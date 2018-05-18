@@ -105,7 +105,7 @@
 </head>
 <body>
 <div class="panel admin-panel">
-  <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>新增站点</strong></div>
+  <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>修改站点</strong></div>
   <div class="body-content">
     <form method="post" class="form-x" action="${rootAddr}stationManage/stationUpd" id="form1">  
       <input type="hidden" value="$!stationInfo.id" name="stationInfo.id"/>
