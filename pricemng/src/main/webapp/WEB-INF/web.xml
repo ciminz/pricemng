@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="WebApp_ID" version="2.5">
+	<display-name>pricemng</display-name>
+	<welcome-file-list>
+		<welcome-file>view/login.vm</welcome-file>
+	</welcome-file-list>
+
+	<context-param id="contextparam">
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			classpath:config/spring-base.xml,
+        	classpath:config/spring-*.xml
+        </param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	
+	<filter>
+	    <filter-name>struts2</filter-name>
+	    <filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+  	</filter>
+	 <filter-mapping>
+	    <filter-name>struts2</filter-name>
+	    <url-pattern>/*</url-pattern>
+	 </filter-mapping>
+
+	<!-- <listener> <listener-class>com.vane.endpoint.tcp.listener.SocketListener</listener-class> 
+		</listener> -->
+
+	<servlet>
+		<description></description>
+		<display-name>ApplicationCongfigServlet</display-name>
+		<servlet-name>ApplicationCongfigServlet</servlet-name>
+		<servlet-class>com.nngdjt.pricemng.servlet.ApplicationCongfigServlet</servlet-class>
+		<load-on-startup>9</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ApplicationCongfigServlet</servlet-name>
+		<url-pattern>/ApplicationCongfigServlet</url-pattern>
+	</servlet-mapping>
+
+
+	<servlet>
+		<description></description>
+		<display-name>ImportSysAdminServlet</display-name>
+		<servlet-name>ImportSysAdminServlet</servlet-name>
+		<servlet-class>com.nngdjt.pricemng.servlet.ImportSysAdminServlet</servlet-class>
+		<load-on-startup>9</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ImportSysAdminServlet</servlet-name>
+		<url-pattern>/ImportSysAdminServlet</url-pattern>
+	</servlet-mapping>
+
+
+	<servlet>
+		<description></description>
+		<display-name>ImportMenuItemServlet</display-name>
+		<servlet-name>ImportMenuItemServlet</servlet-name>
+		<servlet-class>com.nngdjt.pricemng.servlet.ImportMenuItemServlet</servlet-class>
+		<load-on-startup>9</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ImportMenuItemServlet</servlet-name>
+		<url-pattern>/ImportMenuItemServlet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<description></description>
+		<display-name>InitRoleServlet</display-name>
+		<servlet-name>InitRoleServlet</servlet-name>
+		<servlet-class>com.nngdjt.pricemng.servlet.InitRoleServlet</servlet-class>
+		<load-on-startup>10</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>InitRoleServlet</servlet-name>
+		<url-pattern>/InitRoleServlet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+	    <servlet-name>velocity</servlet-name>
+	    <servlet-class>
+				org.apache.velocity.tools.view.servlet.VelocityViewServlet</servlet-class>
+	    <init-param>
+	      <param-name>org.apache.velocity.toolbox</param-name>
+	      <param-value>/WEB-INF/toolbox.xml</param-value>
+	    </init-param>
+	    <init-param>
+	      <param-name>org.apache.velocity.properties</param-name>
+	      <param-value>/WEB-INF/velocity.properties</param-value>
+	    </init-param>
+	    <load-on-startup>10</load-on-startup>
+  	</servlet>
+ 	<servlet-mapping>
+    	<servlet-name>velocity</servlet-name>
+	    <url-pattern>*.vm</url-pattern>
+	</servlet-mapping>
+</web-app>

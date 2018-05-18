@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+	<constant name="struts.enable.DynamicMethodInvocation" value="true" /><!--设定可以在请求中指定方法 -->
+	<constant name="struts.devMode" value="true" /><!-- 开发者模式 -->
+	 <constant name="struts.objectFactory" value="spring"/><!--使用spring注入Action实例 -->
+	<!--  <include file="example.xml" />-->
+	<include file="config/struts-pricemng.xml"/>
+	
+	<package name="default" namespace="/" extends="struts-default">
+	</package>
+
+	<!-- Add packages here -->
+
+</struts>

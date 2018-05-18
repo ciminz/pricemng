@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MenuItems>
+ 	<!-- 用户 -->
+	<Item>
+	 	<Id>1</Id>
+		<ItemName>用户管理</ItemName>
+		<Url>#</Url>
+		<IsParent>0</IsParent>
+		<Parent>-1</Parent>
+	</Item>
+	
+	<Item>
+		<Id>11</Id>
+		<ItemName>查看用户</ItemName>
+		<Url>userManage/userQueryByCondition</Url>
+		<IsParent>1</IsParent>
+		<Parent>1</Parent>
+	</Item>
+	
+	<Item>
+		<Id>12</Id>
+		<ItemName>新增用户</ItemName>
+		<Url>userManage/userImportView</Url>
+		<IsParent>1</IsParent>
+		<Parent>1</Parent>
+	</Item>
+	<!-- 线路 -->
+	<Item>
+	 	<Id>2</Id>
+		<ItemName>线路管理</ItemName>
+		<Url>#</Url>
+		<IsParent>0</IsParent>
+		<Parent>-1</Parent>
+	</Item>
+	
+	<Item>
+		<Id>21</Id>
+		<ItemName>查询线路</ItemName>
+		<Url>lineManage/lineQueryByCondition</Url>
+		<IsParent>1</IsParent>
+		<Parent>2</Parent>
+	</Item>
+	
+	<Item>
+		<Id>22</Id>
+		<ItemName>新增线路</ItemName>
+		<Url>lineManage/lineImportView</Url>
+		<IsParent>1</IsParent>
+		<Parent>2</Parent>
+	</Item>
+	<!-- 站点 -->
+	<Item>
+	 	<Id>3</Id>
+		<ItemName>站点管理</ItemName>
+		<Url>#</Url>
+		<IsParent>0</IsParent>
+		<Parent>-1</Parent>
+	</Item>
+	
+	<Item>
+		<Id>31</Id>
+		<ItemName>查询站点</ItemName>
+		<Url>stationManage/stationQueryByCondition</Url>
+		<IsParent>1</IsParent>
+		<Parent>3</Parent>
+	</Item>
+	
+	<Item>
+		<Id>32</Id>
+		<ItemName>新增站点</ItemName>
+		<Url>stationManage/stationImportView</Url>
+		<IsParent>1</IsParent>
+		<Parent>3</Parent>
+	</Item>
+	<!-- 运距 -->
+	<Item>
+	 	<Id>4</Id>
+		<ItemName>运距管理</ItemName>
+		<Url>#</Url>
+		<IsParent>0</IsParent>
+		<Parent>-1</Parent>
+	</Item>
+	
+	<Item>
+		<Id>41</Id>
+		<ItemName>查询运距</ItemName>
+		<Url>distanceManage/distanceQueryByCondition</Url>
+		<IsParent>1</IsParent>
+		<Parent>4</Parent>
+	</Item>
+	
+	<Item>
+		<Id>42</Id>
+		<ItemName>新增运距</ItemName>
+		<Url>distanceManage/distanceImportView</Url>
+		<IsParent>1</IsParent>
+		<Parent>4</Parent>
+	</Item>
+</MenuItems>

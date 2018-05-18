@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Items>
+	<Item>
+	 	<Id>1</Id>
+		<RoleName>超级管理员</RoleName>
+	</Item>
+	<Item>
+	 	<Id>2</Id>
+		<RoleName>系统操作员</RoleName>
+	</Item>
+	<Item>
+	 	<Id>3</Id>
+		<RoleName>普通用户</RoleName>
+	</Item>
+</Items>

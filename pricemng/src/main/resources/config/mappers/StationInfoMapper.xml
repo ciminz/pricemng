@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nngdjt.pricemng.mapper.StationInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.nngdjt.pricemng.entity.StationInfo" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="station_no" property="stationNo" jdbcType="VARCHAR" />
+    <result column="station_nme" property="stationNme" jdbcType="VARCHAR" />
+    <result column="station_en_nme" property="stationEnNme" jdbcType="VARCHAR" />
+    <result column="line_no" property="lineNo" jdbcType="VARCHAR" />
+    <result column="location_x" property="locationX" jdbcType="VARCHAR" />
+    <result column="location_y" property="locationY" jdbcType="VARCHAR" />
+    <result column="exchange_flg" property="exchangeFlg" jdbcType="VARCHAR" />
+    <result column="exchange_st_no" property="exchangeStNo" jdbcType="VARCHAR" />
+    <result column="exchange_st_li_no" property="exchangeStLiNo" jdbcType="VARCHAR" />
+    <result column="station_des" property="stationDes" jdbcType="VARCHAR" />
+    <result column="sort_id" property="sortId" jdbcType="VARCHAR" />
+    <result column="bak_fld1" property="bakFld1" jdbcType="VARCHAR" />
+    <result column="bak_fld2" property="bakFld2" jdbcType="VARCHAR" />
+    <result column="bak_fld3" property="bakFld3" jdbcType="VARCHAR" />
+    <result column="bak_fld4" property="bakFld4" jdbcType="VARCHAR" />
+    <result column="bak_fld5" property="bakFld5" jdbcType="VARCHAR" />
+    <result column="bak_fld6" property="bakFld6" jdbcType="VARCHAR" />
+    <result column="bak_fld7" property="bakFld7" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, station_no, station_nme, station_en_nme, line_no, location_x, location_y, exchange_flg, 
+    exchange_st_no, exchange_st_li_no, station_des, sort_id, bak_fld1, bak_fld2, bak_fld3, 
+    bak_fld4, bak_fld5, bak_fld6, bak_fld7
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.nngdjt.pricemng.entity.StationInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_station_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_station_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_station_info
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.nngdjt.pricemng.entity.StationInfoExample" >
+    delete from t_station_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.nngdjt.pricemng.entity.StationInfo" >
+    insert into t_station_info (id, station_no, station_nme, 
+      station_en_nme, line_no, location_x, 
+      location_y, exchange_flg, exchange_st_no, 
+      exchange_st_li_no, station_des, sort_id, 
+      bak_fld1, bak_fld2, bak_fld3, 
+      bak_fld4, bak_fld5, bak_fld6, 
+      bak_fld7)
+    values (#{id,jdbcType=BIGINT}, #{stationNo,jdbcType=VARCHAR}, #{stationNme,jdbcType=VARCHAR}, 
+      #{stationEnNme,jdbcType=VARCHAR}, #{lineNo,jdbcType=VARCHAR}, #{locationX,jdbcType=VARCHAR}, 
+      #{locationY,jdbcType=VARCHAR}, #{exchangeFlg,jdbcType=VARCHAR}, #{exchangeStNo,jdbcType=VARCHAR}, 
+      #{exchangeStLiNo,jdbcType=VARCHAR}, #{stationDes,jdbcType=VARCHAR}, #{sortId,jdbcType=VARCHAR}, 
+      #{bakFld1,jdbcType=VARCHAR}, #{bakFld2,jdbcType=VARCHAR}, #{bakFld3,jdbcType=VARCHAR}, 
+      #{bakFld4,jdbcType=VARCHAR}, #{bakFld5,jdbcType=VARCHAR}, #{bakFld6,jdbcType=VARCHAR}, 
+      #{bakFld7,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.nngdjt.pricemng.entity.StationInfo" >
+    insert into t_station_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="stationNo != null" >
+        station_no,
+      </if>
+      <if test="stationNme != null" >
+        station_nme,
+      </if>
+      <if test="stationEnNme != null" >
+        station_en_nme,
+      </if>
+      <if test="lineNo != null" >
+        line_no,
+      </if>
+      <if test="locationX != null" >
+        location_x,
+      </if>
+      <if test="locationY != null" >
+        location_y,
+      </if>
+      <if test="exchangeFlg != null" >
+        exchange_flg,
+      </if>
+      <if test="exchangeStNo != null" >
+        exchange_st_no,
+      </if>
+      <if test="exchangeStLiNo != null" >
+        exchange_st_li_no,
+      </if>
+      <if test="stationDes != null" >
+        station_des,
+      </if>
+      <if test="sortId != null" >
+        sort_id,
+      </if>
+      <if test="bakFld1 != null" >
+        bak_fld1,
+      </if>
+      <if test="bakFld2 != null" >
+        bak_fld2,
+      </if>
+      <if test="bakFld3 != null" >
+        bak_fld3,
+      </if>
+      <if test="bakFld4 != null" >
+        bak_fld4,
+      </if>
+      <if test="bakFld5 != null" >
+        bak_fld5,
+      </if>
+      <if test="bakFld6 != null" >
+        bak_fld6,
+      </if>
+      <if test="bakFld7 != null" >
+        bak_fld7,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="stationNo != null" >
+        #{stationNo,jdbcType=VARCHAR},
+      </if>
+      <if test="stationNme != null" >
+        #{stationNme,jdbcType=VARCHAR},
+      </if>
+      <if test="stationEnNme != null" >
+        #{stationEnNme,jdbcType=VARCHAR},
+      </if>
+      <if test="lineNo != null" >
+        #{lineNo,jdbcType=VARCHAR},
+      </if>
+      <if test="locationX != null" >
+        #{locationX,jdbcType=VARCHAR},
+      </if>
+      <if test="locationY != null" >
+        #{locationY,jdbcType=VARCHAR},
+      </if>
+      <if test="exchangeFlg != null" >
+        #{exchangeFlg,jdbcType=VARCHAR},
+      </if>
+      <if test="exchangeStNo != null" >
+        #{exchangeStNo,jdbcType=VARCHAR},
+      </if>
+      <if test="exchangeStLiNo != null" >
+        #{exchangeStLiNo,jdbcType=VARCHAR},
+      </if>
+      <if test="stationDes != null" >
+        #{stationDes,jdbcType=VARCHAR},
+      </if>
+      <if test="sortId != null" >
+        #{sortId,jdbcType=VARCHAR},
+      </if>
+      <if test="bakFld1 != null" >
+        #{bakFld1,jdbcType=VARCHAR},
+      </if>
+      <if test="bakFld2 != null" >
+        #{bakFld2,jdbcType=VARCHAR},
+      </if>
+      <if test="bakFld3 != null" >
+        #{bakFld3,jdbcType=VARCHAR},
+      </if>
+      <if test="bakFld4 != null" >
+        #{bakFld4,jdbcType=VARCHAR},
+      </if>
+      <if test="bakFld5 != null" >
+        #{bakFld5,jdbcType=VARCHAR},
+      </if>
+      <if test="bakFld6 != null" >
+        #{bakFld6,jdbcType=VARCHAR},
+      </if>
+      <if test="bakFld7 != null" >
+        #{bakFld7,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.nngdjt.pricemng.entity.StationInfoExample" resultType="java.lang.Integer" >
+    select count(*) from t_station_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_station_info
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.stationNo != null" >
+        station_no = #{record.stationNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.stationNme != null" >
+        station_nme = #{record.stationNme,jdbcType=VARCHAR},
+      </if>
+      <if test="record.stationEnNme != null" >
+        station_en_nme = #{record.stationEnNme,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lineNo != null" >
+        line_no = #{record.lineNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.locationX != null" >
+        location_x = #{record.locationX,jdbcType=VARCHAR},
+      </if>
+      <if test="record.locationY != null" >
+        location_y = #{record.locationY,jdbcType=VARCHAR},
+      </if>
+      <if test="record.exchangeFlg != null" >
+        exchange_flg = #{record.exchangeFlg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.exchangeStNo != null" >
+        exchange_st_no = #{record.exchangeStNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.exchangeStLiNo != null" >
+        exchange_st_li_no = #{record.exchangeStLiNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.stationDes != null" >
+        station_des = #{record.stationDes,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sortId != null" >
+        sort_id = #{record.sortId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bakFld1 != null" >
+        bak_fld1 = #{record.bakFld1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bakFld2 != null" >
+        bak_fld2 = #{record.bakFld2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bakFld3 != null" >
+        bak_fld3 = #{record.bakFld3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bakFld4 != null" >
+        bak_fld4 = #{record.bakFld4,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bakFld5 != null" >
+        bak_fld5 = #{record.bakFld5,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bakFld6 != null" >
+        bak_fld6 = #{record.bakFld6,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bakFld7 != null" >
+        bak_fld7 = #{record.bakFld7,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_station_info
+    set id = #{record.id,jdbcType=BIGINT},
+      station_no = #{record.stationNo,jdbcType=VARCHAR},
+      station_nme = #{record.stationNme,jdbcType=VARCHAR},
+      station_en_nme = #{record.stationEnNme,jdbcType=VARCHAR},
+      line_no = #{record.lineNo,jdbcType=VARCHAR},
+      location_x = #{record.locationX,jdbcType=VARCHAR},
+      location_y = #{record.locationY,jdbcType=VARCHAR},
+      exchange_flg = #{record.exchangeFlg,jdbcType=VARCHAR},
+      exchange_st_no = #{record.exchangeStNo,jdbcType=VARCHAR},
+      exchange_st_li_no = #{record.exchangeStLiNo,jdbcType=VARCHAR},
+      station_des = #{record.stationDes,jdbcType=VARCHAR},
+      sort_id = #{record.sortId,jdbcType=VARCHAR},
+      bak_fld1 = #{record.bakFld1,jdbcType=VARCHAR},
+      bak_fld2 = #{record.bakFld2,jdbcType=VARCHAR},
+      bak_fld3 = #{record.bakFld3,jdbcType=VARCHAR},
+      bak_fld4 = #{record.bakFld4,jdbcType=VARCHAR},
+      bak_fld5 = #{record.bakFld5,jdbcType=VARCHAR},
+      bak_fld6 = #{record.bakFld6,jdbcType=VARCHAR},
+      bak_fld7 = #{record.bakFld7,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nngdjt.pricemng.entity.StationInfo" >
+    update t_station_info
+    <set >
+      <if test="stationNo != null" >
+        station_no = #{stationNo,jdbcType=VARCHAR},
+      </if>
+      <if test="stationNme != null" >
+        station_nme = #{stationNme,jdbcType=VARCHAR},
+      </if>
+      <if test="stationEnNme != null" >
+        station_en_nme = #{stationEnNme,jdbcType=VARCHAR},
+      </if>
+      <if test="lineNo != null" >
+        line_no = #{lineNo,jdbcType=VARCHAR},
+      </if>
+      <if test="locationX != null" >
+        location_x = #{locationX,jdbcType=VARCHAR},
+      </if>
+      <if test="locationY != null" >
+        location_y = #{locationY,jdbcType=VARCHAR},
+      </if>
+      <if test="exchangeFlg != null" >
+        exchange_flg = #{exchangeFlg,jdbcType=VARCHAR},
+      </if>
+      <if test="exchangeStNo != null" >
+        exchange_st_no = #{exchangeStNo,jdbcType=VARCHAR},
+      </if>
+      <if test="exchangeStLiNo != null" >
+        exchange_st_li_no = #{exchangeStLiNo,jdbcType=VARCHAR},
+      </if>
+      <if test="stationDes != null" >
+        station_des = #{stationDes,jdbcType=VARCHAR},
+      </if>
+      <if test="sortId != null" >
+        sort_id = #{sortId,jdbcType=VARCHAR},
+      </if>
+      <if test="bakFld1 != null" >
+        bak_fld1 = #{bakFld1,jdbcType=VARCHAR},
+      </if>
+      <if test="bakFld2 != null" >
+        bak_fld2 = #{bakFld2,jdbcType=VARCHAR},
+      </if>
+      <if test="bakFld3 != null" >
+        bak_fld3 = #{bakFld3,jdbcType=VARCHAR},
+      </if>
+      <if test="bakFld4 != null" >
+        bak_fld4 = #{bakFld4,jdbcType=VARCHAR},
+      </if>
+      <if test="bakFld5 != null" >
+        bak_fld5 = #{bakFld5,jdbcType=VARCHAR},
+      </if>
+      <if test="bakFld6 != null" >
+        bak_fld6 = #{bakFld6,jdbcType=VARCHAR},
+      </if>
+      <if test="bakFld7 != null" >
+        bak_fld7 = #{bakFld7,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nngdjt.pricemng.entity.StationInfo" >
+    update t_station_info
+    set station_no = #{stationNo,jdbcType=VARCHAR},
+      station_nme = #{stationNme,jdbcType=VARCHAR},
+      station_en_nme = #{stationEnNme,jdbcType=VARCHAR},
+      line_no = #{lineNo,jdbcType=VARCHAR},
+      location_x = #{locationX,jdbcType=VARCHAR},
+      location_y = #{locationY,jdbcType=VARCHAR},
+      exchange_flg = #{exchangeFlg,jdbcType=VARCHAR},
+      exchange_st_no = #{exchangeStNo,jdbcType=VARCHAR},
+      exchange_st_li_no = #{exchangeStLiNo,jdbcType=VARCHAR},
+      station_des = #{stationDes,jdbcType=VARCHAR},
+      sort_id = #{sortId,jdbcType=VARCHAR},
+      bak_fld1 = #{bakFld1,jdbcType=VARCHAR},
+      bak_fld2 = #{bakFld2,jdbcType=VARCHAR},
+      bak_fld3 = #{bakFld3,jdbcType=VARCHAR},
+      bak_fld4 = #{bakFld4,jdbcType=VARCHAR},
+      bak_fld5 = #{bakFld5,jdbcType=VARCHAR},
+      bak_fld6 = #{bakFld6,jdbcType=VARCHAR},
+      bak_fld7 = #{bakFld7,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select resultMap="BaseResultMap" parameterType="com.nngdjt.pricemng.entity.StationInfoExample" id="selectByExampleWithRowbounds" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_station_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

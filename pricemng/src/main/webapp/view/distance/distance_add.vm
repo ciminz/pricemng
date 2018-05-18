@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="${rootAddr}view/css/pintuer.css">
+<link rel="stylesheet" href="${rootAddr}view/css/admin.css">
+<script src="${rootAddr}view/js/jquery2.js"></script>
+<script src="${rootAddr}view/js/pintuer.js"></script>
+<script>
+    	
+    	function seeIsIe() {
+			var isIe = !-[1,];
+			if(isIe) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		
+	
+		function getLine() {
+			$.post("${rootAddr}ajax/ajaxFindLine",{},function(data) {
+				var xml;
+				if (seeIsIe()) {
+					xml = new ActiveXObject("Microsoft.XMLDOM");
+					xml.async = false;
+					xml.loadXML(data);
+				} else {
+					
+					xml = data;
+				}
+				var messageHead = $("messageHead",xml).text();
+				
+				if(messageHead == '0') {
+					var count = $("count",xml).text();
+					if(count == '0') {
+						return;
+					}else {
+						$("#lineNo").children("[value != '-1']").remove();
+						$("lineInfo",xml).each(function() {
+							var lineNo = $("lineNo",this).text();
+							var lineNme = $("lineNme",this).text();
+							if(lineNo == '${oriLineNo}') {
+								$("<option value=" + lineNo +" selected='selected'>" + lineNme + "</option>").appendTo($("#oLineNo"));
+							}else {
+								$("<option value=" + lineNo +">" + lineNme + "</option>").appendTo($("#oLineNo"));
+							}
+							
+							if(lineNo == '${desLineNo}') {
+								$("<option value=" + lineNo +" selected='selected'>" + lineNme + "</option>").appendTo($("#dLineNo"));
+							}else {
+								$("<option value=" + lineNo +">" + lineNme + "</option>").appendTo($("#dLineNo"));
+							}
+							
+						})
+					}
+				}else {
+					alert('获取线路信息错误，请检查格式！');
+				}
+			});
+		}
+		
+		function getStation() {
+			$.post("${rootAddr}ajax/ajaxFindStation",{},function(data) {
+				var xml;
+				if (seeIsIe()) {
+					xml = new ActiveXObject("Microsoft.XMLDOM");
+					xml.async = false;
+					xml.loadXML(data);
+				} else {
+					xml = data;
+				}
+				var messageHead = $("messageHead",xml).text();
+				
+				if(messageHead == '0') {
+					var count = $("count",xml).text();
+					if(count == '0') {
+						return;
+					}else {
+						$("#oStationNo").children("[value != '-1']").remove();
+						$("#dStationNo").children("[value != '-1']").remove();
+						$("stationInfo",xml).each(function() {
+							var oriLineNo = '${oriLineNo}';
+							var desLineNo = '${desLineNo}';							
+							var stationNo = $("stationNo",this).text();
+							var lineNo =  $("lineNo",this).text();
+							var stationNme = $("stationNme",this).text();
+							if(stationNo == '${viewStationDistanceInfo.oriStationNo}' && lineNo == oriLineNo) {
+								$("<option value=" + stationNo + " selected='selected'>" + stationNme + "</option>").appendTo($("#oStationNo"));
+							}else if(lineNo == oriLineNo){
+								$("<option value="+ stationNo + ">" + stationNme + "</option>").appendTo($("#oStationNo"));
+							}
+							
+							if(stationNo == '${viewStationDistanceInfo.desStationNo}' && lineNo == desLineNo) {
+								$("<option value=" + stationNo +" selected='selected'>" + stationNme + "</option>").appendTo($("#dStationNo"));
+							}else if(lineNo == desLineNo){
+								$("<option value=" + stationNo +">" + stationNme + "</option>").appendTo($("#dStationNo"));
+							}
+							
+						})
+					}
+				}else {
+					alert('获取站点信息错误，请检查格式！');
+				}
+			});
+		}
+    	
+    	
+    	function olineChange() {
+    		$.post("${rootAddr}ajax/ajaxFindStation",{},function(data) {
+				var xml;
+				if (seeIsIe()) {
+					xml = new ActiveXObject("Microsoft.XMLDOM");
+					xml.async = false;
+					xml.loadXML(data);
+				} else {
+					xml = data;
+				}
+				
+				var messageHead = $("messageHead",xml).text();
+				if(messageHead == '0') {
+					var count = $("count",xml).text();
+					if(count == '0') {
+						return;
+					}else {
+						$("#oStationNo").children("[value != '-1']").remove();
+						$("stationInfo",xml).each(function() {
+							var stationNo = $("stationNo",this).text();
+							var lineNoSelected = $("#oLineNo").val();
+							var lineNo = $("lineNo",this).text();
+							if(lineNoSelected == '-1' || lineNoSelected != lineNo) {
+								return true;
+							}
+							
+							var stationNme = $("stationNme",this).text();
+							if(stationNo == '${viewStationDistanceInfo.oriStationNo}') {
+								$("<option value=" + stationNo + " selected='selected'>" + stationNme + "</option>").appendTo($("#oStationNo"));
+							}else {
+								$("<option value="+ stationNo + ">" + stationNme + "</option>").appendTo($("#oStationNo"));
+							}
+						});
+					}
+				}else {
+					alert('获取站点信息错误，请检查格式！');
+				}
+			});
+    	}
+    	
+    	
+    	function dlineChange() {
+    		$.post("${rootAddr}ajax/ajaxFindStation",{},function(data) {
+				var xml;
+				if (seeIsIe()) {
+					xml = new ActiveXObject("Microsoft.XMLDOM");
+					xml.async = false;
+					xml.loadXML(data);
+				} else {
+					xml = data;
+				}
+				
+				var messageHead = $("messageHead",xml).text();
+				if(messageHead == '0') {
+					var count = $("count",xml).text();
+					if(count == '0') {
+						return;
+					}else {
+						$("#dStationNo").children("[value != '-1']").remove();
+						$("stationInfo",xml).each(function() {
+							var stationNo = $("stationNo",this).text();
+							var lineNoSelected = $("#dLineNo").val();
+							var lineNo = $("lineNo",this).text();
+							if(lineNoSelected == '-1' || lineNoSelected != lineNo) {
+								return true;
+							}
+							
+							var stationNme = $("stationNme",this).text();
+							if(stationNo == '${viewStationDistanceInfo.desStationNo}') {
+								$("<option value=" + stationNo + " selected='selected'>" + stationNme + "</option>").appendTo($("#dStationNo"));
+							}else {
+								$("<option value="+ stationNo + ">" + stationNme + "</option>").appendTo($("#dStationNo"));
+							}
+						});
+					}
+				}else {
+					alert('获取站点信息错误，请检查格式！');
+				}
+			});
+    	}
+    </script>
+    
+    <script>
+    	$(document).ready(function(){
+    		getLine();
+    		getStation();
+    		
+	    	$("#submitBtn").click(function() {
+	    		
+	    		if($("#oStationNo").val() == '-1') {
+					$("#oStationNo_tips").text(' 请选择起始站点 ');
+					return false;
+				}else {
+					$("#oStationNo_tips").text('');
+				}
+				
+				if($("#dStationNo").val() == '-1') {
+					$("#dStationNo_tips").text(' 请选择目的站点 ');
+					return false;
+				}else {
+					$("#dStationNo_tips").text('');
+				}
+				
+				if($("#distance").val() == '') {
+					$("#distance_tips").text(' 请输入间距 ');
+					return false;
+				}else {
+					$("#distance_tips").text('');
+				}
+				
+				
+				$("#form1").submit();
+			});
+			
+			$("#addType").change(function() {
+				var oprTyp = $("#addType").val();
+				if(oprTyp == '0') {
+					$("#addType_single").show();
+					$("#addType_batch").hide();
+					$("#form1").attr('action',"${rootAddr}distanceManage/distanceAdd");
+					$("#form1").attr('enctype',"text/plain");
+				}else if(oprTyp == '1') {
+					$("#addType_single").hide();
+					$("#addType_batch").show();
+					$("#form1").attr('action',"${rootAddr}distanceManage/distanceAddBatch");
+					$("#form1").attr('enctype',"multipart/form-data");
+				}
+			});
+		});
+		
+		
+		function downloadTemp() {
+			document.getElementById('downloadFileName').value = 'template.xls';
+			document.getElementById('form_download').submit();
+		}
+    </script>
+
+</head>
+<body>
+<div class="panel admin-panel">
+  <form method="post" action="${rootAddr}download/downloadFile" id="form_download">
+  	<input type="hidden" name="subPath" value="template"/>
+  	<input type="hidden" name="fileName" id="downloadFileName"/>
+  </form>  	
+  <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>增加运距</strong></div>
+  <div class="body-content">
+    <form method="post" class="form-x" action="${rootAddr}distanceManage/distanceAdd" id="form1">  
+    <div class="form-group">
+        <div class="label">
+          <label>新增方式：</label>
+        </div>
+        <div class="field">
+	        <select class="input w50" id="addType">
+			    <option value="0">单条</option>
+			    <option value="1">批量</option>
+			</select>
+	        <div class="tips"></div>
+        </div>
+      </div>
+      <div id="addType_batch" style="display:none;">
+      	<div class="body-content">
+	      <div class="form-group">
+	        <div class="label">
+	          <label>运距数据文件：</label>
+	        </div>
+	        <div class="field">
+	          <input type="file" name="file" id="btn_file" style="display:none" onchange="javascript:document.getElementById('url1').value=document.getElementById('btn_file').value;">
+	          <input type="text" id="url1" name="img" class="input tips" style="width:50%; float:left;"  value=""  data-toggle="hover" data-place="right"/>
+	          <input type="button" class="button bg-blue margin-left" id="image1" value="+ 选择文件"  style="float:left;" onclick="javascript:document.getElementById('btn_file').click();">
+	          <div class="tipss"><a href="javascript:downloadTemp();" style="color:green;">导入模板</a></div>
+	        </div>
+	      </div>  
+	      <div class="form-group">
+	        <div class="label">
+	          <label></label>
+	        </div>
+	        <div class="field">
+	          <button class="button bg-main icon-check-square-o" type="submit" id="submitBtn2"> 提交</button>
+	        </div>
+	      </div> 
+	     </div>  
+      </div>
+      <div id="addType_single" style="display:block;">
+	      <div class="form-group">
+	        <div class="label">
+	          <label>起始线路：</label>
+	        </div>
+	        <div class="field">
+		        <select name="oriLineNo" class="input w50" id="oLineNo" onchange="olineChange()">
+		         	<option value="-1">请选择</option>
+		        </select>
+		        <div class="tips"></div>
+	        </div>
+	      </div> 
+	      <div class="form-group">
+	        <div class="label">
+	          <label>起始站：</label>
+	        </div>
+	        <div class="field">
+	        	<select name="distanceInfo.oriStationNo" class="input w50" id="oStationNo">
+		         	<option value="-1">请选择</option>
+		        </select>
+		        <div class="tipss" id="oStationNo_tips" style="color:red"></div>
+	        </div>
+	      </div>
+	      <div class="form-group">
+	      	<div class="label">
+	          <label>目的线路：</label>
+	        </div>
+	        <div class="field">
+		        <select name="desLineNo" class="input w50" id="dLineNo" onchange="dlineChange()">
+		         	<option value="-1">请选择</option>
+		        </select>
+		        <div class="tips"></div>
+	        </div>
+	      </div> 
+	      <div class="form-group">
+	        <div class="label">
+	          <label>目的站：</label>
+	        </div>
+	        <div class="field">
+	           <select name="distanceInfo.desStationNo" class="input w50" id="dStationNo">
+		         	<option value="-1">请选择</option>
+		        </select>
+		        <div class="tipss" id="dStationNo_tips" style="color:red"></div> 
+	        </div>
+	      </div>
+	      <div class="form-group">
+	        <div class="label">
+	          <label>间距(公里)：</label>
+	        </div>
+	        <div class="field">
+	          <input type="text" class="input w50" value="" name="distanceInfo.distance" id="distance"/>
+	          <div class="tipss" id="distance_tips" style="color:red"></div>
+	        </div>
+	      </div>
+	      <div class="form-group">
+	        <div class="label">
+	          <label></label>
+	        </div>
+	        <div class="field">
+	          <button class="button bg-main icon-check-square-o" type="submit" id="submitBtn"> 提交</button>
+	        </div>
+	      </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+</body></html>

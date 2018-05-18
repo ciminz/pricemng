@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title>站点信息</title>  
+    <link rel="stylesheet" href="${rootAddr}view/css/pintuer.css">
+    <link rel="stylesheet" href="${rootAddr}view/css/admin.css">
+    <script src="${rootAddr}view/js/jquery.js"></script>
+    <script src="${rootAddr}view/js/jquery2.js"></script>
+    <script src="${rootAddr}view/js/pintuer.js"></script>  
+    <script>
+    	function f() {
+    		alert(321);
+    	}
+    	
+    	function seeIsIe() {
+			var isIe = !-[1,];
+			if(isIe) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		
+	
+		function getLine() {
+			$.post("${rootAddr}ajax/ajaxFindLine",{},function(data) {
+				var xml;
+				if (seeIsIe()) {
+					xml = new ActiveXObject("Microsoft.XMLDOM");
+					xml.async = false;
+					xml.loadXML(data);
+				} else {
+					
+					xml = data;
+				}
+				var messageHead = $("messageHead",xml).text();
+				
+				if(messageHead == '0') {
+					var count = $("count",xml).text();
+					if(count == '0') {
+						return;
+					}else {
+						$("#lineNo").children("[value != '-1']").remove();
+						$("lineInfo",xml).each(function() {
+							var lineNo = $("lineNo",this).text();
+							var lineNme = $("lineNme",this).text();
+							if(lineNo == '${oriLineNo}') {
+								$("<option value=" + lineNo +" selected='selected'>" + lineNme + "</option>").appendTo($("#oLineNo"));
+							}else {
+								$("<option value=" + lineNo +">" + lineNme + "</option>").appendTo($("#oLineNo"));
+							}
+							
+							if(lineNo == '${desLineNo}') {
+								$("<option value=" + lineNo +" selected='selected'>" + lineNme + "</option>").appendTo($("#dLineNo"));
+							}else {
+								$("<option value=" + lineNo +">" + lineNme + "</option>").appendTo($("#dLineNo"));
+							}
+							
+						})
+					}
+				}else {
+					alert('获取线路信息错误，请检查格式！');
+				}
+			});
+		}
+		
+		function getStation() {
+			$.post("${rootAddr}ajax/ajaxFindStation",{},function(data) {
+				var xml;
+				if (seeIsIe()) {
+					xml = new ActiveXObject("Microsoft.XMLDOM");
+					xml.async = false;
+					xml.loadXML(data);
+				} else {
+					xml = data;
+				}
+				var messageHead = $("messageHead",xml).text();
+				
+				if(messageHead == '0') {
+					var count = $("count",xml).text();
+					if(count == '0') {
+						return;
+					}else {
+						$("#oStationNo").children("[value != '-1']").remove();
+						$("#dStationNo").children("[value != '-1']").remove();
+						$("stationInfo",xml).each(function() {
+							var oriLineNo = '${oriLineNo}';
+							var desLineNo = '${desLineNo}';							
+							var stationNo = $("stationNo",this).text();
+							var lineNo =  $("lineNo",this).text();
+							var stationNme = $("stationNme",this).text();
+							if(stationNo == '${viewStationDistanceInfo.oriStationNo}' && lineNo == oriLineNo) {
+								$("<option value=" + stationNo + " selected='selected'>" + stationNme + "</option>").appendTo($("#oStationNo"));
+							}else if(lineNo == oriLineNo){
+								$("<option value="+ stationNo + ">" + stationNme + "</option>").appendTo($("#oStationNo"));
+							}
+							
+							if(stationNo == '${viewStationDistanceInfo.desStationNo}' && lineNo == desLineNo) {
+								$("<option value=" + stationNo +" selected='selected'>" + stationNme + "</option>").appendTo($("#dStationNo"));
+							}else if(lineNo == desLineNo){
+								$("<option value=" + stationNo +">" + stationNme + "</option>").appendTo($("#dStationNo"));
+							}
+							
+						})
+					}
+				}else {
+					alert('获取站点信息错误，请检查格式！');
+				}
+			});
+		}
+			
+    	function changePage(oprt) {
+    		var nowpage = document.getElementById("nowpagetxt").value;
+    		if(oprt == 'f') {
+    			document.getElementById("nowpagetxt").value = "1";
+    		}
+    		
+    		if(oprt == 'p') {
+    			document.getElementById("nowpagetxt").value = nowpage - 1 > 0 ? nowpage - 1:1;
+    		}
+    		
+    		if(oprt == 'n') {
+    			document.getElementById("nowpagetxt").value = nowpage + 1 < ${totalPageSize}?nowpage + 1:${totalPageSize};
+    		}
+    		
+    		if(oprt == 'l') {
+    			document.getElementById("nowpagetxt").value = ${totalPageSize};
+    		}
+    		
+    		document.getElementById("form1").submit();
+    	}
+    	
+    	
+    	function olineChange() {
+    		$.post("${rootAddr}ajax/ajaxFindStation",{},function(data) {
+				var xml;
+				if (seeIsIe()) {
+					xml = new ActiveXObject("Microsoft.XMLDOM");
+					xml.async = false;
+					xml.loadXML(data);
+				} else {
+					xml = data;
+				}
+				
+				var messageHead = $("messageHead",xml).text();
+				if(messageHead == '0') {
+					var count = $("count",xml).text();
+					if(count == '0') {
+						return;
+					}else {
+						$("#oStationNo").children("[value != '-1']").remove();
+						$("stationInfo",xml).each(function() {
+							var stationNo = $("stationNo",this).text();
+							var lineNoSelected = $("#oLineNo").val();
+							var lineNo = $("lineNo",this).text();
+							if(lineNoSelected == '-1' || lineNoSelected != lineNo) {
+								return true;
+							}
+							
+							var stationNme = $("stationNme",this).text();
+							if(stationNo == '${viewStationDistanceInfo.oriStationNo}') {
+								$("<option value=" + stationNo + " selected='selected'>" + stationNme + "</option>").appendTo($("#oStationNo"));
+							}else {
+								$("<option value="+ stationNo + ">" + stationNme + "</option>").appendTo($("#oStationNo"));
+							}
+						});
+					}
+				}else {
+					alert('获取站点信息错误，请检查格式！');
+				}
+			});
+    	}
+    	
+    	
+    	function dlineChange() {
+    		$.post("${rootAddr}ajax/ajaxFindStation",{},function(data) {
+				var xml;
+				if (seeIsIe()) {
+					xml = new ActiveXObject("Microsoft.XMLDOM");
+					xml.async = false;
+					xml.loadXML(data);
+				} else {
+					xml = data;
+				}
+				
+				var messageHead = $("messageHead",xml).text();
+				if(messageHead == '0') {
+					var count = $("count",xml).text();
+					if(count == '0') {
+						return;
+					}else {
+						$("#dStationNo").children("[value != '-1']").remove();
+						$("stationInfo",xml).each(function() {
+							var stationNo = $("stationNo",this).text();
+							var lineNoSelected = $("#dLineNo").val();
+							var lineNo = $("lineNo",this).text();
+							if(lineNoSelected == '-1' || lineNoSelected != lineNo) {
+								return true;
+							}
+							
+							var stationNme = $("stationNme",this).text();
+							if(stationNo == '${viewStationDistanceInfo.desStationNo}') {
+								$("<option value=" + stationNo + " selected='selected'>" + stationNme + "</option>").appendTo($("#dStationNo"));
+							}else {
+								$("<option value="+ stationNo + ">" + stationNme + "</option>").appendTo($("#dStationNo"));
+							}
+						});
+					}
+				}else {
+					alert('获取站点信息错误，请检查格式！');
+				}
+			});
+    	}
+    </script>
+    
+    <script>
+    	$(document).ready(function(){
+    		getLine();
+    		getStation();
+		});
+    </script>
+</head>
+<body>
+<form method="post" action="${rootAddr}distanceManage/distanceDelete" id="formDelete">
+	 <input type="hidden" name="distanceInfo.oriStationNo" id="oriStationNotxt"/>
+	 <input type="hidden" name="distanceInfo.desStationNo" id="desStationNotxt"/>
+</form>
+
+<form method="post" action="${rootAddr}distanceManage/distanceUpdView" id="form3">
+	 <input type="hidden" name="distanceInfo.oriStationNo" id="oriStationNotxt2"/>
+	 <input type="hidden" name="distanceInfo.desStationNo" id="desStationNotxt2"/>
+</form>
+<div class="panel admin-panel margin-top">
+  <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>查询条件</strong></div>
+  <div class="body-content">
+    <form method="post" class="form-x" action="${rootAddr}distanceManage/distanceQueryByCondition" id="form1">
+      <input type="hidden" name="nowpage"  value="${nowpage}" id="nowpagetxt"/> 
+      <input type="hidden" name="pagesize"  value="5" /> 
+      <input type="hidden" name="totolpagesize"  value="${totalPageSize}" /> 
+      <table width="100%" align="center"><tr>
+      <td width="50%">
+      <div class="form-group">
+        <div class="label">
+          <label>起始线路：</label>
+        </div>
+        <div class="field">
+	        <select name="oriLineNo" class="input w50" id="oLineNo" onchange="olineChange()">
+	         	<option value="-1">请选择</option>
+	        </select>
+	        <div class="tips"></div>
+        </div>
+      </div> 
+      </td>
+      <td width="50%">
+      <div class="form-group">
+        <div class="label">
+          <label>起始站：</label>
+        </div>
+        <div class="field">
+        	<select name="viewStationDistanceInfo.oriStationNo" class="input w50" id="oStationNo">
+	         	<option value="-1">请选择</option>
+	        </select>
+	        <div class="tips"></div>
+        </div>
+      </div>
+      </td></tr>
+      </table>
+      <table width="100%" align="center"><tr>
+      <td width="50%">
+       <div class="form-group">
+      	<div class="label">
+          <label>目的线路：</label>
+        </div>
+        <div class="field">
+	        <select name="desLineNo" class="input w50" id="dLineNo" onchange="dlineChange()">
+	         	<option value="-1">请选择</option>
+	        </select>
+	        <div class="tips"></div>
+        </div>
+      </div> 
+      </td>
+      <td>
+      <div class="form-group">
+        <div class="label">
+          <label>目的站：</label>
+        </div>
+        <div class="field">
+           <select name="viewStationDistanceInfo.desStationNo" class="input w50" id="dStationNo">
+	         	<option value="-1">请选择</option>
+	        </select>
+	        <div class="tips"></div> 
+        </div>
+      </div>
+      </td></tr>
+      </table>
+     <div class="form-group">
+        <div class="label">
+          <label></label>
+        </div>
+        <div class="field" width="100%" align="center">
+          <button class="button bg-main icon-search" type="submit"> 查询</button>
+          <button class="button bg-main" type="button" onclick="javascript:document.getElementById('lineNo').value='-1';document.getElementById('stationNme').value='';document.getElementById('exchangeFlg').value='-1';"> 重置</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="panel admin-panel">
+  <div class="panel-head"><strong class="icon-reorder"> 运距信息列表</strong></div>
+  <div class="padding border-bottom">
+  	
+  </div> 
+  <table class="table table-hover text-center">
+    <tr>
+      <th width="5%">序号</th>
+      <th>起始站编号</th>  
+      <th>起始站名</th>
+      <th>目的站编号</th>    
+      <th>目的站名</th>
+      <th>间距</th>
+      <th width="250">操作</th>
+    </tr>
+    #set($index=1)
+    #foreach($d in $queryResult)
+    <tr>
+      <td>${index}</td>      
+      <td>${d.oriStationNo}</td>  
+      <td>${d.oriStationNme}</td>
+      <td>${d.desStationNo}</td>
+      <td>${d.desStationNme}</td>
+      <td>${d.distance}</td>
+      <td>
+      <div class="button-group">
+         <a type="button" class="button border-main" href="javascript:void(0);" onclick="viewToUpd('${d.oriStationNo}','${d.desStationNo}')"><span class="icon-edit"></span>修改</a>
+       	 <a class="button border-red" href="javascript:void(0);" onclick="recdel('${d.oriStationNo}','${d.desStationNo}')"><span class="icon-trash-o"></span>删除</a>
+      </div>
+      </td>
+    </tr> 
+    #set($index=$index + 1)
+    #end 
+     <tr>
+        <td colspan="9"><div class="pagelist"> <a onclick="script:changePage('f');">首页</a> <a onclick="script:changePage('p')">上一页</a> <a onclick="script:changePage('n')">下一页</a><a onclick="script:changePage('l');">尾页</a> 共${totalPageSize}页</div></td>
+      </tr>
+  </table>
+</div>
+<script>
+function recdel(oriStationNo, desStationNo){
+	if(confirm("您确定要删除吗?")){
+		document.getElementById("oriStationNotxt").value = oriStationNo;
+		document.getElementById("desStationNotxt").value = desStationNo;
+		document.getElementById("formDelete").submit();
+	}
+}
+
+function viewToUpd(oriStationNo, desStationNo) {
+	document.getElementById("oriStationNotxt2").value = oriStationNo;
+	document.getElementById("desStationNotxt2").value = desStationNo;
+	document.getElementById("form3").submit();
+}
+</script>
+<script>
+	#if($stationInfo.exchangeFlg)
+		document.getElementById('exchangeFlg').value='${stationInfo.exchangeFlg}';
+	#else
+		document.getElementById('exchangeFlg').value='-1';
+	#end
+</script>
+</body></html>

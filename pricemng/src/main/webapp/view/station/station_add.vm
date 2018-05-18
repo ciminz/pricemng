@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="${rootAddr}view/css/pintuer.css">
+<link rel="stylesheet" href="${rootAddr}view/css/admin.css">
+<script src="${rootAddr}view/js/jquery2.js"></script>
+<script src="${rootAddr}view/js/pintuer.js"></script>
+<script>
+	function seeIsIe() {
+		var isIe = !-[1,];
+		if(isIe) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	$(function(){
+	  $.post("${rootAddr}ajax/ajaxFindLine",{},function(data) {
+			var xml;
+			if (seeIsIe()) {
+				xml = new ActiveXObject("Microsoft.XMLDOM");
+				xml.async = false;
+				xml.loadXML(data);
+			} else {
+				
+				xml = data;
+			}
+			var messageHead = $("messageHead",xml).text();
+			
+			if(messageHead == '0') {
+				var count = $("count",xml).text();
+				if(count == '0') {
+					return;
+				}else {
+					$("#lineNo").children("[value != '-1']").remove();
+					$("#lineNo2").children("[value != '-1']").remove();
+					$("lineInfo",xml).each(function() {
+						var lineNo = $("lineNo",this).text();
+						var lineNme = $("lineNme",this).text();
+						if(lineNo == '${stationInfo.lineNo}') {
+							$("<option value=" + lineNo +" selected='selected'>" + lineNme + "</option>").appendTo($("#lineNo"));
+						}else {
+							$("<option value=" + lineNo +">" + lineNme + "</option>").appendTo($("#lineNo"));
+						}
+						
+						if(lineNo == '${stationInfo.exchangeStLiNo}') {
+							$("<option value=" + lineNo +" selected='selected'>" + lineNme + "</option>").appendTo($("#lineNo2"));
+						}else {
+							$("<option value=" + lineNo +">" + lineNme + "</option>").appendTo($("#lineNo2"));
+						}
+						
+					})
+				}
+			}else {
+				alert('获取线路信息错误，请检查格式！');
+			}
+		});
+		
+		$("#submitBtn").click(function() {
+			if($("#stationNo").val() == '') {
+				return;
+			}
+			
+			if($("#stationNme").val() == '') {
+				return;
+			}
+			
+			if($("#lineNo").val() == '-1') {
+				alert('请选择所属线路!');
+				$("#lineNo").focus();
+				return false;
+			}
+			
+			if($("#exchangeFlg").val() == '-1') {
+				alert('请选择是否是换乘站!');
+				$("#exchangeFlg").focus();
+				return false;
+			}
+			
+			if($("#exchangeFlg").val() == 'Y' && $("#exchangeStNo").val() == '') {
+				alert('请输入换成站运营站编号!');
+				$("#exchangeStNo").focus();
+				return false;
+			}
+			
+			if($("#exchangeFlg").val() == 'Y' && $("#lineNo2").val() == '-1') {
+				alert('请选择换成站所属线路编号!');
+				$("#lineNo2").focus();
+				return false;
+			}
+			
+			$("#form1").submit();
+		});
+	
+	});
+	
+</script>
+
+</head>
+<body>
+<div class="panel admin-panel">
+  <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>修改站点</strong></div>
+  <div class="body-content">
+    <form method="post" class="form-x" action="${rootAddr}stationManage/stationAdd" id="form1">  
+      <div class="form-group">
+        <div class="label">
+          <label>站点编号：</label>
+        </div>
+        <div class="field">
+          <input type="text" class="input w50" value="" name="stationInfo.stationNo" data-validate="required:请输入站点编号" id="stationNo"/>
+          <div class="tips"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>名称：</label>
+        </div>
+        <div class="field">
+          <input type="text" class="input w50" value="" name="stationInfo.stationNme" data-validate="required:请输入站点名称" id="stationNme"/>
+          <div class="tips"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>英文名：</label>
+        </div>
+        <div class="field">
+          <input type="text" class="input w50" value="" name="stationInfo.stationEnNme"/>
+          <div class="tips"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>所属线路：</label>
+        </div>
+        <div class="field">
+	        <select name="stationInfo.lineNo" class="input w50" id="lineNo">
+	         	<option value="-1">请选择</option>
+	        </select>
+	        <div class="tips"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>坐标X：</label>
+        </div>
+        <div class="field">
+          <input type="text" class="input w50" value="" name="stationInfo.locationX"/>
+          <div class="tips"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>坐标Y：</label>
+        </div>
+        <div class="field">
+          <input type="text" class="input w50" value="" name="stationInfo.locationY"/>
+          <div class="tips"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>是否是换乘站：</label>
+        </div>
+        <div class="field">
+	        <select name="stationInfo.exchangeFlg" class="input w50" id="exchangeFlg">
+	          <option value="-1">请选择</option>
+	          <option value="Y">是</option>
+	          <option value="N">否</option>
+	        </select>
+	        <div class="tips"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>换成站运营站编号：</label>
+        </div>
+        <div class="field">
+          <input type="text" class="input w50" value="" name="stationInfo.exchangeStNo" id="exchangeStNo"/>
+          <div class="tips"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>换成站所属线路编号：</label>
+        </div>
+        <div class="field">
+	        <select name="stationInfo.exchangeStLiNo" class="input w50" id="lineNo2">
+	         	<option value="-1">请选择</option>
+	        </select>
+	        <div class="tips"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>描述：</label>
+        </div>
+        <div class="field">
+        <textarea class="input" name="stationInfo.stationDes" style=" height:90px;"></textarea>
+        <div class="tips"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label></label>
+        </div>
+        <div class="field">
+          <button class="button bg-main icon-check-square-o" type="submit" id="submitBtn"> 提交</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+</body></html>

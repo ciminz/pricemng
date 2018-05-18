@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nngdjt.pricemng.mapper.DistanceInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.nngdjt.pricemng.entity.DistanceInfo" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="ori_station_no" property="oriStationNo" jdbcType="VARCHAR" />
+    <result column="des_station_no" property="desStationNo" jdbcType="VARCHAR" />
+    <result column="distance" property="distance" jdbcType="VARCHAR" />
+    <result column="bak_fld1" property="bakFld1" jdbcType="VARCHAR" />
+    <result column="bak_fld2" property="bakFld2" jdbcType="VARCHAR" />
+    <result column="bak_fld3" property="bakFld3" jdbcType="VARCHAR" />
+    <result column="bak_fld4" property="bakFld4" jdbcType="VARCHAR" />
+    <result column="bak_fld5" property="bakFld5" jdbcType="VARCHAR" />
+    <result column="bak_fld6" property="bakFld6" jdbcType="VARCHAR" />
+    <result column="bak_fld7" property="bakFld7" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, ori_station_no, des_station_no, distance, bak_fld1, bak_fld2, bak_fld3, bak_fld4, 
+    bak_fld5, bak_fld6, bak_fld7
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.nngdjt.pricemng.entity.DistanceInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_distance_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_distance_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_distance_info
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.nngdjt.pricemng.entity.DistanceInfoExample" >
+    delete from t_distance_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.nngdjt.pricemng.entity.DistanceInfo" >
+    insert into t_distance_info (id, ori_station_no, des_station_no, 
+      distance, bak_fld1, bak_fld2, 
+      bak_fld3, bak_fld4, bak_fld5, 
+      bak_fld6, bak_fld7)
+    values (#{id,jdbcType=BIGINT}, #{oriStationNo,jdbcType=VARCHAR}, #{desStationNo,jdbcType=VARCHAR}, 
+      #{distance,jdbcType=VARCHAR}, #{bakFld1,jdbcType=VARCHAR}, #{bakFld2,jdbcType=VARCHAR}, 
+      #{bakFld3,jdbcType=VARCHAR}, #{bakFld4,jdbcType=VARCHAR}, #{bakFld5,jdbcType=VARCHAR}, 
+      #{bakFld6,jdbcType=VARCHAR}, #{bakFld7,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.nngdjt.pricemng.entity.DistanceInfo" >
+    insert into t_distance_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="oriStationNo != null" >
+        ori_station_no,
+      </if>
+      <if test="desStationNo != null" >
+        des_station_no,
+      </if>
+      <if test="distance != null" >
+        distance,
+      </if>
+      <if test="bakFld1 != null" >
+        bak_fld1,
+      </if>
+      <if test="bakFld2 != null" >
+        bak_fld2,
+      </if>
+      <if test="bakFld3 != null" >
+        bak_fld3,
+      </if>
+      <if test="bakFld4 != null" >
+        bak_fld4,
+      </if>
+      <if test="bakFld5 != null" >
+        bak_fld5,
+      </if>
+      <if test="bakFld6 != null" >
+        bak_fld6,
+      </if>
+      <if test="bakFld7 != null" >
+        bak_fld7,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="oriStationNo != null" >
+        #{oriStationNo,jdbcType=VARCHAR},
+      </if>
+      <if test="desStationNo != null" >
+        #{desStationNo,jdbcType=VARCHAR},
+      </if>
+      <if test="distance != null" >
+        #{distance,jdbcType=VARCHAR},
+      </if>
+      <if test="bakFld1 != null" >
+        #{bakFld1,jdbcType=VARCHAR},
+      </if>
+      <if test="bakFld2 != null" >
+        #{bakFld2,jdbcType=VARCHAR},
+      </if>
+      <if test="bakFld3 != null" >
+        #{bakFld3,jdbcType=VARCHAR},
+      </if>
+      <if test="bakFld4 != null" >
+        #{bakFld4,jdbcType=VARCHAR},
+      </if>
+      <if test="bakFld5 != null" >
+        #{bakFld5,jdbcType=VARCHAR},
+      </if>
+      <if test="bakFld6 != null" >
+        #{bakFld6,jdbcType=VARCHAR},
+      </if>
+      <if test="bakFld7 != null" >
+        #{bakFld7,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.nngdjt.pricemng.entity.DistanceInfoExample" resultType="java.lang.Integer" >
+    select count(*) from t_distance_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_distance_info
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.oriStationNo != null" >
+        ori_station_no = #{record.oriStationNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.desStationNo != null" >
+        des_station_no = #{record.desStationNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.distance != null" >
+        distance = #{record.distance,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bakFld1 != null" >
+        bak_fld1 = #{record.bakFld1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bakFld2 != null" >
+        bak_fld2 = #{record.bakFld2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bakFld3 != null" >
+        bak_fld3 = #{record.bakFld3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bakFld4 != null" >
+        bak_fld4 = #{record.bakFld4,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bakFld5 != null" >
+        bak_fld5 = #{record.bakFld5,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bakFld6 != null" >
+        bak_fld6 = #{record.bakFld6,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bakFld7 != null" >
+        bak_fld7 = #{record.bakFld7,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_distance_info
+    set id = #{record.id,jdbcType=BIGINT},
+      ori_station_no = #{record.oriStationNo,jdbcType=VARCHAR},
+      des_station_no = #{record.desStationNo,jdbcType=VARCHAR},
+      distance = #{record.distance,jdbcType=VARCHAR},
+      bak_fld1 = #{record.bakFld1,jdbcType=VARCHAR},
+      bak_fld2 = #{record.bakFld2,jdbcType=VARCHAR},
+      bak_fld3 = #{record.bakFld3,jdbcType=VARCHAR},
+      bak_fld4 = #{record.bakFld4,jdbcType=VARCHAR},
+      bak_fld5 = #{record.bakFld5,jdbcType=VARCHAR},
+      bak_fld6 = #{record.bakFld6,jdbcType=VARCHAR},
+      bak_fld7 = #{record.bakFld7,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nngdjt.pricemng.entity.DistanceInfo" >
+    update t_distance_info
+    <set >
+      <if test="oriStationNo != null" >
+        ori_station_no = #{oriStationNo,jdbcType=VARCHAR},
+      </if>
+      <if test="desStationNo != null" >
+        des_station_no = #{desStationNo,jdbcType=VARCHAR},
+      </if>
+      <if test="distance != null" >
+        distance = #{distance,jdbcType=VARCHAR},
+      </if>
+      <if test="bakFld1 != null" >
+        bak_fld1 = #{bakFld1,jdbcType=VARCHAR},
+      </if>
+      <if test="bakFld2 != null" >
+        bak_fld2 = #{bakFld2,jdbcType=VARCHAR},
+      </if>
+      <if test="bakFld3 != null" >
+        bak_fld3 = #{bakFld3,jdbcType=VARCHAR},
+      </if>
+      <if test="bakFld4 != null" >
+        bak_fld4 = #{bakFld4,jdbcType=VARCHAR},
+      </if>
+      <if test="bakFld5 != null" >
+        bak_fld5 = #{bakFld5,jdbcType=VARCHAR},
+      </if>
+      <if test="bakFld6 != null" >
+        bak_fld6 = #{bakFld6,jdbcType=VARCHAR},
+      </if>
+      <if test="bakFld7 != null" >
+        bak_fld7 = #{bakFld7,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nngdjt.pricemng.entity.DistanceInfo" >
+    update t_distance_info
+    set ori_station_no = #{oriStationNo,jdbcType=VARCHAR},
+      des_station_no = #{desStationNo,jdbcType=VARCHAR},
+      distance = #{distance,jdbcType=VARCHAR},
+      bak_fld1 = #{bakFld1,jdbcType=VARCHAR},
+      bak_fld2 = #{bakFld2,jdbcType=VARCHAR},
+      bak_fld3 = #{bakFld3,jdbcType=VARCHAR},
+      bak_fld4 = #{bakFld4,jdbcType=VARCHAR},
+      bak_fld5 = #{bakFld5,jdbcType=VARCHAR},
+      bak_fld6 = #{bakFld6,jdbcType=VARCHAR},
+      bak_fld7 = #{bakFld7,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select resultMap="BaseResultMap" parameterType="com.nngdjt.pricemng.entity.DistanceInfoExample" id="selectByExampleWithRowbounds" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_distance_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

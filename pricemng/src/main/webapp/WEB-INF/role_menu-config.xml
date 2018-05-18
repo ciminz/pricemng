@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Items>
+	<Item>
+	 	<RoleId>1</RoleId>
+		<MenuId>1</MenuId>
+	</Item>
+	
+	<Item>
+	 	<RoleId>2</RoleId>
+		<MenuId>2</MenuId>
+	</Item>
+	
+	<Item>
+	 	<RoleId>2</RoleId>
+		<MenuId>3</MenuId>
+	</Item>
+	
+	<Item>
+	 	<RoleId>2</RoleId>
+		<MenuId>4</MenuId>
+	</Item>
+</Items>
