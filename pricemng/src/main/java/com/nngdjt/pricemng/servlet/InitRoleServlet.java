@@ -241,6 +241,10 @@ public class InitRoleServlet extends HttpServlet {
 					
 					if(("UserId").equals(e2.getName())) { 
 						userId = e2.getText();
+						User user = this.userMapper.selectByPrimaryKey(Long.valueOf(userId));
+						if(user == null) {
+							continue out;
+						}
 					}
 				}
 				if(nameArray.contains(roleId + userId)) {

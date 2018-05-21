@@ -328,24 +328,26 @@ public class DistanceManageAction extends ActionSupport{
 		
 		//数据校验
 		List<DistanceInfo> distanceInfoListIntoDb = new ArrayList<DistanceInfo>();
+		int rowindex = 0;
 		for(Map<String,String> map : excelData) {
+			rowindex++;
 			String oriStationNo = map.get("oriStationNo");
 			String desStationNo = map.get("desStationNo");
 			String distance = map.get("distance");
 			//校验数据是否为空
 			if(oriStationNo == null || "".equals(oriStationNo.trim())) {
 				logger.info("oriStation is null");
-				return ExceptionProcess.exceptionProcess("数据文件中起始站点获取失败","distanceManage/distanceImportView");
+				return ExceptionProcess.exceptionProcess("数据文件中第" +rowindex + "行,起始站点获取失败","distanceManage/distanceImportView");
 			}
 			
 			if(desStationNo == null || "".equals(desStationNo.trim())) {
 				logger.info("desStation is null");
-				return ExceptionProcess.exceptionProcess("数据文件中目的站点获取失败","distanceManage/distanceImportView");
+				return ExceptionProcess.exceptionProcess("数据文件中第" +rowindex + "行,目的站点获取失败","distanceManage/distanceImportView");
 			}
 			
 			if(distance == null || "".equals(distance.trim())) {
 				logger.info("desStation is null");
-				return ExceptionProcess.exceptionProcess("数据文件中间距获取失败","distanceManage/distanceImportView");
+				return ExceptionProcess.exceptionProcess("数据文件中第" +rowindex + "行,间距获取失败","distanceManage/distanceImportView");
 			}
 			
 			oriStationNo = oriStationNo.trim();
@@ -367,9 +369,29 @@ public class DistanceManageAction extends ActionSupport{
 				return ExceptionProcess.exceptionProcess("编号为:" + desStationNo + " 站点系统中不存在","distanceManage/distanceImportView");
 			}
 			
-			
+			DistanceInfo distanceInfo = new DistanceInfo();
+			distanceInfo.setId(BaseUtil.getSeqLong());
+			distanceInfo.setOriStationNo(oriStationNo);
+			distanceInfo.setDesStationNo(desStationNo);
+			distanceInfo.setDistance(distance);
+			distanceInfoListIntoDb.add(distanceInfo);
 		}
 		
-		return null;
+		for(DistanceInfo distanceInfo : distanceInfoListIntoDb) {
+			DistanceInfoExample distanceInfoExample = new DistanceInfoExample();
+			distanceInfoExample.createCriteria()
+			.andOriStationNoEqualTo(distanceInfo.getOriStationNo())
+			.andDesStationNoEqualTo(distanceInfo.getDesStationNo());
+			List<DistanceInfo> distanceInfoList = this.distanceInfoMapper.selectByExample(distanceInfoExample);
+			if(distanceInfoList != null && distanceInfoList.size() != 0) {
+				distanceInfo.setId(distanceInfoList.get(0).getId());
+				this.distanceInfoMapper.updateByPrimaryKey(distanceInfo);
+			}else {
+				this.distanceInfoMapper.insert(distanceInfo);
+			}
+		}
+		
+		ServletActionContext.getRequest().setAttribute("returnPage", "distanceManage/distanceQueryByCondition");
+		return "success";
 	}
 }
