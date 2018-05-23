@@ -96,4 +96,21 @@
 		<IsParent>1</IsParent>
 		<Parent>4</Parent>
 	</Item>
+	
+	<!-- 票价 -->
+	<Item>
+	 	<Id>5</Id>
+		<ItemName>票价管理</ItemName>
+		<Url>#</Url>
+		<IsParent>0</IsParent>
+		<Parent>-1</Parent>
+	</Item>
+	
+	<Item>
+		<Id>51</Id>
+		<ItemName>票价审核</ItemName>
+		<Url>priceManage/priceQueryByCondition</Url>
+		<IsParent>1</IsParent>
+		<Parent>5</Parent>
+	</Item>
 </MenuItems>

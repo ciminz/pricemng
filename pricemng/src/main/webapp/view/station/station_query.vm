@@ -151,6 +151,7 @@
       <th>名称</th>
       <th>英文名称</th>    
       <th>线路编号</th>
+      <th>顺序号</th>
       <th>坐标</th>
       <th>是否是换成站</th>
       <th>备注</th>
@@ -164,6 +165,7 @@
       <td>${s.stationNme}</td>
       <td>$!s.stationEnNme</td>
       <td>$s.lineNo</td>
+      <td>$!s.sortId</td>
       #if(!$null.isNull(${s.locationX}) && !$null.isNull(${s.locationY}))
       <td>$s.locationX,$s.locationY</td>
       #else

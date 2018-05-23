@@ -19,4 +19,9 @@
 	 	<RoleId>2</RoleId>
 		<MenuId>4</MenuId>
 	</Item>
+	
+	<Item>
+	 	<RoleId>2</RoleId>
+		<MenuId>5</MenuId>
+	</Item>
 </Items>

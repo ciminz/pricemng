@@ -33,6 +33,8 @@
 		<table tableName="user" domainObjectName="User" /> -->
 		<!-- <table tableName="t_line_info" domainObjectName="LineInfo" /> -->
 		<!-- <table tableName="t_distance_info" domainObjectName="DistanceInfo" /> -->
-		<table tableName="v_station_distance_info" domainObjectName="ViewStationDistanceInfo" /> 
+		<!-- <table tableName="v_station_distance_info" domainObjectName="ViewStationDistanceInfo" />  -->
+		<!-- <table tableName="t_price_info" domainObjectName="PriceInfo" />  -->
+		<table tableName="v_price_info" domainObjectName="ViewPriceInfo" /> 
 	</context>
 </generatorConfiguration>

@@ -137,6 +137,7 @@ public class StationManageAction extends ActionSupport{
 		stationInfoIntoDb.setStationNme(this.getStationInfo().getStationNme());
 		stationInfoIntoDb.setStationEnNme(this.getStationInfo().getStationEnNme());
 		stationInfoIntoDb.setLineNo(this.getStationInfo().getLineNo());
+		stationInfoIntoDb.setSortId(this.getStationInfo().getSortId());
 		stationInfoIntoDb.setLocationX(this.getStationInfo().getLocationX());
 		stationInfoIntoDb.setLocationY(this.getStationInfo().getLocationY());
 		stationInfoIntoDb.setExchangeFlg(this.getStationInfo().getExchangeFlg());

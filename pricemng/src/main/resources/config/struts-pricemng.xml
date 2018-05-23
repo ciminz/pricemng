@@ -162,211 +162,41 @@
 	<package name="download" namespace="/download" extends="base">
 		<action name="downloadFile" class="com.nngdjt.pricemng.action.SystemFileDownloadAction"/>
 	</package>
-	<!--
-	<package name="queryUndeal" namespace="/queryUndeal" extends="base">
-		<action name="queryUndeal">
-			<result>/common_view/main.vm</result>
-		</action>
-	</package>
 	
-	<package name="userInfoUpdate" namespace="/userInfoUpdate" extends="struts-default">
-		<action name="forwardToUserInfoUpdateView" class="userInfoUpdateAction" method="forwardToUserInfoUpdateView">
-			<result>/WEB-INF/user_view/user_info_update.vm</result>
-		</action>
-		<action name="userInfoUpdate" class="userInfoUpdateAction" method="userInfoUpdate">
-			<result>/WEB-INF/user_view/user_info_update.vm</result>
-		</action>
-	</package>
-
-	<package name="userLogin" namespace="/userLogin" extends="struts-default">
-		<action name="login" class="userLoginAction">
-			<result name="success_adm">/common_view/main_for_adm.vm</result>
-			<result name="success_user">/common_view/main_for_user.vm</result>
-			<result name="input">/login.vm</result>
+	<package name="priceManage" namespace="/priceManage" extends="base">
+		<action name="priceQueryByCondition" class="com.nngdjt.pricemng.action.PriceManageAction" method="query">
+			<result name="success">/view/price/price_query.vm</result>
+			<result name="input">/view/tips_err.vm</result>
 		</action>
 		
-		<action name="userDocDownload" class="docDownload"></action>
-	</package>
-	
-	<package name="roleManage" namespace="/roleManage" extends="base">
-		<action name="addRoleView" class="roleManageAction" method="forwardToAddRoleView">
-			<result>/WEB-INF/role_view/add_role.vm</result>
-		</action>
-		<action name="addRole" class="roleManageAction" method="addRole">
-			<result name="success" type="chain">addRoleView</result>
-			<result name="input" type="chain">addRoleView</result>
-		</action>
-		
-		<action name="roleQuery" class="roleManageAction" method="queryRoleByCondition">
-			<result name="success">/WEB-INF/role_view/role_query.vm</result>
-		</action>
-		
-		<action name="queryUsersOfThisRole" class="roleManageAction" method="queryUsersOfThisRole">
-			<result name="success">/WEB-INF/role_view/query_users_of_this_role.vm</result>
-		</action>
-		
-		<action name="deleteUserOfThisRole" class="roleManageAction" method="deleteUserOfThisRole">
-			<result name="success" type="chain">queryUsersOfThisRole</result>
-		</action>
-		
-		<action name="queryMenuItemsOfThisRole" class="roleManageAction" method="queryMenuItemsOfThisRole">
-			<result name="success">/WEB-INF/role_view/query_menu_items_of_this_role.vm</result>
-		</action>
-		
-		<action name="deleteMenuItemOfThisRole" class="roleManageAction" method="deleteMenuItemOfThisRole">
-			<result name="success" type="chain">queryMenuItemsOfThisRole</result>
-		</action>
-		
-		<action name="deleteRole" class="roleManageAction" method="deleteRole">
-			<result name="success" type="chain">roleQuery</result>
-			<result name="input" type="chain">roleQuery</result>
-		</action>
-	</package>
-	
-	<package name="menuItemManage" namespace="/menuItemManage" extends="base">
-		<action name="parentQueryMenuItemView" class="memuItemManageAction" method="queryParentItems">
-			<result>/WEB-INF/menu_item_view/parent_query_menu_item.vm</result>
-		</action>
-		<action name="childrenQueryMenuItemView" class="memuItemManageAction" method="queryChildrenItems">
-			<result>/WEB-INF/menu_item_view/children_query_menu_item.vm</result>
-		</action>
-		<action name="parentMenuItemDelete" class="memuItemManageAction" method="delete">
-			<result name="success" type="chain">parentQueryMenuItemView</result>
-			<result name="input" type="chain">parentQueryMenuItemView</result>
-		</action>
-		<action name="childrenMenuItemDelete" class="memuItemManageAction" method="delete">
-			<result name="success" type="chain">childrenQueryMenuItemView</result>
-			<result name="input" type="chain">childrenQueryMenuItemView</result>
-		</action>
-	</package>
-	
-	<package name="userManage" namespace="/userManage" extends="base">
-		<action name="userQueryByCondition" class="userManageAction" method="queryUser">
-			<result name="success">/WEB-INF/user_view/user_query.vm</result>
-		</action>
-		
-		<action name="userDelete" class="userManageAction" method="delete">
-			<result name="success" type="chain">userQueryByCondition</result>
+		<!-- <action name="distanceDelete" class="com.nngdjt.pricemng.action.DistanceManageAction" method="delete">
+			<result name="success">/view/tips_suc.vm</result>
+			<result name="input">/view/tips_err.vm</result>
 		</action>
 
-		<action name="userImportView">
-			<result>/WEB-INF/user_view/user_import.vm</result>
+		<action name="distanceImportView">
+			<result>/view/distance/distance_add.vm</result>
 		</action>	
 		
-		<action name="userFileUpload" class="com.bankcomm.gxjh_file_exchange.action.UserFileUploadAction">
-			<result name="success">
-				/WEB-INF/user_view/user_import.vm
-			</result>
-		</action>	
+		<action name="distanceUpdView" class="com.nngdjt.pricemng.action.DistanceManageAction" method="distanceUpdView">
+			<result name="success">/view/distance/distance_upd.vm</result>
+		</action>
+		
+		<action name="distanceAdd" class="com.nngdjt.pricemng.action.DistanceManageAction" method="add">
+			<result name="success">/view/tips_suc.vm</result>
+			<result name="input">/view/tips_err.vm</result>
+		</action> 
+		
+		<action name="distanceAddBatch" class="com.nngdjt.pricemng.action.DistanceManageAction" method="addBatch">
+			<result name="success">/view/tips_suc.vm</result>
+			<result name="input">/view/tips_err.vm</result> 
+		</action> 
+		
+		
+		<action name="distanceUpd" class="com.nngdjt.pricemng.action.DistanceManageAction" method="upd">
+			<result name="success">/view/tips_suc.vm</result>
+			<result name="input">/view/tips_err.vm</result>
+		</action>  -->
 	</package>	
-	
-	<package name="templateFileManage" namespace="/templateFileManage" extends="base">
-		<action name="templateFileDownload" class="templateFileDownloadAction">
-		</action>
-	</package>
-	
-	<package name="ipAddressManage" namespace="/ipAddressManage" extends="base">
-		<action name="forwardToAddIpView">
-			<result>/WEB-INF/ip_address_view/ip_add.vm</result>
-		</action>
-		
-		<action name="ipAddressCommonAdd" class="ipAddressManageAction" method="IpAddressAdd">
-			<result name="success" type="chain">forwardToAddIpView</result>
-			<result name="input" type="chain">forwardToAddIpView</result>
-		</action>
-		
-		<action name="ipAddressQuery" class="ipAddressManageAction" method="queryIpAddressByCondition">
-			<result name="success">/WEB-INF/ip_address_view/ip_query.vm</result>
-			<result name="input">/WEB-INF/ip_address_view/ip_query.vm</result>
-		</action>
-		
-		<action name="ipAddressDelete" class="ipAddressManageAction" method="deleteIpaddress">
-			<result name="success" type="chain">ipAddressQuery</result>
-			<result name="input" type="chain">ipAddressQuery</result>
-		</action>
-	</package> 
-	
-	
-	<package name="systemFileManage" namespace="/systemFileManage" extends="base">
-		<action name="forwardToUploadView" class="systemFileManageAction" method="forwardToUploadView">
-			<result>/WEB-INF/file_view/file_upload.vm</result>
-			<result name="input">/err.vm</result>
-		</action>
-		
-		<action name="systemFileUploadAction" class="systemFileUploadAction">
-			<result name="success" type="chain">forwardToUploadView</result>
-			<result name="input">/err.vm</result>
-		</action>
-		
-		<action name="querySystemFile" class="systemFileManageAction" method="querySystemFileByCondition">
-			<result name="success">/WEB-INF/file_view/file_query.vm</result>
-		</action>
-		
-		<action name="deleteSystemFile" class="systemFileManageAction" method="deleteSystemFile">
-			<result name="success" type="chain">querySystemFile</result>
-			<result name="input" type="chain">querySystemFile</result>
-		</action>
-		
-		<action name="queryAllowUserOfThisFile" class="systemFileManageAction" method="queryAllowUserOfThisFile">
-			<result name="success">/WEB-INF/file_view/query_user_of_this_file.vm</result>
-			<result name="input">/WEB-INF/file_view/query_user_of_this_file.vm</result>
-		</action>
-		
-		<action name="addAllowUserOfThisFile" class="systemFileManageAction" method="addAllowUserOfThisFile">
-			<result name="success" type="chain">queryAllowUserOfThisFile</result>
-		</action>
-		
-		<action name="deleteAllowUserOfThisFile" class="systemFileManageAction" method="deleteAllowUserOfThisFile">
-			<result name="success" type="chain">queryAllowUserOfThisFile</result>
-		</action>
-		
-		<action name="queryAllowIpOfFile" class="systemFileManageAction" method="queryAllowIpOfFile">
-			<result name="success">/WEB-INF/file_view/query_ip_of_this_file.vm</result>
-		</action>
-		
-		<action name="addAllowIpOfThisFile" class="systemFileManageAction" method="addAllowIpOfThisFile">
-			<result name="success" type="chain">queryAllowIpOfFile</result>
-		</action>
-		
-		<action name="deleteAllowIpOfThisFile" class="systemFileManageAction" method="deleteAllowIpOfThisFile">
-			<result name="success" type="chain">queryAllowIpOfFile</result>
-		</action>
-		
-		<action name="openUpload" class="systemFileManageAction" method="openUpload">
-			<result name="success" type="chain">querySystemFile</result>
-		</action>
-		
-		<action name="closeUpload" class="systemFileManageAction" method="closeUpload">
-			<result name="success" type="chain">querySystemFile</result>
-		</action>
-		
-		<action name="querySystemFileOfUser" class="systemFileManageAction" method="querySystemFileOfUser">
-			<result name="success">/WEB-INF/file_view/query_file_of_user.vm</result>
-		</action>
-		
-		<action name="systemFileDownload" class="systemFileDownLoadAction">
-			<result name="input" type="chain">querySystemFileOfUser</result>
-		</action>
-		<action name="fowardToWriteRemark">
-			<result>/WEB-INF/file_view/write_remark.vm</result>
-		</action>
-		<action name="fowardToSeeRemark">
-			<result>/WEB-INF/file_view/see_remark.vm</result>
-		</action>
-	</package>
-	
-	<package name="logManage" namespace="/logManage" extends="base">
-		<action name="queryLog" class="logManageAction" method="queryLog">
-			<result name="success">/WEB-INF/log_view/log_query.vm</result>
-		</action>
-	</package>
-	
-	<package name="userReg" namespace="/userReg" extends="struts-default">
-		<action name="userReg" class="userRegAction">
-			<result name="success">/reg.vm</result>
-		</action>
-	</package> -->
-	
-	<!-- Add packages here -->
 
 </struts>

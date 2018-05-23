@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="renderer" content="webkit">
-    <title>运距信息</title>  
+    <title>票价信息</title>  
     <link rel="stylesheet" href="${rootAddr}view/css/pintuer.css">
     <link rel="stylesheet" href="${rootAddr}view/css/admin.css">
     <script src="${rootAddr}view/js/jquery.js"></script>
@@ -94,13 +94,13 @@
 							var stationNo = $("stationNo",this).text();
 							var lineNo =  $("lineNo",this).text();
 							var stationNme = $("stationNme",this).text();
-							if(stationNo == '${viewStationDistanceInfo.oriStationNo}' && lineNo == oriLineNo) {
+							if(stationNo == '${viewPriceInfo.oriStationNo}' && lineNo == oriLineNo) {
 								$("<option value=" + stationNo + " selected='selected'>" + stationNme + "</option>").appendTo($("#oStationNo"));
 							}else if(lineNo == oriLineNo){
 								$("<option value="+ stationNo + ">" + stationNme + "</option>").appendTo($("#oStationNo"));
 							}
 							
-							if(stationNo == '${viewStationDistanceInfo.desStationNo}' && lineNo == desLineNo) {
+							if(stationNo == '${viewPriceInfo.desStationNo}' && lineNo == desLineNo) {
 								$("<option value=" + stationNo +" selected='selected'>" + stationNme + "</option>").appendTo($("#dStationNo"));
 							}else if(lineNo == desLineNo){
 								$("<option value=" + stationNo +">" + stationNme + "</option>").appendTo($("#dStationNo"));
@@ -163,7 +163,7 @@
 							}
 							
 							var stationNme = $("stationNme",this).text();
-							if(stationNo == '${viewStationDistanceInfo.oriStationNo}') {
+							if(stationNo == '${viewPriceInfo.oriStationNo}') {
 								$("<option value=" + stationNo + " selected='selected'>" + stationNme + "</option>").appendTo($("#oStationNo"));
 							}else {
 								$("<option value="+ stationNo + ">" + stationNme + "</option>").appendTo($("#oStationNo"));
@@ -204,7 +204,7 @@
 							}
 							
 							var stationNme = $("stationNme",this).text();
-							if(stationNo == '${viewStationDistanceInfo.desStationNo}') {
+							if(stationNo == '${viewPriceInfo.desStationNo}') {
 								$("<option value=" + stationNo + " selected='selected'>" + stationNme + "</option>").appendTo($("#dStationNo"));
 							}else {
 								$("<option value="+ stationNo + ">" + stationNme + "</option>").appendTo($("#dStationNo"));
@@ -223,17 +223,27 @@
     		getLine();
     		getStation();
 		});
+		
+		function updateAllPrice() {
+			if(confirm("将更新线网所有OD站点票价，需重新审核，确定更新吗？")){
+			    document.getElementById("updateAllPriceBtn").disabled="disabled";
+				document.getElementById("formAllUpdate").submit();
+			}
+		}
     </script>
 </head>
 <body>
 <form method="post" action="${rootAddr}distanceManage/distanceDelete" id="formDelete">
-	 <input type="hidden" name="distanceInfo.oriStationNo" id="oriStationNotxt"/>
-	 <input type="hidden" name="distanceInfo.desStationNo" id="desStationNotxt"/>
+	 <input type="hidden" name="priceInfo.oriStationNo" id="oriStationNotxt"/>
+	 <input type="hidden" name="priceInfo.desStationNo" id="desStationNotxt"/>
+</form>
+
+<form method="post" action="${rootAddr}distanceManage/allPriceUpdate" id="formAllUpdate">
 </form>
 
 <form method="post" action="${rootAddr}distanceManage/distanceUpdView" id="form3">
-	 <input type="hidden" name="distanceInfo.oriStationNo" id="oriStationNotxt2"/>
-	 <input type="hidden" name="distanceInfo.desStationNo" id="desStationNotxt2"/>
+	 <input type="hidden" name="priceInfo.oriStationNo" id="oriStationNotxt2"/>
+	 <input type="hidden" name="priceInfo.desStationNo" id="desStationNotxt2"/>
 </form>
 <div class="panel admin-panel margin-top">
   <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>查询条件</strong></div>
@@ -263,7 +273,7 @@
           <label>起始站：</label>
         </div>
         <div class="field">
-        	<select name="viewStationDistanceInfo.oriStationNo" class="input w50" id="oStationNo">
+        	<select name="viewPriceInfo.oriStationNo" class="input w50" id="oStationNo">
 	         	<option value="-1">请选择</option>
 	        </select>
 	        <div class="tips"></div>
@@ -291,7 +301,7 @@
           <label>目的站：</label>
         </div>
         <div class="field">
-           <select name="viewStationDistanceInfo.desStationNo" class="input w50" id="dStationNo">
+           <select name="viewPriceInfo.desStationNo" class="input w50" id="dStationNo">
 	         	<option value="-1">请选择</option>
 	        </select>
 	        <div class="tips"></div> 
@@ -308,13 +318,15 @@
         <div class="field" width="100%" align="center">
           <button class="button bg-main icon-search" type="submit"> 查询</button>
           <button class="button bg-main" type="button" onclick="javascript:document.getElementById('lineNo').value='-1';document.getElementById('stationNme').value='';document.getElementById('exchangeFlg').value='-1';"> 重置</button>
+          <button class="button bg-main icon-refresh" type="button" onclick="updateAllPrice()" id="updateAllPriceBtn"> 更新线网票价</button>
+          <button class="button bg-main icon-download" type="button"> 生成票价矩阵</button>
         </div>
       </div>
     </form>
   </div>
 </div>
 <div class="panel admin-panel">
-  <div class="panel-head"><strong class="icon-reorder"> 运距信息列表</strong></div>
+  <div class="panel-head"><strong class="icon-reorder"> 票价信息列表</strong></div>
   <div class="padding border-bottom">
   	
   </div> 
@@ -325,7 +337,10 @@
       <th>起始站名</th>
       <th>目的站编号</th>    
       <th>目的站名</th>
-      <th>间距(米)</th>
+      <th>票价（元）</th>
+      <th>审核状态</th>
+      <th>审核人</th>
+      <th>审核时间</th>
       <th width="250">操作</th>
     </tr>
     #set($index=1)
@@ -336,7 +351,9 @@
       <td>${d.oriStationNme}</td>
       <td>${d.desStationNo}</td>
       <td>${d.desStationNme}</td>
-      <td>${d.distance}</td>
+      <td>${d.price}</td>
+      <td>${d.auditRealusername}</td>
+      <td>${d.auditDate}  ${d.auditTme}</td>
       <td>
       <div class="button-group">
          <a type="button" class="button border-main" href="javascript:void(0);" onclick="viewToUpd('${d.oriStationNo}','${d.desStationNo}')"><span class="icon-edit"></span>修改</a>

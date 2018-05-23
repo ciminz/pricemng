@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.nngdjt.pricemng.mapper.ViewPriceInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.nngdjt.pricemng.entity.ViewPriceInfo" >
+    <result column="ori_station_no" property="oriStationNo" jdbcType="VARCHAR" />
+    <result column="ori_station_nme" property="oriStationNme" jdbcType="VARCHAR" />
+    <result column="des_station_no" property="desStationNo" jdbcType="VARCHAR" />
+    <result column="des_station_nme" property="desStationNme" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="VARCHAR" />
+    <result column="audit_user_id" property="auditUserId" jdbcType="VARCHAR" />
+    <result column="audit_username" property="auditUsername" jdbcType="VARCHAR" />
+    <result column="audit_realusername" property="auditRealusername" jdbcType="VARCHAR" />
+    <result column="audit_flg" property="auditFlg" jdbcType="VARCHAR" />
+    <result column="audit_date" property="auditDate" jdbcType="VARCHAR" />
+    <result column="audit_tme" property="auditTme" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ori_station_no, ori_station_nme, des_station_no, des_station_nme, price, audit_user_id, 
+    audit_username, audit_realusername, audit_flg, audit_date, audit_tme
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.nngdjt.pricemng.entity.ViewPriceInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from v_price_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.nngdjt.pricemng.entity.ViewPriceInfoExample" >
+    delete from v_price_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.nngdjt.pricemng.entity.ViewPriceInfo" >
+    insert into v_price_info (ori_station_no, ori_station_nme, des_station_no, 
+      des_station_nme, price, audit_user_id, 
+      audit_username, audit_realusername, audit_flg, 
+      audit_date, audit_tme)
+    values (#{oriStationNo,jdbcType=VARCHAR}, #{oriStationNme,jdbcType=VARCHAR}, #{desStationNo,jdbcType=VARCHAR}, 
+      #{desStationNme,jdbcType=VARCHAR}, #{price,jdbcType=VARCHAR}, #{auditUserId,jdbcType=VARCHAR}, 
+      #{auditUsername,jdbcType=VARCHAR}, #{auditRealusername,jdbcType=VARCHAR}, #{auditFlg,jdbcType=VARCHAR}, 
+      #{auditDate,jdbcType=VARCHAR}, #{auditTme,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.nngdjt.pricemng.entity.ViewPriceInfo" >
+    insert into v_price_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="oriStationNo != null" >
+        ori_station_no,
+      </if>
+      <if test="oriStationNme != null" >
+        ori_station_nme,
+      </if>
+      <if test="desStationNo != null" >
+        des_station_no,
+      </if>
+      <if test="desStationNme != null" >
+        des_station_nme,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="auditUserId != null" >
+        audit_user_id,
+      </if>
+      <if test="auditUsername != null" >
+        audit_username,
+      </if>
+      <if test="auditRealusername != null" >
+        audit_realusername,
+      </if>
+      <if test="auditFlg != null" >
+        audit_flg,
+      </if>
+      <if test="auditDate != null" >
+        audit_date,
+      </if>
+      <if test="auditTme != null" >
+        audit_tme,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="oriStationNo != null" >
+        #{oriStationNo,jdbcType=VARCHAR},
+      </if>
+      <if test="oriStationNme != null" >
+        #{oriStationNme,jdbcType=VARCHAR},
+      </if>
+      <if test="desStationNo != null" >
+        #{desStationNo,jdbcType=VARCHAR},
+      </if>
+      <if test="desStationNme != null" >
+        #{desStationNme,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=VARCHAR},
+      </if>
+      <if test="auditUserId != null" >
+        #{auditUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="auditUsername != null" >
+        #{auditUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="auditRealusername != null" >
+        #{auditRealusername,jdbcType=VARCHAR},
+      </if>
+      <if test="auditFlg != null" >
+        #{auditFlg,jdbcType=VARCHAR},
+      </if>
+      <if test="auditDate != null" >
+        #{auditDate,jdbcType=VARCHAR},
+      </if>
+      <if test="auditTme != null" >
+        #{auditTme,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.nngdjt.pricemng.entity.ViewPriceInfoExample" resultType="java.lang.Integer" >
+    select count(*) from v_price_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update v_price_info
+    <set >
+      <if test="record.oriStationNo != null" >
+        ori_station_no = #{record.oriStationNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.oriStationNme != null" >
+        ori_station_nme = #{record.oriStationNme,jdbcType=VARCHAR},
+      </if>
+      <if test="record.desStationNo != null" >
+        des_station_no = #{record.desStationNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.desStationNme != null" >
+        des_station_nme = #{record.desStationNme,jdbcType=VARCHAR},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=VARCHAR},
+      </if>
+      <if test="record.auditUserId != null" >
+        audit_user_id = #{record.auditUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.auditUsername != null" >
+        audit_username = #{record.auditUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="record.auditRealusername != null" >
+        audit_realusername = #{record.auditRealusername,jdbcType=VARCHAR},
+      </if>
+      <if test="record.auditFlg != null" >
+        audit_flg = #{record.auditFlg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.auditDate != null" >
+        audit_date = #{record.auditDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.auditTme != null" >
+        audit_tme = #{record.auditTme,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update v_price_info
+    set ori_station_no = #{record.oriStationNo,jdbcType=VARCHAR},
+      ori_station_nme = #{record.oriStationNme,jdbcType=VARCHAR},
+      des_station_no = #{record.desStationNo,jdbcType=VARCHAR},
+      des_station_nme = #{record.desStationNme,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=VARCHAR},
+      audit_user_id = #{record.auditUserId,jdbcType=VARCHAR},
+      audit_username = #{record.auditUsername,jdbcType=VARCHAR},
+      audit_realusername = #{record.auditRealusername,jdbcType=VARCHAR},
+      audit_flg = #{record.auditFlg,jdbcType=VARCHAR},
+      audit_date = #{record.auditDate,jdbcType=VARCHAR},
+      audit_tme = #{record.auditTme,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <select resultMap="BaseResultMap" parameterType="com.nngdjt.pricemng.entity.ViewPriceInfoExample" id="selectByExampleWithRowbounds" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from v_price_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>
