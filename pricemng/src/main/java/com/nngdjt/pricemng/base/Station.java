@@ -110,6 +110,6 @@ public class Station {
       
     @Override  
     public int hashCode() {  
-        return this.getName().hashCode();  
+        return this.getStationNo().hashCode();  
     }  
 }  

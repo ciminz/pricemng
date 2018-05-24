@@ -233,6 +233,9 @@
     </script>
 </head>
 <body>
+<div id="icon1" style="position:absolute;top:30%;width:100%;display:none;">
+			<center><img src="${rootAddr}view/images/009.gif"/></center>
+		</div>
 <form method="post" action="${rootAddr}distanceManage/distanceDelete" id="formDelete">
 	 <input type="hidden" name="priceInfo.oriStationNo" id="oriStationNotxt"/>
 	 <input type="hidden" name="priceInfo.desStationNo" id="desStationNotxt"/>
@@ -347,13 +350,18 @@
     #foreach($d in $queryResult)
     <tr>
       <td>${index}</td>      
-      <td>${d.oriStationNo}</td>  
-      <td>${d.oriStationNme}</td>
-      <td>${d.desStationNo}</td>
-      <td>${d.desStationNme}</td>
-      <td>${d.price}</td>
-      <td>${d.auditRealusername}</td>
-      <td>${d.auditDate}  ${d.auditTme}</td>
+      <td>$!d.oriStationNo</td>  
+      <td>$!d.oriStationNme</td>
+      <td>$!d.desStationNo</td>
+      <td>$!d.desStationNme</td>
+      <td>$!d.price</td>
+      #if(${d.auditFlg} == 'Y')
+      <td>已审核</td>
+      #else
+      <td>未审核</td>
+      #end
+      <td>$!d.auditRealusername</td>
+      <td>$!d.auditDate  $!d.auditTme</td>
       <td>
       <div class="button-group">
          <a type="button" class="button border-main" href="javascript:void(0);" onclick="viewToUpd('${d.oriStationNo}','${d.desStationNo}')"><span class="icon-edit"></span>修改</a>

@@ -1,6 +1,12 @@
 package com.nngdjt.pricemng.base;
 
 import java.util.HashMap;
+import java.util.List;
+
+import com.nngdjt.pricemng.entity.DistanceInfo;
+import com.nngdjt.pricemng.entity.DistanceInfoExample;
+import com.nngdjt.pricemng.mapper.DistanceInfoMapper;
+import com.vane.base.LocalBeanFactory;
 
 /**
  * 计算票价 根据公里数，两个od路径之间的最短路径开始计算 以米为单位
@@ -11,9 +17,26 @@ import java.util.HashMap;
 public class PriceUtil {
 
 	/* 只记录区间矩阵 */
-	static HashMap<String, Integer> dis = new HashMap<String, Integer>();
-
-	static{
+	public HashMap<String, Integer> dis = new HashMap<String, Integer>();
+	
+	{
+		DataBuilder dataBuilder = new DataBuilder();
+		DistanceInfoMapper distanceInfoMapper = (DistanceInfoMapper)LocalBeanFactory.get(DistanceInfoMapper.class);
+		
+		for(Station station : dataBuilder.lines) {
+			if(station.getNext() ==null) {
+				continue;
+			}
+			DistanceInfoExample distanceInfoExample = new DistanceInfoExample();
+			distanceInfoExample.createCriteria()
+			.andOriStationNoEqualTo(station.getStationNo())
+			.andDesStationNoEqualTo(station.getNext().getStationNo());
+			List<DistanceInfo> distanceInfoList = distanceInfoMapper.selectByExample(distanceInfoExample);
+			if(distanceInfoList == null || distanceInfoList.size() == 0) {
+				continue;
+			}
+			dis.put(station.getStationNo() + station.getNext().getStationNo(), Integer.valueOf(distanceInfoList.get(0).getDistance()));
+		}
 		
 		/*一号线*/
 //		dis.put("石埠站南职院站",1725);
@@ -42,49 +65,49 @@ public class PriceUtil {
 //		dis.put("佛子岭站火车东站站",1651);
 		
 		
-		dis.put("01010102",1725);
-		dis.put("01020103",1041);
-		dis.put("01030104",	1927);
-		dis.put("01040105",	1355);
-		dis.put("01050106",	2100);
-		dis.put("01060107",	1525);
-		dis.put("01070108",1656);
-		dis.put("01080109",	1031);
-	    dis.put("01090110",	1614);
-		dis.put("01100111",1373);
-		dis.put("01110112",	951);
-		dis.put("01120113",	997);
-		dis.put("01130114",	891);
-		dis.put("01140115",1166);
-		dis.put("01150116",	1658);
-		dis.put("01160117",899);
-		dis.put("01170118",1176);
-		dis.put("01180119",818);
-		dis.put("01190120",779);
-		dis.put("01200121",1177);
-		dis.put("01210122",	901);
-		dis.put("01220123",	1439);
-		dis.put("01230124",1567);
-		dis.put("01240125",1651);
-
-		
-		/*二号线*/
-		dis.put("02010202",	1077);
-		dis.put("02020203",	1394);
-		dis.put("02030204",	1403);
-		dis.put("02040205",	1009);
-		dis.put("02050206",	827);
-		dis.put("02060207",1656);
-		dis.put("02070208",	809);
-		dis.put("02080209",	692);
-		dis.put("02090210",	1082);
-		dis.put("02100111",	1775);
-	    dis.put("01120213",1673);
-		dis.put("02130214",1202);
-		dis.put("02140215",1153);
-		dis.put("02150216",	1270);
-		dis.put("02160217",	1198);
-		dis.put("02170218",	1054);
+//		dis.put("01010102",1725);
+//		dis.put("01020103",1041);
+//		dis.put("01030104",	1927);
+//		dis.put("01040105",	1355);
+//		dis.put("01050106",	2100);
+//		dis.put("01060107",	1525);
+//		dis.put("01070108",1656);
+//		dis.put("01080109",	1031);
+//	    dis.put("01090110",	1614);
+//		dis.put("01100111",1373);
+//		dis.put("01110112",	951);
+//		dis.put("01120113",	997);
+//		dis.put("01130114",	891);
+//		dis.put("01140115",1166);
+//		dis.put("01150116",	1658);
+//		dis.put("01160117",899);
+//		dis.put("01170118",1176);
+//		dis.put("01180119",818);
+//		dis.put("01190120",779);
+//		dis.put("01200121",1177);
+//		dis.put("01210122",	901);
+//		dis.put("01220123",	1439);
+//		dis.put("01230124",1567);
+//		dis.put("01240125",1651);
+//
+//		
+//		/*二号线*/
+//		dis.put("02010202",	1077);
+//		dis.put("02020203",	1394);
+//		dis.put("02030204",	1403);
+//		dis.put("02040205",	1009);
+//		dis.put("02050206",	827);
+//		dis.put("02060207",1656);
+//		dis.put("02070208",	809);
+//		dis.put("02080209",	692);
+//		dis.put("02090210",	1082);
+//		dis.put("02100111",	1775);
+//	    dis.put("01120213",1673);
+//		dis.put("02130214",1202);
+//		dis.put("02140215",1153);
+//		dis.put("02150216",	1270);
+//		dis.put("02160217",	1198);
+//		dis.put("02170218",	1054);
 
 		
 		
@@ -109,7 +132,7 @@ public class PriceUtil {
 
 	
 	
-   public static int getDistance(String s1,String s2){
+   public int getDistance(String s1,String s2){
 	   System.out.println("s1:" + s1 + ",s2:" + s2);
 	   if(dis.containsKey(s1+s2))
 	   {
