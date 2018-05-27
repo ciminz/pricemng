@@ -169,6 +169,10 @@
 			<result name="input">/view/tips_err.vm</result>
 		</action>
 		
+		<action name="priceManageUpdateAllPrice" class="com.nngdjt.pricemng.action.PriceManageAction" method="priceManageUpdateAllPrice"/>
+		
+		<action name="createPriceMap" class="com.nngdjt.pricemng.action.PriceManageAction" method="createPriceMap"/>
+		
 		<!-- <action name="distanceDelete" class="com.nngdjt.pricemng.action.DistanceManageAction" method="delete">
 			<result name="success">/view/tips_suc.vm</result>
 			<result name="input">/view/tips_err.vm</result>

@@ -13,6 +13,7 @@
     <result column="audit_flg" property="auditFlg" jdbcType="VARCHAR" />
     <result column="audit_date" property="auditDate" jdbcType="VARCHAR" />
     <result column="audit_tme" property="auditTme" jdbcType="VARCHAR" />
+    <result column="bak_fld1" property="bakFld1" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -74,7 +75,7 @@
   </sql>
   <sql id="Base_Column_List" >
     ori_station_no, ori_station_nme, des_station_no, des_station_nme, price, audit_user_id, 
-    audit_username, audit_realusername, audit_flg, audit_date, audit_tme
+    audit_username, audit_realusername, audit_flg, audit_date, audit_tme, bak_fld1
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.nngdjt.pricemng.entity.ViewPriceInfoExample" >
     select
@@ -100,11 +101,13 @@
     insert into v_price_info (ori_station_no, ori_station_nme, des_station_no, 
       des_station_nme, price, audit_user_id, 
       audit_username, audit_realusername, audit_flg, 
-      audit_date, audit_tme)
+      audit_date, audit_tme, bak_fld1
+      )
     values (#{oriStationNo,jdbcType=VARCHAR}, #{oriStationNme,jdbcType=VARCHAR}, #{desStationNo,jdbcType=VARCHAR}, 
       #{desStationNme,jdbcType=VARCHAR}, #{price,jdbcType=VARCHAR}, #{auditUserId,jdbcType=VARCHAR}, 
       #{auditUsername,jdbcType=VARCHAR}, #{auditRealusername,jdbcType=VARCHAR}, #{auditFlg,jdbcType=VARCHAR}, 
-      #{auditDate,jdbcType=VARCHAR}, #{auditTme,jdbcType=VARCHAR})
+      #{auditDate,jdbcType=VARCHAR}, #{auditTme,jdbcType=VARCHAR}, #{bakFld1,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.nngdjt.pricemng.entity.ViewPriceInfo" >
     insert into v_price_info
@@ -142,6 +145,9 @@
       <if test="auditTme != null" >
         audit_tme,
       </if>
+      <if test="bakFld1 != null" >
+        bak_fld1,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="oriStationNo != null" >
@@ -176,6 +182,9 @@
       </if>
       <if test="auditTme != null" >
         #{auditTme,jdbcType=VARCHAR},
+      </if>
+      <if test="bakFld1 != null" >
+        #{bakFld1,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -221,6 +230,9 @@
       <if test="record.auditTme != null" >
         audit_tme = #{record.auditTme,jdbcType=VARCHAR},
       </if>
+      <if test="record.bakFld1 != null" >
+        bak_fld1 = #{record.bakFld1,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -238,7 +250,8 @@
       audit_realusername = #{record.auditRealusername,jdbcType=VARCHAR},
       audit_flg = #{record.auditFlg,jdbcType=VARCHAR},
       audit_date = #{record.auditDate,jdbcType=VARCHAR},
-      audit_tme = #{record.auditTme,jdbcType=VARCHAR}
+      audit_tme = #{record.auditTme,jdbcType=VARCHAR},
+      bak_fld1 = #{record.bakFld1,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>

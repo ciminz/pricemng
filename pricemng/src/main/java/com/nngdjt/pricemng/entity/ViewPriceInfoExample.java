@@ -874,6 +874,76 @@ public class ViewPriceInfoExample {
             return (Criteria) this;
         }
 
+        public Criteria andBakFld1IsNull() {
+            addCriterion("bak_fld1 is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBakFld1IsNotNull() {
+            addCriterion("bak_fld1 is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBakFld1EqualTo(String value) {
+            addCriterion("bak_fld1 =", value, "bakFld1");
+            return (Criteria) this;
+        }
+
+        public Criteria andBakFld1NotEqualTo(String value) {
+            addCriterion("bak_fld1 <>", value, "bakFld1");
+            return (Criteria) this;
+        }
+
+        public Criteria andBakFld1GreaterThan(String value) {
+            addCriterion("bak_fld1 >", value, "bakFld1");
+            return (Criteria) this;
+        }
+
+        public Criteria andBakFld1GreaterThanOrEqualTo(String value) {
+            addCriterion("bak_fld1 >=", value, "bakFld1");
+            return (Criteria) this;
+        }
+
+        public Criteria andBakFld1LessThan(String value) {
+            addCriterion("bak_fld1 <", value, "bakFld1");
+            return (Criteria) this;
+        }
+
+        public Criteria andBakFld1LessThanOrEqualTo(String value) {
+            addCriterion("bak_fld1 <=", value, "bakFld1");
+            return (Criteria) this;
+        }
+
+        public Criteria andBakFld1Like(String value) {
+            addCriterion("bak_fld1 like", value, "bakFld1");
+            return (Criteria) this;
+        }
+
+        public Criteria andBakFld1NotLike(String value) {
+            addCriterion("bak_fld1 not like", value, "bakFld1");
+            return (Criteria) this;
+        }
+
+        public Criteria andBakFld1In(List<String> values) {
+            addCriterion("bak_fld1 in", values, "bakFld1");
+            return (Criteria) this;
+        }
+
+        public Criteria andBakFld1NotIn(List<String> values) {
+            addCriterion("bak_fld1 not in", values, "bakFld1");
+            return (Criteria) this;
+        }
+
+        public Criteria andBakFld1Between(String value1, String value2) {
+            addCriterion("bak_fld1 between", value1, value2, "bakFld1");
+            return (Criteria) this;
+        }
+
+        public Criteria andBakFld1NotBetween(String value1, String value2) {
+            addCriterion("bak_fld1 not between", value1, value2, "bakFld1");
+            return (Criteria) this;
+        }
+
         public Criteria andOriStationNoLikeInsensitive(String value) {
             addCriterion("upper(ori_station_no) like", value.toUpperCase(), "oriStationNo");
             return (Criteria) this;
@@ -926,6 +996,11 @@ public class ViewPriceInfoExample {
 
         public Criteria andAuditTmeLikeInsensitive(String value) {
             addCriterion("upper(audit_tme) like", value.toUpperCase(), "auditTme");
+            return (Criteria) this;
+        }
+
+        public Criteria andBakFld1LikeInsensitive(String value) {
+            addCriterion("upper(bak_fld1) like", value.toUpperCase(), "bakFld1");
             return (Criteria) this;
         }
     }

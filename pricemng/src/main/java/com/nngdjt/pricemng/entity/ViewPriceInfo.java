@@ -25,6 +25,8 @@ public class ViewPriceInfo implements Serializable {
 
     private String auditTme;
 
+    private String bakFld1;
+
     private static final long serialVersionUID = 1L;
 
     public String getOriStationNo() {
@@ -113,5 +115,13 @@ public class ViewPriceInfo implements Serializable {
 
     public void setAuditTme(String auditTme) {
         this.auditTme = auditTme == null ? null : auditTme.trim();
+    }
+
+    public String getBakFld1() {
+        return bakFld1;
+    }
+
+    public void setBakFld1(String bakFld1) {
+        this.bakFld1 = bakFld1 == null ? null : bakFld1.trim();
     }
 }

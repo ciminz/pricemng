@@ -1,19 +1,46 @@
 package com.nngdjt.pricemng.action;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.ibatis.session.RowBounds;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.nngdjt.pricemng.base.DataBuilder;
 import com.nngdjt.pricemng.base.Page;
+import com.nngdjt.pricemng.base.PriceUtil;
+import com.nngdjt.pricemng.base.Station;
+import com.nngdjt.pricemng.base.Subway;
+import com.nngdjt.pricemng.entity.DistanceInfo;
+import com.nngdjt.pricemng.entity.DistanceInfoExample;
+import com.nngdjt.pricemng.entity.LineInfo;
 import com.nngdjt.pricemng.entity.PriceInfo;
+import com.nngdjt.pricemng.entity.PriceInfoExample;
+import com.nngdjt.pricemng.entity.StationInfo;
+import com.nngdjt.pricemng.entity.StationInfoExample;
 import com.nngdjt.pricemng.entity.ViewPriceInfo;
 import com.nngdjt.pricemng.entity.ViewPriceInfoExample;
 import com.nngdjt.pricemng.entity.ViewPriceInfoExample.Criteria;
 import com.nngdjt.pricemng.mapper.DistanceInfoMapper;
+import com.nngdjt.pricemng.mapper.LineInfoMapper;
+import com.nngdjt.pricemng.mapper.PriceInfoMapper;
 import com.nngdjt.pricemng.mapper.StationInfoMapper;
 import com.nngdjt.pricemng.mapper.ViewPriceInfoMapper;
 import com.opensymphony.xwork2.ActionSupport;
@@ -81,6 +108,11 @@ public class PriceManageAction extends ActionSupport{
 		return nowpage;
 	}
 	
+	public void setNowpage(String nowpage) {
+		this.nowpage = nowpage;
+	}
+
+	
 	public PriceInfo getPriceInfo() {
 		return priceInfo;
 	}
@@ -112,6 +144,9 @@ public class PriceManageAction extends ActionSupport{
 	
 	private StationInfoMapper stationInfoMapper;
 	
+	private LineInfoMapper lineInfoMapper;
+	
+	private PriceInfoMapper priceInfoMapper;
 	/**
 	 * 初始化组件
 	 */
@@ -119,6 +154,8 @@ public class PriceManageAction extends ActionSupport{
 		this.viewPriceInfoMapper = (ViewPriceInfoMapper)LocalBeanFactory.get(ViewPriceInfoMapper.class);
 		this.distanceInfoMapper = (DistanceInfoMapper)LocalBeanFactory.get(DistanceInfoMapper.class);
 		this.stationInfoMapper = (StationInfoMapper)LocalBeanFactory.get(StationInfoMapper.class);
+		this.lineInfoMapper = (LineInfoMapper)LocalBeanFactory.get(LineInfoMapper.class);
+		this.priceInfoMapper = (PriceInfoMapper)LocalBeanFactory.get(PriceInfoMapper.class);
 	}
 	
 	/**
@@ -130,8 +167,6 @@ public class PriceManageAction extends ActionSupport{
 		ViewPriceInfoExample viewPriceInfoExample = new ViewPriceInfoExample();
 		Criteria criteria= viewPriceInfoExample.createCriteria();
 		
-		logger.info("" + (this.getViewPriceInfo() == null));
-		//logger.info("" + (this.getViewStationDistanceInfo().getoStationNo() == null));
 		if(this.getViewPriceInfo() != null && this.getViewPriceInfo().getOriStationNo() != null && !"-1".equals(this.getViewPriceInfo().getOriStationNo())) {
 			criteria.andOriStationNoLike("%" + this.getViewPriceInfo().getOriStationNo() + "%");
 		}
@@ -139,12 +174,188 @@ public class PriceManageAction extends ActionSupport{
 		if(this.getViewPriceInfo() != null && this.getViewPriceInfo().getDesStationNo() != null && !"-1".equals(this.getViewPriceInfo().getDesStationNo())) {
 			criteria.andDesStationNoLike("%" + this.getViewPriceInfo().getDesStationNo() + "%");
 		}
+		
+		if(this.getViewPriceInfo() != null && this.getViewPriceInfo().getAuditFlg() != null && !"-1".equals(this.getViewPriceInfo().getAuditFlg())) {
+			criteria.andAuditFlgEqualTo(this.getViewPriceInfo().getAuditFlg());
+		}
+		
 		List<ViewPriceInfo> vPriceInfoList = this.viewPriceInfoMapper.selectByExampleWithRowbounds(viewPriceInfoExample,
 				new RowBounds(Page.getOffSet(this.getNowpage(), this.getPagesize()), Integer.valueOf(this.getPagesize())));
 		int totalPageSize = Page.getTotolSize(Integer.valueOf(this.getPagesize()) ,this.viewPriceInfoMapper.countByExample(viewPriceInfoExample)); 
 		ServletActionContext.getRequest().setAttribute("queryResult", vPriceInfoList);
 		ServletActionContext.getRequest().setAttribute("totalPageSize", totalPageSize + "");
 		return "success";
+	}
+	
+	/**
+	 * 更新线网票价
+	 * @return
+	 */
+	//@Transactional(propagation=Propagation.NEVER)
+	public String priceManageUpdateAllPrice() {
+		this.beanInit();
+		logger.info("<<<<<<<<<<<<<<<<<<<<<<<<<,,,");
+		//检查每条线，相邻站点是否都有间距信息
+		boolean flag = true;
+		List<LineInfo> lineInfoList = this.lineInfoMapper.selectByExample(null);
+		StringBuilder returnMessage = null;
+		out:for(LineInfo lineInfo : lineInfoList) {
+			StationInfoExample stationInfoExample = new StationInfoExample();
+			stationInfoExample.createCriteria().andLineNoEqualTo(lineInfo.getLineNo());
+			List<StationInfo> stationInfoList = this.stationInfoMapper.selectByExample(stationInfoExample);
+			
+			for(StationInfo stationInfo : stationInfoList) {
+				StationInfo nextStation = null;
+				if(stationInfoList.indexOf(stationInfo) + 1 < stationInfoList.size()) {
+					nextStation = stationInfoList.get(stationInfoList.indexOf(stationInfo) + 1);
+				}
+				else {
+					break;
+				}
+				
+				String oriStationNo = "";
+				String desStationNo = "";
+				if("Y".equals(stationInfo.getExchangeFlg())) {
+					oriStationNo = stationInfo.getExchangeStNo();
+				}else {
+					oriStationNo = stationInfo.getStationNo();
+				}
+				
+				if("Y".equals(nextStation.getExchangeFlg())) {
+					desStationNo = nextStation.getExchangeStNo();
+				}else {
+					desStationNo = nextStation.getStationNo();
+				}
+				
+				DistanceInfoExample distanceInfoExample = new DistanceInfoExample();
+				distanceInfoExample.createCriteria().
+				andOriStationNoEqualTo(oriStationNo)
+				.andDesStationNoEqualTo(desStationNo);
+				
+				int distanceCnt = this.distanceInfoMapper.countByExample(distanceInfoExample);
+				
+				if(distanceCnt == 0) {
+					returnMessage = new StringBuilder("<response><messageHead>-1</messageHead><message>" + stationInfo.getStationNme() + "与" + nextStation.getStationNme() +"间无间距信息</message></response>");
+					flag = false;
+					break out;
+				}
+			}
+		}
+		
+		if(flag) {
+			priceInfoMapper.deleteByExample(null);
+			DataBuilder dataBuilder = new DataBuilder();
+			PriceUtil priceUtil = new PriceUtil();
+			try {
+				long t1 = System.currentTimeMillis();
+				//DataBuilder dataBuilder = new DataBuilder();
+				int b = dataBuilder.totalStaion;
+				for (int i = 0; i < b; i++) {
+					for (int y = 0; y < b; y++) {
+						Subway sw = new Subway(dataBuilder, priceUtil);
+						sw.calculate(dataBuilder.lines.get(i), dataBuilder.lines.get(y), priceInfoMapper);
+					}
+				}
+				long t2 = System.currentTimeMillis();
+				logger.info("耗时：" + (t2 - t1) + "ms");
+				returnMessage = new StringBuilder("<response><messageHead>0</messageHead><message>更新线网票价信息成功</message></response>");
+			} catch (Exception e) {
+				e.printStackTrace();
+				returnMessage = new StringBuilder("<response><messageHead>-1</messageHead><message>更新线网票价信息失败</message></response>");
+			} 
+			
+		}
+		
+		logger.info(">>>>>>>>>>>>>>>>" + returnMessage.toString());
+		try {
+			HttpServletResponse response = ServletActionContext.getResponse();
+			response.setCharacterEncoding("utf-8");
+			PrintWriter pw = response.getWriter();
+			pw.write(returnMessage.toString());
+			pw.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	
+	public String createPriceMap() {
+		this.beanInit();
+		PriceInfoExample priceInfoExample = new PriceInfoExample();
+		priceInfoExample.createCriteria().andAuditFlgEqualTo("N");
+		int cnt = this.priceInfoMapper.countByExample(priceInfoExample);
+		StringBuilder returnMessage = null;
+		if(cnt > 0) {
+			returnMessage = new StringBuilder("<response><messageHead>-1</messageHead><message>存在未审核的票价记录</message></response>");
+		}else {
+			 //创建工作簿  
+	        HSSFWorkbook workBook = new HSSFWorkbook();  
+	        //创建工作表  工作表的名字叫helloWorld  
+	        HSSFSheet sheet = workBook.createSheet("票价矩阵");  
+	        
+	        DataBuilder dataBuilder = new DataBuilder();
+	        for(int i = 0; i < dataBuilder.lines.size(); i++) {
+	        	Station desStation = dataBuilder.lines.get(i);
+	        	List<PriceInfo> priceInfoList = new ArrayList<PriceInfo>();
+	        	for(int j = 0; j <= i; j++) {
+	        		Station oriStation =  dataBuilder.lines.get(j);
+	        		PriceInfoExample priceInfoExcample = new PriceInfoExample();
+	        		priceInfoExcample.createCriteria()
+	        		.andOriStationNoEqualTo(oriStation.getStationNo())
+	        		.andDesStationNoEqualTo(desStation.getStationNo());
+	        		List<PriceInfo> priceInfoTmpList = priceInfoMapper.selectByExample(priceInfoExcample);
+	        		if(priceInfoTmpList != null && priceInfoTmpList.size() != 0) {
+	        			System.out.println(priceInfoTmpList.get(0).getPrice());
+	        			priceInfoList.add(priceInfoTmpList.get(0));
+	        		}
+	        	}
+	        	
+	        	//创建行,第3行  
+	            HSSFRow row = sheet.createRow(i);
+	            
+	            HSSFCell cellStation = row.createCell(0, CellType.STRING);  
+	            cellStation.setCellValue(desStation.getName());  
+	            int index = 1;
+	            for(PriceInfo priceInfo : priceInfoList) {
+	            	//创建单元格，操作第三行第三列  
+	                HSSFCell cellPrice = row.createCell(index++, CellType.STRING);  
+	                cellPrice.setCellValue(priceInfo.getPrice());  
+	            }
+	        }
+	        
+	        //末尾行，设重点站
+	        HSSFRow row = sheet.createRow(dataBuilder.lines.size());
+	        int index = 1;
+	        for(Station station : dataBuilder.lines) {
+	        	//创建单元格，操作第三行第三列  
+	            HSSFCell cellPrice = row.createCell(index++, CellType.STRING);  
+	            cellPrice.setCellValue(station.getName());  
+	        }
+	         
+	        ResourceBundle rb = ResourceBundle.getBundle("system_file_store");
+	        String path = rb.getString("down_path");
+	        try {
+				workBook.write(new File(path, "票价矩阵.xls"));
+				 workBook.close();//最后记得关闭工作簿  
+			} catch (IOException e) {
+				returnMessage = new StringBuilder("<response><messageHead>-1</messageHead><message>系统创建票价矩阵文件出错</message></response>");
+			}  
+	        returnMessage = new StringBuilder("<response><messageHead>0</messageHead><message>生成票价矩阵文件成功</message><file>票价矩阵.xls</file></response>");
+		}
+		
+		logger.info(">>>>>>>>>>>>>>>>" + returnMessage.toString());
+		try {
+			HttpServletResponse response = ServletActionContext.getResponse();
+			response.setCharacterEncoding("utf-8");
+			PrintWriter pw = response.getWriter();
+			pw.write(returnMessage.toString());
+			pw.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 //	/**

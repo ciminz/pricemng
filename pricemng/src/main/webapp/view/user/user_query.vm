@@ -12,7 +12,7 @@
     <script src="${rootAddr}view/js/pintuer.js"></script>  
     <script>
     	function changePage(oprt) {
-    		var nowpage = document.getElementById("nowpagetxt").value;
+    		var nowpage = parseInt(document.getElementById("nowpagetxt").value);
     		if(oprt == 'f') {
     			document.getElementById("nowpagetxt").value = "1";
     		}

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+import org.apache.velocity.tools.generic.ClassTool.Sub;
+
 import com.nngdjt.pricemng.entity.PriceInfo;
 import com.nngdjt.pricemng.mapper.PriceInfoMapper;
 import com.vane.utils.BaseUtil;
@@ -20,9 +22,20 @@ public class Subway {
 	/* 记录所有经过的站点 */
 	private List<Station> outList = new ArrayList<Station>();// 记录已经分析过的站点
 	
-	private DataBuilder dataBuilder = new DataBuilder();
+//	private DataBuilder dataBuilder = new DataBuilder();
+//	
+//	private PriceUtil priceUtil = new PriceUtil();
 	
-	private PriceUtil priceUtil = new PriceUtil();
+	private DataBuilder dataBuilder;
+	
+	private PriceUtil priceUtil;
+	
+	public Subway() {}
+	
+	public Subway(DataBuilder dataBuilder, PriceUtil priceUtil) {
+		this.dataBuilder = dataBuilder;
+		this.priceUtil = priceUtil;
+	}
 
 	// 计算从s1站到s2站的最短经过路径 s1初始站点 s2目的站点
 	public void calculate(Station s1, Station s2, FileWriter fw) throws Exception {
@@ -251,39 +264,39 @@ public class Subway {
 	/**
 	 * desc: How to use the method author chaisson since 2015-5-31 version 1.0
 	 */
-	public static void main(String[] args) {
-		DataBuilder dataBuilder = new DataBuilder();
-		FileWriter fw = null;
-
-		try {
-			fw = new FileWriter("d://2.txt");
-
-			long t1 = System.currentTimeMillis();
-			Subway sw = new Subway();
-
-			int b = dataBuilder.totalStaion;
-
-		for (int i = 0; i < b; i++)
-				for (int y = 0; y < b; y++) {
-					sw = new Subway();
-					sw.calculate(dataBuilder.lines.get(i), dataBuilder.lines.get(y), fw);
-					fw.append(
-							"-----------------------------------------------------------------------------------------------------------\r\n");
-				}
-			long t2 = System.currentTimeMillis();
-			System.out.println();
-			System.out.println("耗时：" + (t2 - t1) + "ms");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			if (null != fw)
-				try {
-					fw.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		}
-	}
+//	public static void main(String[] args) {
+//		DataBuilder dataBuilder = new DataBuilder();
+//		FileWriter fw = null;
+//
+//		try {
+//			fw = new FileWriter("d://2.txt");
+//
+//			long t1 = System.currentTimeMillis();
+//			Subway sw = new Subway();
+//
+//			int b = dataBuilder.totalStaion;
+//
+//		for (int i = 0; i < b; i++)
+//				for (int y = 0; y < b; y++) {
+//					sw = new Subway();
+//					sw.calculate(dataBuilder.lines.get(i), dataBuilder.lines.get(y), fw);
+//					fw.append(
+//							"-----------------------------------------------------------------------------------------------------------\r\n");
+//				}
+//			long t2 = System.currentTimeMillis();
+//			System.out.println();
+//			System.out.println("耗时：" + (t2 - t1) + "ms");
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} finally {
+//			if (null != fw)
+//				try {
+//					fw.close();
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//		}
+//	}
 }
