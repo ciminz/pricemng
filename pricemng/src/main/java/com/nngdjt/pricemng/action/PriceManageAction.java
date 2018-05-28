@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nngdjt.pricemng.base.DataBuilder;
+import com.nngdjt.pricemng.base.ExceptionProcess;
 import com.nngdjt.pricemng.base.Page;
 import com.nngdjt.pricemng.base.PriceUtil;
 import com.nngdjt.pricemng.base.Station;
@@ -179,6 +180,7 @@ public class PriceManageAction extends ActionSupport{
 			criteria.andAuditFlgEqualTo(this.getViewPriceInfo().getAuditFlg());
 		}
 		
+		viewPriceInfoExample.setOrderByClause("ori_station_no,des_station_no");
 		List<ViewPriceInfo> vPriceInfoList = this.viewPriceInfoMapper.selectByExampleWithRowbounds(viewPriceInfoExample,
 				new RowBounds(Page.getOffSet(this.getNowpage(), this.getPagesize()), Integer.valueOf(this.getPagesize())));
 		int totalPageSize = Page.getTotolSize(Integer.valueOf(this.getPagesize()) ,this.viewPriceInfoMapper.countByExample(viewPriceInfoExample)); 
@@ -454,38 +456,55 @@ public class PriceManageAction extends ActionSupport{
 //		return "success";
 //	}
 //	
-//	/**
-//	 * 跳转更新页面
-//	 * @return
-//	 */
-//	public String upd() {
-//		this.beanInit();
-//		DistanceInfoExample distanceInfoExample = new DistanceInfoExample();
-//		com.nngdjt.pricemng.entity.DistanceInfoExample.Criteria criteria = distanceInfoExample.createCriteria();
-//		if(this.getDistanceInfo() != null && this.getDistanceInfo().getOriStationNo() != null && !"".equals(this.getDistanceInfo().getOriStationNo())) {
-//			criteria.andOriStationNoEqualTo(this.getDistanceInfo().getOriStationNo());
-//		}
-//		
-//		if(this.getDistanceInfo() != null && this.getDistanceInfo().getDesStationNo() != null && !"".equals(this.getDistanceInfo().getDesStationNo())) {
-//			criteria.andDesStationNoEqualTo(this.getDistanceInfo().getDesStationNo());
-//		}
-//		
-//		List<DistanceInfo> distanceInfoList = this.distanceInfoMapper.selectByExample(distanceInfoExample);
-//		if(distanceInfoList == null && distanceInfoList.size() == 0) {
-//			logger.info("the distance info no found");
-//			return ExceptionProcess.exceptionProcess("无法获取运距信息","distanceManage/distanceQueryByCondition");
-//		}
-//		
-//		DistanceInfo distanceInfoUpd = distanceInfoList.get(0);
-//		distanceInfoUpd.setDistance(this.getDistanceInfo().getDistance());
-//		int i = this.distanceInfoMapper.updateByPrimaryKey(distanceInfoUpd);
-//		if(i == 1) {
-//			ServletActionContext.getRequest().setAttribute("returnPage", "distanceManage/distanceQueryByCondition");
-//			return "success";
-//		}else {
-//			return ExceptionProcess.exceptionProcess("系统更新失败","distanceManage/distanceQueryByCondition");
-//		}
-//	}
+	/**
+	 * 更新
+	 * @return
+	 */
+	public String upd() {
+		this.beanInit();
+		if(this.getPriceInfo() == null || this.getPriceInfo().getOriStationNo() == null || "".equals(this.getPriceInfo().getOriStationNo())) {
+			logger.info("the price info OriStationNo not found");
+			return ExceptionProcess.exceptionProcess("无法获取起点站信息","priceManage/priceQueryByCondition");
+		}
+		
+		if(this.getPriceInfo() == null || this.getPriceInfo().getDesStationNo() == null || "".equals(this.getPriceInfo().getDesStationNo())) {
+			logger.info("the price info DesStationNo not found");
+			return ExceptionProcess.exceptionProcess("无法获取目的站信息","priceManage/priceQueryByCondition");
+		}
+		DataBuilder dataBuilder = new DataBuilder();
+		PriceUtil priceUtil = new PriceUtil();
+		
+		Subway sw = new Subway(dataBuilder, priceUtil);
+		
+		int i = -1;
+		int y = -1;
+		
+		for(Station station : dataBuilder.lines) {
+			if(this.getPriceInfo().getOriStationNo().equals(station.getStationNo())) {
+				i = dataBuilder.lines.indexOf(station);
+			}
+			
+			if(this.getPriceInfo().getDesStationNo().equals(station.getStationNo())) {
+				y = dataBuilder.lines.indexOf(station);
+			}
+		}
+		
+		try {
+			PriceInfoExample priceInfoExample = new PriceInfoExample();
+			priceInfoExample.createCriteria()
+			.andOriStationNoEqualTo(this.getPriceInfo().getOriStationNo())
+			.andDesStationNoEqualTo(this.getPriceInfo().getDesStationNo());
+			this.priceInfoMapper.deleteByExample(priceInfoExample);
+			sw.calculate(dataBuilder.lines.get(i), dataBuilder.lines.get(y), priceInfoMapper);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.info("the price info update failed");
+			return ExceptionProcess.exceptionProcess("票价更新失败","priceManage/priceQueryByCondition");
+		}
+		
+		ServletActionContext.getRequest().setAttribute("returnPage", "priceManage/priceQueryByCondition");
+		return "success";
+	}
 //	
 //	/**
 //	 * 批量新增更新
