@@ -24,4 +24,14 @@
 	 	<RoleId>2</RoleId>
 		<MenuId>5</MenuId>
 	</Item>
+	
+	<Item>
+	 	<RoleId>3</RoleId>
+		<MenuId>6</MenuId>
+	</Item>
+	
+	<Item>
+	 	<RoleId>3</RoleId>
+		<MenuId>7</MenuId>
+	</Item>
 </Items>

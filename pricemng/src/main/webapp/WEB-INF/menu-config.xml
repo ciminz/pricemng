@@ -113,4 +113,39 @@
 		<IsParent>1</IsParent>
 		<Parent>5</Parent>
 	</Item>
+	
+	<!-- 线路查询 -->
+	<Item>
+	 	<Id>6</Id>
+		<ItemName>线路信息</ItemName>
+		<Url>#</Url>
+		<IsParent>0</IsParent>
+		<Parent>-1</Parent>
+	</Item>
+	
+	<Item>
+		<Id>61</Id>
+		<ItemName>线路查询</ItemName>
+		<Url>lineManage/lineQueryByConditionUser</Url>
+		<IsParent>1</IsParent>
+		<Parent>6</Parent>
+	</Item>
+	
+	<!-- 票价查询 -->
+	<Item>
+	 	<Id>7</Id>
+		<ItemName>票价信息</ItemName>
+		<Url>#</Url>
+		<IsParent>0</IsParent>
+		<Parent>-1</Parent>
+	</Item>
+	
+	<Item>
+		<Id>71</Id>
+		<ItemName>票价查询</ItemName>
+		<Url>priceManage/priceQueryByConditionUser</Url>
+		<IsParent>1</IsParent>
+		<Parent>7</Parent>
+	</Item>
+	
 </MenuItems>

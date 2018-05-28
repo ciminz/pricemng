@@ -195,6 +195,47 @@ public class PriceManageAction extends ActionSupport{
 		return "success";
 	}
 	
+	
+	/**
+	 * 票价查询
+	 * @return
+	 */
+	public String query4User() {
+		this.beanInit();
+		ViewPriceInfoExample viewPriceInfoExample = new ViewPriceInfoExample();
+		Criteria criteria= viewPriceInfoExample.createCriteria();
+		
+		if(this.getViewPriceInfo() != null && this.getViewPriceInfo().getOriStationNo() != null && !"-1".equals(this.getViewPriceInfo().getOriStationNo())) {
+			criteria.andOriStationNoLike("%" + this.getViewPriceInfo().getOriStationNo() + "%");
+		}
+		
+		if(this.getViewPriceInfo() != null && this.getViewPriceInfo().getDesStationNo() != null && !"-1".equals(this.getViewPriceInfo().getDesStationNo())) {
+			criteria.andDesStationNoLike("%" + this.getViewPriceInfo().getDesStationNo() + "%");
+		}
+		
+		if(this.getViewPriceInfo() != null && this.getViewPriceInfo().getAuditFlg() != null && !"-1".equals(this.getViewPriceInfo().getAuditFlg())) {
+			criteria.andAuditFlgEqualTo(this.getViewPriceInfo().getAuditFlg());
+		}
+		
+		if(this.getOriLineNo() != null && !"-1".equals(this.getOriLineNo())) {
+			criteria.andOriLineNoEqualTo(this.getOriLineNo());
+		}
+		
+		if(this.getDesLineNo() != null && !"-1".equals(this.getDesLineNo())) {
+			criteria.andDesLineNoEqualTo(this.getDesLineNo());
+		}
+		
+		criteria.andAuditFlgEqualTo("Y");
+		
+		viewPriceInfoExample.setOrderByClause("ori_station_no,des_station_no");
+		List<ViewPriceInfo> vPriceInfoList = this.viewPriceInfoMapper.selectByExampleWithRowbounds(viewPriceInfoExample,
+				new RowBounds(Page.getOffSet(this.getNowpage(), this.getPagesize()), Integer.valueOf(this.getPagesize())));
+		int totalPageSize = Page.getTotolSize(Integer.valueOf(this.getPagesize()) ,this.viewPriceInfoMapper.countByExample(viewPriceInfoExample)); 
+		ServletActionContext.getRequest().setAttribute("queryResult", vPriceInfoList);
+		ServletActionContext.getRequest().setAttribute("totalPageSize", totalPageSize + "");
+		return "success";
+	}
+	
 	/**
 	 * 更新线网票价
 	 * @return

@@ -318,7 +318,7 @@
 <div class="panel admin-panel margin-top">
   <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>查询条件</strong></div>
   <div class="body-content">
-    <form method="post" class="form-x" action="${rootAddr}priceManage/priceQueryByCondition" id="form1">
+    <form method="post" class="form-x" action="${rootAddr}priceManage/priceQueryByConditionUser" id="form1">
       <input type="hidden" name="nowpage"  value="${nowpage}" id="nowpagetxt"/> 
       <input type="hidden" name="pagesize"  value="5" /> 
       <input type="hidden" name="totolpagesize"  value="${totalPageSize}" /> 
@@ -363,17 +363,17 @@
 		        <div class="tips"></div> 
 	        </div>
 	        
-	         <div class="label">
+	         <!--<div class="label">
 	          <label>审核状态：</label>
 	        </div>
-	        <div>
+	        div>
 	           <select name="viewPriceInfo.auditFlg" class="input w50" id="auditSt" style="width:5%;">
 		         	<option value="-1">请选择</option>
 		         	<option value="Y" #if(${viewPriceInfo.auditFlg} == 'Y') selected#end>已审核</option>
 		         	<option value="N" #if(${viewPriceInfo.auditFlg} == 'N') selected#end>未审核</option>
 		        </select>
 		        <div class="tips"></div> 
-	        </div>
+	        </div-->
       	</div>
       	
      <div class="form-group">
@@ -382,8 +382,6 @@
         </div>
         <div class="field" width="100%" align="center">
           <button class="button bg-main icon-search" type="submit"> 查询</button>
-          <button class="button bg-main" type="button" onclick="javascript:document.getElementById('lineNo').value='-1';document.getElementById('stationNme').value='';document.getElementById('exchangeFlg').value='-1';"> 重置</button>
-          <button class="button bg-main icon-refresh" type="button" onclick="updateAllPrice()" id="updateAllPriceBtn"> 更新线网票价</button>
           <button class="button bg-main icon-download" type="button" onclick="createPriceMap()"> 生成线网票价矩阵</button>
         </div>
       </div>
@@ -403,10 +401,10 @@
       <th>目的站编号</th>    
       <th>目的站名</th>
       <th>票价（元）</th>
-      <th>审核状态</th>
+      <!--th>审核状态</th>
       <th>审核人</th>
       <th>审核时间</th>
-      <th width="250">操作</th>
+      <th width="250">操作</th-->
     </tr>
     #set($index=1)
     #foreach($d in $queryResult)
@@ -417,19 +415,7 @@
       <td>$!d.desStationNo</td>
       <td>$!d.desStationNme</td>
       <td>$!d.price</td>
-      #if(${d.auditFlg} == 'Y')
-      <td>已审核</td>
-      #else
-      <td>未审核</td>
-      #end
-      <td>$!d.auditRealusername</td>
-      <td>$!d.auditDate  $!d.auditTme</td>
-      <td>
-      <div class="button-group">
-         <a type="button" class="button border-main" href="javascript:void(0);" onclick="viewToUpd('${d.oriStationNo}','${d.desStationNo}')"><span class="icon-refresh"></span>更新</a>
-       	 <a class="button border-red" href="javascript:void(0);" onclick="toAuditView('${d.oriStationNo}','${d.desStationNo}')"><span class="icon-edit"></span>审核</a>
-      </div>
-      </td>
+      
     </tr> 
     #set($index=$index + 1)
     #end 

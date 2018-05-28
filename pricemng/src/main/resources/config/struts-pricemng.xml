@@ -72,6 +72,11 @@
 			<result name="input">/view/tips_err.vm</result>
 		</action>
 		
+		<action name="lineQueryByConditionUser" class="com.nngdjt.pricemng.action.LineManageAction" method="query">
+			<result name="success">/view/line/line_query_user.vm</result>
+			<result name="input">/view/tips_err.vm</result>
+		</action>
+		
 		<action name="lineDelete" class="com.nngdjt.pricemng.action.LineManageAction" method="delete">
 			<result name="success">/view/tips_suc.vm</result>
 			<result name="input">/view/tips_err.vm</result>
@@ -169,6 +174,10 @@
 			<result name="input">/view/tips_err.vm</result>
 		</action>
 		
+		<action name="priceQueryByConditionUser" class="com.nngdjt.pricemng.action.PriceManageAction" method="query4User">
+			<result name="success">/view/price/price_query_user.vm</result>
+			<result name="input">/view/tips_err.vm</result>
+		</action>
 		<action name="priceManageUpdateAllPrice" class="com.nngdjt.pricemng.action.PriceManageAction" method="priceManageUpdateAllPrice"/>
 		
 		<action name="createPriceMap" class="com.nngdjt.pricemng.action.PriceManageAction" method="createPriceMap"/>
