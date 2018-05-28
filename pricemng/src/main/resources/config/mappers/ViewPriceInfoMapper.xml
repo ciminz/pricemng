@@ -4,8 +4,10 @@
   <resultMap id="BaseResultMap" type="com.nngdjt.pricemng.entity.ViewPriceInfo" >
     <result column="ori_station_no" property="oriStationNo" jdbcType="VARCHAR" />
     <result column="ori_station_nme" property="oriStationNme" jdbcType="VARCHAR" />
+    <result column="ori_line_no" property="oriLineNo" jdbcType="VARCHAR" />
     <result column="des_station_no" property="desStationNo" jdbcType="VARCHAR" />
     <result column="des_station_nme" property="desStationNme" jdbcType="VARCHAR" />
+    <result column="des_line_no" property="desLineNo" jdbcType="VARCHAR" />
     <result column="price" property="price" jdbcType="VARCHAR" />
     <result column="audit_user_id" property="auditUserId" jdbcType="VARCHAR" />
     <result column="audit_username" property="auditUsername" jdbcType="VARCHAR" />
@@ -14,6 +16,7 @@
     <result column="audit_date" property="auditDate" jdbcType="VARCHAR" />
     <result column="audit_tme" property="auditTme" jdbcType="VARCHAR" />
     <result column="bak_fld1" property="bakFld1" jdbcType="VARCHAR" />
+    <result column="bak_fld2" property="bakFld2" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -74,8 +77,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    ori_station_no, ori_station_nme, des_station_no, des_station_nme, price, audit_user_id, 
-    audit_username, audit_realusername, audit_flg, audit_date, audit_tme, bak_fld1
+    ori_station_no, ori_station_nme, ori_line_no, des_station_no, des_station_nme, des_line_no, 
+    price, audit_user_id, audit_username, audit_realusername, audit_flg, audit_date, 
+    audit_tme, bak_fld1, bak_fld2
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.nngdjt.pricemng.entity.ViewPriceInfoExample" >
     select
@@ -98,15 +102,17 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.nngdjt.pricemng.entity.ViewPriceInfo" >
-    insert into v_price_info (ori_station_no, ori_station_nme, des_station_no, 
-      des_station_nme, price, audit_user_id, 
-      audit_username, audit_realusername, audit_flg, 
-      audit_date, audit_tme, bak_fld1
+    insert into v_price_info (ori_station_no, ori_station_nme, ori_line_no, 
+      des_station_no, des_station_nme, des_line_no, 
+      price, audit_user_id, audit_username, 
+      audit_realusername, audit_flg, audit_date, 
+      audit_tme, bak_fld1, bak_fld2
       )
-    values (#{oriStationNo,jdbcType=VARCHAR}, #{oriStationNme,jdbcType=VARCHAR}, #{desStationNo,jdbcType=VARCHAR}, 
-      #{desStationNme,jdbcType=VARCHAR}, #{price,jdbcType=VARCHAR}, #{auditUserId,jdbcType=VARCHAR}, 
-      #{auditUsername,jdbcType=VARCHAR}, #{auditRealusername,jdbcType=VARCHAR}, #{auditFlg,jdbcType=VARCHAR}, 
-      #{auditDate,jdbcType=VARCHAR}, #{auditTme,jdbcType=VARCHAR}, #{bakFld1,jdbcType=VARCHAR}
+    values (#{oriStationNo,jdbcType=VARCHAR}, #{oriStationNme,jdbcType=VARCHAR}, #{oriLineNo,jdbcType=VARCHAR}, 
+      #{desStationNo,jdbcType=VARCHAR}, #{desStationNme,jdbcType=VARCHAR}, #{desLineNo,jdbcType=VARCHAR}, 
+      #{price,jdbcType=VARCHAR}, #{auditUserId,jdbcType=VARCHAR}, #{auditUsername,jdbcType=VARCHAR}, 
+      #{auditRealusername,jdbcType=VARCHAR}, #{auditFlg,jdbcType=VARCHAR}, #{auditDate,jdbcType=VARCHAR}, 
+      #{auditTme,jdbcType=VARCHAR}, #{bakFld1,jdbcType=VARCHAR}, #{bakFld2,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.nngdjt.pricemng.entity.ViewPriceInfo" >
@@ -118,11 +124,17 @@
       <if test="oriStationNme != null" >
         ori_station_nme,
       </if>
+      <if test="oriLineNo != null" >
+        ori_line_no,
+      </if>
       <if test="desStationNo != null" >
         des_station_no,
       </if>
       <if test="desStationNme != null" >
         des_station_nme,
+      </if>
+      <if test="desLineNo != null" >
+        des_line_no,
       </if>
       <if test="price != null" >
         price,
@@ -148,6 +160,9 @@
       <if test="bakFld1 != null" >
         bak_fld1,
       </if>
+      <if test="bakFld2 != null" >
+        bak_fld2,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="oriStationNo != null" >
@@ -156,11 +171,17 @@
       <if test="oriStationNme != null" >
         #{oriStationNme,jdbcType=VARCHAR},
       </if>
+      <if test="oriLineNo != null" >
+        #{oriLineNo,jdbcType=VARCHAR},
+      </if>
       <if test="desStationNo != null" >
         #{desStationNo,jdbcType=VARCHAR},
       </if>
       <if test="desStationNme != null" >
         #{desStationNme,jdbcType=VARCHAR},
+      </if>
+      <if test="desLineNo != null" >
+        #{desLineNo,jdbcType=VARCHAR},
       </if>
       <if test="price != null" >
         #{price,jdbcType=VARCHAR},
@@ -186,6 +207,9 @@
       <if test="bakFld1 != null" >
         #{bakFld1,jdbcType=VARCHAR},
       </if>
+      <if test="bakFld2 != null" >
+        #{bakFld2,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.nngdjt.pricemng.entity.ViewPriceInfoExample" resultType="java.lang.Integer" >
@@ -203,11 +227,17 @@
       <if test="record.oriStationNme != null" >
         ori_station_nme = #{record.oriStationNme,jdbcType=VARCHAR},
       </if>
+      <if test="record.oriLineNo != null" >
+        ori_line_no = #{record.oriLineNo,jdbcType=VARCHAR},
+      </if>
       <if test="record.desStationNo != null" >
         des_station_no = #{record.desStationNo,jdbcType=VARCHAR},
       </if>
       <if test="record.desStationNme != null" >
         des_station_nme = #{record.desStationNme,jdbcType=VARCHAR},
+      </if>
+      <if test="record.desLineNo != null" >
+        des_line_no = #{record.desLineNo,jdbcType=VARCHAR},
       </if>
       <if test="record.price != null" >
         price = #{record.price,jdbcType=VARCHAR},
@@ -233,6 +263,9 @@
       <if test="record.bakFld1 != null" >
         bak_fld1 = #{record.bakFld1,jdbcType=VARCHAR},
       </if>
+      <if test="record.bakFld2 != null" >
+        bak_fld2 = #{record.bakFld2,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -242,8 +275,10 @@
     update v_price_info
     set ori_station_no = #{record.oriStationNo,jdbcType=VARCHAR},
       ori_station_nme = #{record.oriStationNme,jdbcType=VARCHAR},
+      ori_line_no = #{record.oriLineNo,jdbcType=VARCHAR},
       des_station_no = #{record.desStationNo,jdbcType=VARCHAR},
       des_station_nme = #{record.desStationNme,jdbcType=VARCHAR},
+      des_line_no = #{record.desLineNo,jdbcType=VARCHAR},
       price = #{record.price,jdbcType=VARCHAR},
       audit_user_id = #{record.auditUserId,jdbcType=VARCHAR},
       audit_username = #{record.auditUsername,jdbcType=VARCHAR},
@@ -251,7 +286,8 @@
       audit_flg = #{record.auditFlg,jdbcType=VARCHAR},
       audit_date = #{record.auditDate,jdbcType=VARCHAR},
       audit_tme = #{record.auditTme,jdbcType=VARCHAR},
-      bak_fld1 = #{record.bakFld1,jdbcType=VARCHAR}
+      bak_fld1 = #{record.bakFld1,jdbcType=VARCHAR},
+      bak_fld2 = #{record.bakFld2,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>

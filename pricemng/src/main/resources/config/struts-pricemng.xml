@@ -173,6 +173,10 @@
 		
 		<action name="createPriceMap" class="com.nngdjt.pricemng.action.PriceManageAction" method="createPriceMap"/>
 		
+		<action name="priceToAuditView" class="com.nngdjt.pricemng.action.PriceManageAction" method="auditView">
+			<result name="success">/view/price/price_audit.vm</result>
+		</action>
+		
 		<!-- <action name="distanceDelete" class="com.nngdjt.pricemng.action.DistanceManageAction" method="delete">
 			<result name="success">/view/tips_suc.vm</result>
 			<result name="input">/view/tips_err.vm</result>
@@ -189,13 +193,12 @@
 		<action name="distanceAdd" class="com.nngdjt.pricemng.action.DistanceManageAction" method="add">
 			<result name="success">/view/tips_suc.vm</result>
 			<result name="input">/view/tips_err.vm</result>
-		</action> 
-		
-		<action name="distanceAddBatch" class="com.nngdjt.pricemng.action.DistanceManageAction" method="addBatch">
-			<result name="success">/view/tips_suc.vm</result>
-			<result name="input">/view/tips_err.vm</result> 
 		</action> -->
 		
+		<action name="priceAudit" class="com.nngdjt.pricemng.action.PriceManageAction" method="priceAudit">
+			<result name="success" type="chain">priceQueryByCondition</result>
+			<result name="input">/view/tips_err.vm</result> 
+		</action> 
 		
 		<action name="priceUpdSingle" class="com.nngdjt.pricemng.action.PriceManageAction" method="upd">
 			<result name="success">/view/tips_suc.vm</result>

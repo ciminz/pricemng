@@ -244,6 +244,76 @@ public class ViewPriceInfoExample {
             return (Criteria) this;
         }
 
+        public Criteria andOriLineNoIsNull() {
+            addCriterion("ori_line_no is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriLineNoIsNotNull() {
+            addCriterion("ori_line_no is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriLineNoEqualTo(String value) {
+            addCriterion("ori_line_no =", value, "oriLineNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriLineNoNotEqualTo(String value) {
+            addCriterion("ori_line_no <>", value, "oriLineNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriLineNoGreaterThan(String value) {
+            addCriterion("ori_line_no >", value, "oriLineNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriLineNoGreaterThanOrEqualTo(String value) {
+            addCriterion("ori_line_no >=", value, "oriLineNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriLineNoLessThan(String value) {
+            addCriterion("ori_line_no <", value, "oriLineNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriLineNoLessThanOrEqualTo(String value) {
+            addCriterion("ori_line_no <=", value, "oriLineNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriLineNoLike(String value) {
+            addCriterion("ori_line_no like", value, "oriLineNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriLineNoNotLike(String value) {
+            addCriterion("ori_line_no not like", value, "oriLineNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriLineNoIn(List<String> values) {
+            addCriterion("ori_line_no in", values, "oriLineNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriLineNoNotIn(List<String> values) {
+            addCriterion("ori_line_no not in", values, "oriLineNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriLineNoBetween(String value1, String value2) {
+            addCriterion("ori_line_no between", value1, value2, "oriLineNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andOriLineNoNotBetween(String value1, String value2) {
+            addCriterion("ori_line_no not between", value1, value2, "oriLineNo");
+            return (Criteria) this;
+        }
+
         public Criteria andDesStationNoIsNull() {
             addCriterion("des_station_no is null");
             return (Criteria) this;
@@ -381,6 +451,76 @@ public class ViewPriceInfoExample {
 
         public Criteria andDesStationNmeNotBetween(String value1, String value2) {
             addCriterion("des_station_nme not between", value1, value2, "desStationNme");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesLineNoIsNull() {
+            addCriterion("des_line_no is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesLineNoIsNotNull() {
+            addCriterion("des_line_no is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesLineNoEqualTo(String value) {
+            addCriterion("des_line_no =", value, "desLineNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesLineNoNotEqualTo(String value) {
+            addCriterion("des_line_no <>", value, "desLineNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesLineNoGreaterThan(String value) {
+            addCriterion("des_line_no >", value, "desLineNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesLineNoGreaterThanOrEqualTo(String value) {
+            addCriterion("des_line_no >=", value, "desLineNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesLineNoLessThan(String value) {
+            addCriterion("des_line_no <", value, "desLineNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesLineNoLessThanOrEqualTo(String value) {
+            addCriterion("des_line_no <=", value, "desLineNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesLineNoLike(String value) {
+            addCriterion("des_line_no like", value, "desLineNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesLineNoNotLike(String value) {
+            addCriterion("des_line_no not like", value, "desLineNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesLineNoIn(List<String> values) {
+            addCriterion("des_line_no in", values, "desLineNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesLineNoNotIn(List<String> values) {
+            addCriterion("des_line_no not in", values, "desLineNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesLineNoBetween(String value1, String value2) {
+            addCriterion("des_line_no between", value1, value2, "desLineNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesLineNoNotBetween(String value1, String value2) {
+            addCriterion("des_line_no not between", value1, value2, "desLineNo");
             return (Criteria) this;
         }
 
@@ -944,6 +1084,76 @@ public class ViewPriceInfoExample {
             return (Criteria) this;
         }
 
+        public Criteria andBakFld2IsNull() {
+            addCriterion("bak_fld2 is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBakFld2IsNotNull() {
+            addCriterion("bak_fld2 is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBakFld2EqualTo(String value) {
+            addCriterion("bak_fld2 =", value, "bakFld2");
+            return (Criteria) this;
+        }
+
+        public Criteria andBakFld2NotEqualTo(String value) {
+            addCriterion("bak_fld2 <>", value, "bakFld2");
+            return (Criteria) this;
+        }
+
+        public Criteria andBakFld2GreaterThan(String value) {
+            addCriterion("bak_fld2 >", value, "bakFld2");
+            return (Criteria) this;
+        }
+
+        public Criteria andBakFld2GreaterThanOrEqualTo(String value) {
+            addCriterion("bak_fld2 >=", value, "bakFld2");
+            return (Criteria) this;
+        }
+
+        public Criteria andBakFld2LessThan(String value) {
+            addCriterion("bak_fld2 <", value, "bakFld2");
+            return (Criteria) this;
+        }
+
+        public Criteria andBakFld2LessThanOrEqualTo(String value) {
+            addCriterion("bak_fld2 <=", value, "bakFld2");
+            return (Criteria) this;
+        }
+
+        public Criteria andBakFld2Like(String value) {
+            addCriterion("bak_fld2 like", value, "bakFld2");
+            return (Criteria) this;
+        }
+
+        public Criteria andBakFld2NotLike(String value) {
+            addCriterion("bak_fld2 not like", value, "bakFld2");
+            return (Criteria) this;
+        }
+
+        public Criteria andBakFld2In(List<String> values) {
+            addCriterion("bak_fld2 in", values, "bakFld2");
+            return (Criteria) this;
+        }
+
+        public Criteria andBakFld2NotIn(List<String> values) {
+            addCriterion("bak_fld2 not in", values, "bakFld2");
+            return (Criteria) this;
+        }
+
+        public Criteria andBakFld2Between(String value1, String value2) {
+            addCriterion("bak_fld2 between", value1, value2, "bakFld2");
+            return (Criteria) this;
+        }
+
+        public Criteria andBakFld2NotBetween(String value1, String value2) {
+            addCriterion("bak_fld2 not between", value1, value2, "bakFld2");
+            return (Criteria) this;
+        }
+
         public Criteria andOriStationNoLikeInsensitive(String value) {
             addCriterion("upper(ori_station_no) like", value.toUpperCase(), "oriStationNo");
             return (Criteria) this;
@@ -954,6 +1164,11 @@ public class ViewPriceInfoExample {
             return (Criteria) this;
         }
 
+        public Criteria andOriLineNoLikeInsensitive(String value) {
+            addCriterion("upper(ori_line_no) like", value.toUpperCase(), "oriLineNo");
+            return (Criteria) this;
+        }
+
         public Criteria andDesStationNoLikeInsensitive(String value) {
             addCriterion("upper(des_station_no) like", value.toUpperCase(), "desStationNo");
             return (Criteria) this;
@@ -961,6 +1176,11 @@ public class ViewPriceInfoExample {
 
         public Criteria andDesStationNmeLikeInsensitive(String value) {
             addCriterion("upper(des_station_nme) like", value.toUpperCase(), "desStationNme");
+            return (Criteria) this;
+        }
+
+        public Criteria andDesLineNoLikeInsensitive(String value) {
+            addCriterion("upper(des_line_no) like", value.toUpperCase(), "desLineNo");
             return (Criteria) this;
         }
 
@@ -1001,6 +1221,11 @@ public class ViewPriceInfoExample {
 
         public Criteria andBakFld1LikeInsensitive(String value) {
             addCriterion("upper(bak_fld1) like", value.toUpperCase(), "bakFld1");
+            return (Criteria) this;
+        }
+
+        public Criteria andBakFld2LikeInsensitive(String value) {
+            addCriterion("upper(bak_fld2) like", value.toUpperCase(), "bakFld2");
             return (Criteria) this;
         }
     }

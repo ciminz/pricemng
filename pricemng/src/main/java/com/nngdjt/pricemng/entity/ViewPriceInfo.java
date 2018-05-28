@@ -7,9 +7,13 @@ public class ViewPriceInfo implements Serializable {
 
     private String oriStationNme;
 
+    private String oriLineNo;
+
     private String desStationNo;
 
     private String desStationNme;
+
+    private String desLineNo;
 
     private String price;
 
@@ -26,6 +30,8 @@ public class ViewPriceInfo implements Serializable {
     private String auditTme;
 
     private String bakFld1;
+
+    private String bakFld2;
 
     private static final long serialVersionUID = 1L;
 
@@ -45,6 +51,14 @@ public class ViewPriceInfo implements Serializable {
         this.oriStationNme = oriStationNme == null ? null : oriStationNme.trim();
     }
 
+    public String getOriLineNo() {
+        return oriLineNo;
+    }
+
+    public void setOriLineNo(String oriLineNo) {
+        this.oriLineNo = oriLineNo == null ? null : oriLineNo.trim();
+    }
+
     public String getDesStationNo() {
         return desStationNo;
     }
@@ -59,6 +73,14 @@ public class ViewPriceInfo implements Serializable {
 
     public void setDesStationNme(String desStationNme) {
         this.desStationNme = desStationNme == null ? null : desStationNme.trim();
+    }
+
+    public String getDesLineNo() {
+        return desLineNo;
+    }
+
+    public void setDesLineNo(String desLineNo) {
+        this.desLineNo = desLineNo == null ? null : desLineNo.trim();
     }
 
     public String getPrice() {
@@ -123,5 +145,13 @@ public class ViewPriceInfo implements Serializable {
 
     public void setBakFld1(String bakFld1) {
         this.bakFld1 = bakFld1 == null ? null : bakFld1.trim();
+    }
+
+    public String getBakFld2() {
+        return bakFld2;
+    }
+
+    public void setBakFld2(String bakFld2) {
+        this.bakFld2 = bakFld2 == null ? null : bakFld2.trim();
     }
 }

@@ -302,7 +302,7 @@
 <div id="icon1" style="position:absolute;top:40%;width:100%;display:none;">
 			<center><img src="${rootAddr}view/images/009.gif"/></center>
 		</div>
-<form method="post" action="${rootAddr}distanceManage/distanceDelete" id="formDelete">
+<form method="post" action="${rootAddr}priceManage/priceToAuditView" id="formToAuditView">
 	 <input type="hidden" name="priceInfo.oriStationNo" id="oriStationNotxt"/>
 	 <input type="hidden" name="priceInfo.desStationNo" id="desStationNotxt"/>
 </form>
@@ -368,10 +368,10 @@
 	          <label>审核状态：</label>
 	        </div>
 	        <div>
-	           <select name="viewPriceInfo.auditFlg" class="input w50" id="dStationNo" style="width:5%;">
+	           <select name="viewPriceInfo.auditFlg" class="input w50" id="auditSt" style="width:5%;">
 		         	<option value="-1">请选择</option>
-		         	<option value="Y" #if(${viewPriceInfo.auditFlg} == 'Y') selected#end>是</option>
-		         	<option value="N" #if(${viewPriceInfo.auditFlg} == 'N') selected#end>否</option>
+		         	<option value="Y" #if(${viewPriceInfo.auditFlg} == 'Y') selected#end>已审核</option>
+		         	<option value="N" #if(${viewPriceInfo.auditFlg} == 'N') selected#end>未审核</option>
 		        </select>
 		        <div class="tips"></div> 
 	        </div>
@@ -428,7 +428,7 @@
       <td>
       <div class="button-group">
          <a type="button" class="button border-main" href="javascript:void(0);" onclick="viewToUpd('${d.oriStationNo}','${d.desStationNo}')"><span class="icon-refresh"></span>更新</a>
-       	 <a class="button border-red" href="javascript:void(0);" onclick="recdel('${d.oriStationNo}','${d.desStationNo}')"><span class="icon-edit"></span>审核</a>
+       	 <a class="button border-red" href="javascript:void(0);" onclick="toAuditView('${d.oriStationNo}','${d.desStationNo}')"><span class="icon-edit"></span>审核</a>
       </div>
       </td>
     </tr> 
@@ -440,12 +440,10 @@
   </table>
 </div>
 <script>
-function recdel(oriStationNo, desStationNo){
-	if(confirm("您确定要删除吗?")){
-		document.getElementById("oriStationNotxt").value = oriStationNo;
-		document.getElementById("desStationNotxt").value = desStationNo;
-		document.getElementById("formDelete").submit();
-	}
+function toAuditView(oriStationNo, desStationNo){
+	document.getElementById("oriStationNotxt").value = oriStationNo;
+	document.getElementById("desStationNotxt").value = desStationNo;
+	document.getElementById("formToAuditView").submit();
 }
 
 function viewToUpd(oriStationNo, desStationNo) {

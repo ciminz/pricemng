@@ -249,7 +249,7 @@ public class Subway {
 
 		}
 		
-		fw.append("总公里数:"+totaldis+" 票价:"+PriceUtil.getPrivce(totaldis)+"\r\n");
+		fw.append("间距（米）:"+totaldis+" 票价:"+PriceUtil.getPrivce(totaldis)+"元\r\n");
 		
 		PriceInfo priceInfo = new PriceInfo();
 		priceInfo.setId(BaseUtil.getSeqLong());
@@ -258,6 +258,7 @@ public class Subway {
 		priceInfo.setPrice(PriceUtil.getPrivce(totaldis) + "");
 		priceInfo.setAuditFlg("N");
 		priceInfo.setBakFld1(fw.toString());
+		priceInfo.setBakFld2(totaldis + "");
 		priceInfoMapper.insert(priceInfo);
 	}
 

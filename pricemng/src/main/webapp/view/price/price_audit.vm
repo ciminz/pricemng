@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="${rootAddr}view/css/pintuer.css">
+<link rel="stylesheet" href="${rootAddr}view/css/admin.css">
+<script src="${rootAddr}view/js/jquery2.js"></script>
+<script src="${rootAddr}view/js/pintuer.js"></script>
+<script>
+	function audit() {
+		var confirmPrice = document.getElementById("confirmPrice").value;
+		var price = document.getElementById("price").value;
+		if(confirmPrice != price) {
+			alert('确认票价与系统计算的票价不符');
+			return false;
+		}
+		return true;
+	}
+</script>
+
+</head>
+<body>
+<div class="panel admin-panel">
+  <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>修改站点</strong></div>
+  <div class="body-content">
+    <form method="post" class="form-x" action="${rootAddr}priceManage/priceAudit" id="form1">  
+      <input type="hidden" value="$!stationInfo.id" name="stationInfo.id"/>
+      <div class="form-group">
+        <div class="label">
+          <label>起点站编号：</label>
+        </div>
+        <div class="field">
+          <input type="text" class="input w50" value="$!viewPriceInfo.oriStationNo" name="viewPriceInfo.oriStationNo" readonly="readonly"/>
+          <div class="tips"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>起点站名称：</label>
+        </div>
+        <div class="field">
+          <input type="text" class="input w50" value="$!viewPriceInfo.oriStationNme" name="viewPriceInfo.oriStationNme" readonly="readonly"/>
+          <div class="tips"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>目的站编号：</label>
+        </div>
+        <div class="field">
+          <input type="text" class="input w50" value="$!viewPriceInfo.desStationNo" name="viewPriceInfo.desStationNo" readonly="readonly"/>
+          <div class="tips"></div>
+        </div>
+      </div>
+       <div class="form-group">
+        <div class="label">
+          <label>目的站名称：</label>
+        </div>
+        <div class="field">
+          <input type="text" class="input w50" value="$!viewPriceInfo.desStationNme" name="viewPriceInfo.desStationNme" readonly="readonly"/>
+          <div class="tips"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>间距（米）：</label>
+        </div>
+        <div class="field">
+          <input type="text" class="input w50" value="$!viewPriceInfo.bakFld2" name="viewPriceInfo.bakFld2" readonly="readonly"/>
+          <div class="tips"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>票价（元）：</label>
+        </div>
+        <div class="field">
+          <input type="text" class="input w50" value="$!viewPriceInfo.price" name="viewPriceInfo.price" readonly="readonly" id="price"/>
+          <div class="tips"></div>
+        </div>
+      </div>
+      
+       <div class="form-group">
+        <div class="label">
+          <label>详细信息：</label>
+        </div>
+        <div class="field">
+        <textarea class="input" name="stationInfo.stationDes" style=" height:90px;" readonly="readonly">$!viewPriceInfo.bakFld1</textarea>
+        <div class="tips"></div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <div class="label">
+          <label>确认票价为（元）：</label>
+        </div>
+        <div class="field">
+          <input type="text" class="input w50" value="" name="viewPriceInfo.price2" id="confirmPrice"/>
+          <div class="tips"></div>
+        </div>
+      </div>
+      
+       <div class="form-group">
+        <div class="label">
+          <label></label>
+        </div>
+        <div class="field">
+          <button class="button bg-main icon-check-square-o" type="submit" id="submitBtn" onclick="return audit()"> 提交</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+</body></html>
