@@ -10,18 +10,30 @@
 <link rel="stylesheet" href="${rootAddr}view/css/admin.css">
 <script src="${rootAddr}view/js/jquery2.js"></script>
 <script src="${rootAddr}view/js/pintuer.js"></script>
+<script>
+    function pswupd() {
+		var pwd1 = document.getElementById('pwd1').value;
+		var pwd2 = document.getElementById('pwd2').value;
+		if(pwd1 != pwd2) {
+			alert('两次输入的密码不一致！');
+			return false;
+		}
+		return true;
+	}
+</script>
 </head>
 <body>
 <div class="panel admin-panel">
   <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>新增用户</strong></div>
   <div class="body-content">
-    <form method="post" class="form-x" action="${rootAddr}userManage/userAdd">  
+    <form method="post" class="form-x" action="${rootAddr}userManage/userPwdUpd">  
+      <input type="hidden" name="user.id" value="$upduser.id"/>
       <div class="form-group">
         <div class="label">
           <label>用户名：</label>
         </div>
         <div class="field">
-          <input type="text" class="input w50" value="" name="user.username" data-validate="required:请输入用户名" />
+          <input type="text" class="input w50" value="$!upduser.username" name="user.username" data-validate="required:请输入用户名" readonly=readonly/>
           <div class="tips"></div>
         </div>
       </div>
@@ -30,7 +42,7 @@
           <label>用户真实姓名：</label>
         </div>
         <div class="field">
-          <input type="text" class="input w50" value="" name="user.realusername" data-validate="required:请输入用户真实姓名" />
+          <input type="text" class="input w50" value="$!upduser.realusername" name="user.realusername" data-validate="required:请输入用户真实姓名" readonly=readonly/>
           <div class="tips"></div>
         </div>
       </div>
@@ -39,20 +51,28 @@
           <label>手机号码：</label>
         </div>
         <div class="field">
-          <input type="text" class="input w50" value="" name="user.tel" data-validate="required:请输入用户手机号码" />
+          <input type="text" class="input w50" value="$!upduser.tel" name="user.tel" data-validate="required:请输入用户手机号码" readonly=readonly/>
           <div class="tips"></div>
         </div>
       </div>
       
       <div class="form-group">
         <div class="label">
-          <label>角色：</label>
+          <label>新密码：</label>
         </div>
         <div class="field">
-       	 #foreach($d in $roleInfoList)
-       	 	<input type="checkbox" name="roleIds" value="$d.id"><label>$d.rolename</label>  
-       	 #end
-         <div class="tips"></div>
+          <input type="password" class="input w50" value="" name="user.password" data-validate="required:请输入密码" id="pwd1"/>
+          <div class="tips"></div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <div class="label">
+          <label>确认密码：</label>
+        </div>
+        <div class="field">
+          <input type="password" class="input w50" value="" name="user.password2" data-validate="required:请确认密码" id="pwd2"/>
+          <div class="tips"></div>
         </div>
       </div>
       
@@ -61,11 +81,10 @@
           <label></label>
         </div>
         <div class="field">
-          <button class="button bg-main icon-check-square-o" type="submit"> 提交</button>
+          <button class="button bg-main icon-check-square-o" type="submit" onclick="return pswupd()"> 提交</button>
         </div>
       </div>
     </form>
   </div>
 </div>
-
 </body></html>

@@ -82,6 +82,9 @@ public class StationManageAction extends ActionSupport{
 		if(this.getStationInfo() != null && this.getStationInfo().getStationNo() != null && !"".equals(this.getStationInfo().getStationNo())) {
 			criteria.andStationNoLike("%" + this.getStationInfo().getStationNo() + "%");
 		}
+		if(this.getStationInfo() != null && this.getStationInfo().getLineNo() != null && !"-1".equals(this.getStationInfo().getLineNo())) {
+			criteria.andLineNoLike("%" + this.getStationInfo().getLineNo() + "%");
+		}
 		if(this.getStationInfo() != null && this.getStationInfo().getStationNme() != null && !"".equals(this.getStationInfo().getStationNme())) {
 			criteria.andStationNmeLike("%" + this.getStationInfo().getStationNme() + "%");
 		}
@@ -91,6 +94,7 @@ public class StationManageAction extends ActionSupport{
 		List<StationInfo> stationInfoList = this.stationInfoMapper.selectByExampleWithRowbounds(stationInfoExample,
 				new RowBounds(Page.getOffSet(this.getNowpage(), this.getPagesize()), Integer.valueOf(this.getPagesize())));
 		int totalPageSize = Page.getTotolSize(Integer.valueOf(this.getPagesize()) ,this.stationInfoMapper.countByExample(stationInfoExample)); 
+		logger.info(">>>>>>>>>" + stationInfoList.size());
 		ServletActionContext.getRequest().setAttribute("queryResult", stationInfoList);
 		ServletActionContext.getRequest().setAttribute("totalPageSize", totalPageSize + "");
 		return "success";

@@ -15,13 +15,14 @@
 <div class="panel admin-panel">
   <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>新增用户</strong></div>
   <div class="body-content">
-    <form method="post" class="form-x" action="${rootAddr}userManage/userAdd">  
+    <form method="post" class="form-x" action="${rootAddr}userManage/userUpd">  
+      <input type="hidden" name="user.id" value="$upduser.id"/>
       <div class="form-group">
         <div class="label">
           <label>用户名：</label>
         </div>
         <div class="field">
-          <input type="text" class="input w50" value="" name="user.username" data-validate="required:请输入用户名" />
+          <input type="text" class="input w50" value="$!upduser.username" name="user.username" data-validate="required:请输入用户名" readonly=readonly/>
           <div class="tips"></div>
         </div>
       </div>
@@ -30,7 +31,7 @@
           <label>用户真实姓名：</label>
         </div>
         <div class="field">
-          <input type="text" class="input w50" value="" name="user.realusername" data-validate="required:请输入用户真实姓名" />
+          <input type="text" class="input w50" value="$!upduser.realusername" name="user.realusername" data-validate="required:请输入用户真实姓名" />
           <div class="tips"></div>
         </div>
       </div>
@@ -39,10 +40,30 @@
           <label>手机号码：</label>
         </div>
         <div class="field">
-          <input type="text" class="input w50" value="" name="user.tel" data-validate="required:请输入用户手机号码" />
+          <input type="text" class="input w50" value="$!upduser.tel" name="user.tel" data-validate="required:请输入用户手机号码" />
           <div class="tips"></div>
         </div>
       </div>
+      
+      <!--div class="form-group">
+        <div class="label">
+          <label>新密码：</label>
+        </div>
+        <div class="field">
+          <input type="text" class="input w50" value="" name="user.password" data-validate="required:请输入密码" />
+          <div class="tips"></div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <div class="label">
+          <label>确认密码：</label>
+        </div>
+        <div class="field">
+          <input type="text" class="input w50" value="" name="user.password2" data-validate="required:请确认密码" />
+          <div class="tips"></div>
+        </div>
+      </div-->
       
       <div class="form-group">
         <div class="label">
@@ -50,7 +71,13 @@
         </div>
         <div class="field">
        	 #foreach($d in $roleInfoList)
-       	 	<input type="checkbox" name="roleIds" value="$d.id"><label>$d.rolename</label>  
+       	    #set($flag=0)
+       	    #foreach($r in $userRoleList)
+       	    	#if($r.roleId == $d.id)
+       	    		#set($flag=1)
+       	    	#end
+       	    #end
+       	  <input type="checkbox" name="roleIds" value="$d.id" #if($flag == 1) checked=checked#end><label>$d.rolename</label>
        	 #end
          <div class="tips"></div>
         </div>

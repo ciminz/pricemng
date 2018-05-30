@@ -1,18 +1,21 @@
 package com.nngdjt.pricemng.action;
 
 import java.util.List;
+
 import org.apache.ibatis.session.RowBounds;
 import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.nngdjt.pricemng.base.Constants;
+
 import com.nngdjt.pricemng.base.ExceptionProcess;
 import com.nngdjt.pricemng.base.Page;
+import com.nngdjt.pricemng.entity.Role;
 import com.nngdjt.pricemng.entity.User;
 import com.nngdjt.pricemng.entity.UserExample;
 import com.nngdjt.pricemng.entity.UserExample.Criteria;
 import com.nngdjt.pricemng.entity.UserRoleExample;
 import com.nngdjt.pricemng.entity.UserRoleKey;
+import com.nngdjt.pricemng.mapper.RoleMapper;
 import com.nngdjt.pricemng.mapper.UserMapper;
 import com.nngdjt.pricemng.mapper.UserRoleMapper;
 import com.opensymphony.xwork2.ActionSupport;
@@ -25,6 +28,16 @@ public class UserManageAction extends ActionSupport{
 	
 	private User user;
 	
+	private String roleIds;
+	
+	public String getRoleIds() {
+		return roleIds;
+	}
+
+	public void setRoleIds(String roleIds) {
+		this.roleIds = roleIds;
+	}
+
 	private String nowpage;
 	
 	private String pagesize;
@@ -63,14 +76,24 @@ public class UserManageAction extends ActionSupport{
 	
 	private UserRoleMapper userRoleMapper;
 	
+	private RoleMapper roleMapper;
+	
 	/**
 	 * 初始化组件
 	 */
 	private void beanInit() {
 		userMapper = (UserMapper)LocalBeanFactory.get(UserMapper.class);
 		userRoleMapper = (UserRoleMapper)LocalBeanFactory.get(UserRoleMapper.class);
+		this.roleMapper = (RoleMapper)LocalBeanFactory.get(RoleMapper.class);
 	}
 	
+	
+	public String viewToAdd() {
+		this.beanInit();
+		List<Role> roleInfoList = this.roleMapper.selectByExample(null);
+		ServletActionContext.getRequest().setAttribute("roleInfoList", roleInfoList);
+		return "success";
+	}
 	/**
 	 * 用户查询
 	 * @return
@@ -134,14 +157,113 @@ public class UserManageAction extends ActionSupport{
 		userIntoDb.setRealusername(this.getUser().getRealusername());
 		userIntoDb.setTel(this.getUser().getTel());
 		userIntoDb.setPassword("123456");
-		this.userMapper.insert(userIntoDb);
 		
-		//分配角色
-		UserRoleKey userRole = new UserRoleKey();
-		userRole.setUserId(userIntoDb.getId());
-		userRole.setRoleId(Long.valueOf(Constants.NORMAL_USER_ROLE_ID));
-		this.userRoleMapper.insert(userRole);
+		if(this.getRoleIds() == null) {
+			logger.info("no role");
+			return ExceptionProcess.exceptionProcess("请分配角色!","userManage/userImportView");
+		}
+		
+		String[] chkValues = this.getRoleIds().split(","); 
+		if(chkValues == null || chkValues.length == 0) {
+			//分配角色
+//			UserRoleKey userRole = new UserRoleKey();
+//			userRole.setUserId(userIntoDb.getId());
+//			userRole.setRoleId(Long.valueOf(Constants.NORMAL_USER_ROLE_ID));
+//			this.userRoleMapper.insert(userRole);
+			logger.info("no role");
+			return ExceptionProcess.exceptionProcess("请分配角色!","userManage/userImportView");
+		}else {
+			for(String roleId : chkValues) {
+				//分配角色
+				UserRoleKey userRole = new UserRoleKey();
+				userRole.setUserId(userIntoDb.getId());
+				userRole.setRoleId(Long.valueOf(roleId));
+				this.userRoleMapper.insert(userRole);
+			}
+			this.userMapper.insert(userIntoDb);
+		}
+		
+		
 		ServletActionContext.getRequest().setAttribute("returnPage", "userManage/userQueryByCondition");
+		return "success";
+	}
+	
+	
+	public String userUpdView() {
+		this.beanInit();
+		if(this.getUser() == null) {
+			this.setUser((User)ServletActionContext.getRequest().getSession().getAttribute("nowuser"));
+		}
+		User user = this.userMapper.selectByPrimaryKey(this.getUser().getId());
+		UserRoleExample userRoleExample = new UserRoleExample();
+		userRoleExample.createCriteria().andUserIdEqualTo(user.getId());
+		List<UserRoleKey> userRoleList = this.userRoleMapper.selectByExample(userRoleExample);
+		List<Role> roleList = this.roleMapper.selectByExample(null);
+		ServletActionContext.getRequest().setAttribute("upduser", user);
+		ServletActionContext.getRequest().setAttribute("userRoleList", userRoleList);
+		ServletActionContext.getRequest().setAttribute("roleInfoList", roleList);
+		return "success";
+	}
+	
+	public String updAdmin() {
+		this.beanInit();
+		String[] chkValues = this.getRoleIds().split(","); 
+		if(chkValues == null || chkValues.length == 0) {
+			logger.info("no role");
+			return ExceptionProcess.exceptionProcess("请分配角色!","userManage/userQueryByCondition");
+		}else {
+			for(String roleId : chkValues) {
+				//分配角色
+				UserRoleKey userRole = new UserRoleKey();
+				userRole.setUserId(this.getUser().getId());
+				userRole.setRoleId(Long.valueOf(roleId.trim()));
+				this.userRoleMapper.insert(userRole);
+				this.userMapper.updateByPrimaryKey(this.getUser());
+			}
+		}
+		
+		ServletActionContext.getRequest().setAttribute("returnPage", "userManage/userQueryByCondition");
+		return "success";
+	} 
+	
+	public String updUser() {
+		this.beanInit();
+		if(this.getRoleIds() == null) {
+			logger.info("no role");
+			return ExceptionProcess.exceptionProcess("请分配角色!","userManage/userQueryByCondition");
+		}
+		String[] chkValues = this.getRoleIds().split(","); 
+		if(chkValues == null || chkValues.length == 0) {
+			logger.info("no role");
+			return ExceptionProcess.exceptionProcess("请分配角色!","userManage/userQueryByCondition");
+		}else {
+			UserRoleExample userRoleExample = new UserRoleExample();
+			userRoleExample.createCriteria().andUserIdEqualTo(this.getUser().getId());
+			this.userRoleMapper.deleteByExample(userRoleExample);
+			User userIndb = this.userMapper.selectByPrimaryKey(this.getUser().getId());
+			this.getUser().setPassword(userIndb.getPassword());
+			
+			for(String roleId : chkValues) {
+				//分配角色
+				UserRoleKey userRole = new UserRoleKey();
+				userRole.setUserId(this.getUser().getId());
+				userRole.setRoleId(Long.valueOf(roleId.trim()));
+				this.userRoleMapper.insert(userRole);
+			}
+			this.userMapper.updateByPrimaryKey(this.getUser());
+		}
+		
+		ServletActionContext.getRequest().setAttribute("returnPage", "userManage/userQueryByCondition");
+		return "success";
+	} 
+	
+	
+	public String userPwdUpd() {
+		this.beanInit();
+		User userInDb = this.userMapper.selectByPrimaryKey(this.getUser().getId());
+		userInDb.setPassword(this.getUser().getPassword());
+		this.userMapper.updateByPrimaryKey(userInDb);
+		ServletActionContext.getRequest().setAttribute("returnPage", "view/right.vm");
 		return "success";
 	}
 }

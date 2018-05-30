@@ -74,7 +74,7 @@ public class DistanceManageAction extends ActionSupport{
 	}
 
 	private String nowpage;
-	
+
 	private String pagesize;
 	
 	public String getPagesize() {
@@ -88,6 +88,11 @@ public class DistanceManageAction extends ActionSupport{
 		this.pagesize = pagesize;
 	}
 
+
+	public void setNowpage(String nowpage) {
+		this.nowpage = nowpage;
+	}
+	
 	public String getNowpage() {
 		if(this.nowpage == null) {
 			return "1";

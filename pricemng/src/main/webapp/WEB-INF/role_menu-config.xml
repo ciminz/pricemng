@@ -34,4 +34,24 @@
 	 	<RoleId>3</RoleId>
 		<MenuId>7</MenuId>
 	</Item>
+	
+	<Item>
+	 	<RoleId>3</RoleId>
+		<MenuId>8</MenuId>
+	</Item>
+	
+	<Item>
+	 	<RoleId>3</RoleId>
+		<MenuId>9</MenuId>
+	</Item>
+	
+	<Item>
+	 	<RoleId>3</RoleId>
+		<MenuId>10</MenuId>
+	</Item>
+	
+	<Item>
+	 	<RoleId>2</RoleId>
+		<MenuId>10</MenuId>
+	</Item>
 </Items>

@@ -223,6 +223,13 @@
     		getLine();
     		getStation();
 		});
+		
+		function rest() {
+			document.getElementById('oLineNo').value='-1';
+			document.getElementById('oStationNo').value='-1';
+			document.getElementById('dLineNo').value='-1';
+			document.getElementById('dStationNo').value='-1';
+		}
     </script>
 </head>
 <body>
@@ -307,7 +314,7 @@
         </div>
         <div class="field" width="100%" align="center">
           <button class="button bg-main icon-search" type="submit"> 查询</button>
-          <button class="button bg-main" type="button" onclick="javascript:document.getElementById('lineNo').value='-1';document.getElementById('stationNme').value='';document.getElementById('exchangeFlg').value='-1';"> 重置</button>
+          <button class="button bg-main" type="button" onclick="reset()"> 重置</button>
         </div>
       </div>
     </form>

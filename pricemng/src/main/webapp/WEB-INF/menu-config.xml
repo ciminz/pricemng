@@ -131,10 +131,10 @@
 		<Parent>6</Parent>
 	</Item>
 	
-	<!-- 票价查询 -->
+	<!-- 站点查询 -->
 	<Item>
 	 	<Id>7</Id>
-		<ItemName>票价信息</ItemName>
+		<ItemName>站点信息</ItemName>
 		<Url>#</Url>
 		<IsParent>0</IsParent>
 		<Parent>-1</Parent>
@@ -142,10 +142,61 @@
 	
 	<Item>
 		<Id>71</Id>
+		<ItemName>站点查询</ItemName>
+		<Url>stationManage/stationQueryByConditionUser</Url>
+		<IsParent>1</IsParent>
+		<Parent>7</Parent>
+	</Item>
+	
+	<!-- 间距查询 -->
+	<Item>
+	 	<Id>8</Id>
+		<ItemName>间距信息</ItemName>
+		<Url>#</Url>
+		<IsParent>0</IsParent>
+		<Parent>-1</Parent>
+	</Item>
+	
+	<Item>
+		<Id>81</Id>
+		<ItemName>间距查询</ItemName>
+		<Url>distanceManage/distanceQueryByConditionUser</Url>
+		<IsParent>1</IsParent>
+		<Parent>8</Parent>
+	</Item>
+	
+	<!-- 票价查询 -->
+	<Item>
+	 	<Id>9</Id>
+		<ItemName>票价信息</ItemName>
+		<Url>#</Url>
+		<IsParent>0</IsParent>
+		<Parent>-1</Parent>
+	</Item>
+	
+	<Item>
+		<Id>91</Id>
 		<ItemName>票价查询</ItemName>
 		<Url>priceManage/priceQueryByConditionUser</Url>
 		<IsParent>1</IsParent>
-		<Parent>7</Parent>
+		<Parent>9</Parent>
+	</Item>
+	
+	<!-- 票价查询 -->
+	<Item>
+	 	<Id>10</Id>
+		<ItemName>系统设置</ItemName>
+		<Url>#</Url>
+		<IsParent>0</IsParent>
+		<Parent>-1</Parent>
+	</Item>
+	
+	<Item>
+		<Id>101</Id>
+		<ItemName>密码更新</ItemName>
+		<Url>userManage/userUpdViewUser</Url>
+		<IsParent>1</IsParent>
+		<Parent>10</Parent>
 	</Item>
 	
 </MenuItems>

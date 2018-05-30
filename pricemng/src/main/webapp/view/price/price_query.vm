@@ -280,6 +280,14 @@
 			    }
 			});
 		}
+		
+		function rest() {
+			document.getElementById('oLineNo').value='-1';
+			document.getElementById('oStationNo').value='-1';
+			document.getElementById('dLineNo').value='-1';
+			document.getElementById('dStationNo').value='-1';
+			document.getElementById('auditSt').value='-1';
+		}
     </script>
     
     <style>
@@ -382,7 +390,7 @@
         </div>
         <div class="field" width="100%" align="center">
           <button class="button bg-main icon-search" type="submit"> 查询</button>
-          <button class="button bg-main" type="button" onclick="javascript:document.getElementById('lineNo').value='-1';document.getElementById('stationNme').value='';document.getElementById('exchangeFlg').value='-1';"> 重置</button>
+          <button class="button bg-main" type="button" onclick="rest()"> 重置</button>
           <button class="button bg-main icon-refresh" type="button" onclick="updateAllPrice()" id="updateAllPriceBtn"> 更新线网票价</button>
           <button class="button bg-main icon-download" type="button" onclick="createPriceMap()"> 生成线网票价矩阵</button>
         </div>

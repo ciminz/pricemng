@@ -109,6 +109,7 @@ public class UserLoginAction extends ActionSupport{
 			}
 		}
 		
+		List<Long> menuitemIdList = new ArrayList<Long>();
 		for(Long menuitemId : parentMenuitemOfUserList) {
 			Menuitem parentMenuitem = this.menuitemMapper.selectByPrimaryKey(menuitemId);
 			if(parentMenuitem == null) {
@@ -120,7 +121,11 @@ public class UserLoginAction extends ActionSupport{
 			menuitemExample.createCriteria().andParentEqualTo(parentMenuitem.getId());
 			List<Menuitem> menuItmeChildList = this.menuitemMapper.selectByExample(menuitemExample);
 			for(Menuitem childItem : menuItmeChildList) {
+				if(menuitemIdList.contains(childItem.getId())) {
+					continue;
+				}
 				menuItemListOfUser.add(childItem);
+				menuitemIdList.add(childItem.getId());
 			}
 		}
 		

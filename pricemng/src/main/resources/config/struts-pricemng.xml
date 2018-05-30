@@ -50,8 +50,8 @@
 			<result name="input">/view/tips_err.vm</result>
 		</action>
 
-		<action name="userImportView">
-			<result>/view/user/user_add.vm</result>
+		<action name="userImportView" class="com.nngdjt.pricemng.action.UserManageAction" method="viewToAdd">
+			<result name="success">/view/user/user_add.vm</result>
 		</action>	
 		
 		<action name="userAdd" class="com.nngdjt.pricemng.action.UserManageAction" method="add">
@@ -64,6 +64,23 @@
 				/WEB-INF/user_view/user_import.vm
 			</result>
 		</action> -->	
+		<action name="userUpdView" class="com.nngdjt.pricemng.action.UserManageAction" method="userUpdView">
+			<result name="success">/view/user/user_upd.vm</result>
+		</action> 
+		
+		<action name="userUpdViewUser" class="com.nngdjt.pricemng.action.UserManageAction" method="userUpdView">
+			<result name="success">/view/user/user_upd_user.vm</result>
+		</action> 
+		
+		<action name="userUpd" class="com.nngdjt.pricemng.action.UserManageAction" method="updUser">
+			<result name="success">/view/tips_suc.vm</result>
+			<result name="input">/view/tips_err.vm</result>
+		</action> 
+		
+		<action name="userPwdUpd" class="com.nngdjt.pricemng.action.UserManageAction" method="userPwdUpd">
+			<result name="success">/view/right.vm</result>
+			<result name="input">/view/tips_err.vm</result>
+		</action> 
 	</package>	
 	
 	<package name="lineManage" namespace="/lineManage" extends="base">
@@ -90,11 +107,17 @@
 			<result name="success">/view/tips_suc.vm</result>
 			<result name="input">/view/tips_err.vm</result>
 		</action> 
+		
 	</package>	
 	
 	<package name="stationManage" namespace="/stationManage" extends="base">
 		<action name="stationQueryByCondition" class="com.nngdjt.pricemng.action.StationManageAction" method="query">
 			<result name="success">/view/station/station_query.vm</result>
+			<result name="input">/view/tips_err.vm</result>
+		</action>
+		
+		<action name="stationQueryByConditionUser" class="com.nngdjt.pricemng.action.StationManageAction" method="query">
+			<result name="success">/view/station/station_query_user.vm</result>
 			<result name="input">/view/tips_err.vm</result>
 		</action>
 		
@@ -126,6 +149,11 @@
 	<package name="distanceManage" namespace="/distanceManage" extends="base">
 		<action name="distanceQueryByCondition" class="com.nngdjt.pricemng.action.DistanceManageAction" method="query">
 			<result name="success">/view/distance/distance_query.vm</result>
+			<result name="input">/view/tips_err.vm</result>
+		</action>
+		
+		<action name="distanceQueryByConditionUser" class="com.nngdjt.pricemng.action.DistanceManageAction" method="query">
+			<result name="success">/view/distance/distance_query_user.vm</result>
 			<result name="input">/view/tips_err.vm</result>
 		</action>
 		

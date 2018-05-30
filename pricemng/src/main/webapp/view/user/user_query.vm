@@ -31,9 +31,17 @@
     		
     		document.getElementById("form1").submit();
     	}
+    	
+    	function viewToUpd(idVal) {
+			document.getElementById("idtxt2").value = idVal;
+			document.getElementById("form3").submit();
+		}
     </script>
 </head>
 <body>
+<form method="post" action="${rootAddr}userManage/userUpdView" id="form3">
+	 <input type="hidden" name="user.id" id="idtxt2"/>
+</form>
 <form method="post" action="${rootAddr}userManage/userDelete" id="form2">
 	 <input type="hidden" name="user.id" id="useridtxt"/>
 </form>
@@ -96,6 +104,7 @@
       <td>$!u.tel</td>
       <td>
       <div class="button-group">
+      	<a type="button" class="button border-main" href="javascript:void(0);" onclick="viewToUpd('${u.id}')"><span class="icon-edit"></span>修改</a>
        <a class="button border-red" href="javascript:void(0);" onclick="userdel('${u.id}')"><span class="icon-trash-o"></span>删除</a>
       </div>
       </td>

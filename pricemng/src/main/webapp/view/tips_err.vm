@@ -18,9 +18,13 @@ a{color:#0ae;}
 <div class="error-container"> 
     <h1> 票价管理系统-信息提示 </h1>   
     <div class="errorcon">     
-        <i class="icon-smile-o"></i>操作失败:${exceptionMessage}       
+        <i class="icon-smile-o"></i>操作失败!$!exceptionMessage     
    </div>
+   #if(${returnPage})
     <h4 class="smaller"><a id="href" href="${rootAddr}${returnPage}"> 返 回 </a></h4> 
+   #else
+	<h4 class="smaller"><a id="href" href="${rootAddr}view/right.vm"> 返 回 </a></h4> 
+   #end
    
 </div>
 

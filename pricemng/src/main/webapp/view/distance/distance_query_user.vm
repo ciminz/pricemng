@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="renderer" content="webkit">
-    <title>票价信息</title>  
+    <title>运距信息</title>  
     <link rel="stylesheet" href="${rootAddr}view/css/pintuer.css">
     <link rel="stylesheet" href="${rootAddr}view/css/admin.css">
     <script src="${rootAddr}view/js/jquery.js"></script>
@@ -94,13 +94,13 @@
 							var stationNo = $("stationNo",this).text();
 							var lineNo =  $("lineNo",this).text();
 							var stationNme = $("stationNme",this).text();
-							if(stationNo == '${viewPriceInfo.oriStationNo}' && lineNo == oriLineNo) {
+							if(stationNo == '${viewStationDistanceInfo.oriStationNo}' && lineNo == oriLineNo) {
 								$("<option value=" + stationNo + " selected='selected'>" + stationNo + ' ' +stationNme + "</option>").appendTo($("#oStationNo"));
 							}else if(lineNo == oriLineNo){
-								$("<option value="+ stationNo + ">" + stationNo + ' ' +stationNme + "</option>").appendTo($("#oStationNo"));
+								$("<option value="+ stationNo + ">" + stationNme + "</option>").appendTo($("#oStationNo"));
 							}
 							
-							if(stationNo == '${viewPriceInfo.desStationNo}' && lineNo == desLineNo) {
+							if(stationNo == '${viewStationDistanceInfo.desStationNo}' && lineNo == desLineNo) {
 								$("<option value=" + stationNo +" selected='selected'>" + stationNo + ' ' +stationNme + "</option>").appendTo($("#dStationNo"));
 							}else if(lineNo == desLineNo){
 								$("<option value=" + stationNo +">" + stationNo + ' ' +stationNme + "</option>").appendTo($("#dStationNo"));
@@ -163,10 +163,10 @@
 							}
 							
 							var stationNme = $("stationNme",this).text();
-							if(stationNo == '${viewPriceInfo.oriStationNo}') {
-								$("<option value=" + stationNo + " selected='selected'>" + stationNo + ' ' +stationNme + "</option>").appendTo($("#oStationNo"));
+							if(stationNo == '${viewStationDistanceInfo.oriStationNo}') {
+								$("<option value=" + stationNo + " selected='selected'>" + stationNo + ' ' +stationNme +"</option>").appendTo($("#oStationNo"));
 							}else {
-								$("<option value="+ stationNo + ">" + stationNo + ' ' +stationNme + "</option>").appendTo($("#oStationNo"));
+								$("<option value="+ stationNo + ">" + stationNo + ' ' +stationNme +"</option>").appendTo($("#oStationNo"));
 							}
 						});
 					}
@@ -204,8 +204,8 @@
 							}
 							
 							var stationNme = $("stationNme",this).text();
-							if(stationNo == '${viewPriceInfo.desStationNo}') {
-								$("<option value=" + stationNo + " selected='selected'>" + stationNo + ' ' +stationNme + "</option>").appendTo($("#dStationNo"));
+							if(stationNo == '${viewStationDistanceInfo.desStationNo}') {
+								$("<option value=" + stationNo + " selected='selected'>"+ stationNo + ' ' +stationNme +"</option>").appendTo($("#dStationNo"));
 							}else {
 								$("<option value="+ stationNo + ">" + stationNo + ' ' +stationNme + "</option>").appendTo($("#dStationNo"));
 							}
@@ -224,64 +224,6 @@
     		getStation();
 		});
 		
-		function updateAllPrice() {
-			if(confirm("将更新线网所有OD站点票价，需重新审核，确定更新吗？")){
-			    document.getElementById("updateAllPriceBtn").disabled="disabled";
-			    document.getElementById('icon1').style.display = 'block';
-			    hidebg.style.display="block";  //显示隐藏层
-   				hidebg.style.height=document.body.clientHeight+"px";  //设置隐藏层的高度为当前页面高度
-				$.post("${rootAddr}priceManage/priceManageUpdateAllPrice",{},function(data) {
-				var xml;
-				if (seeIsIe()) {
-					xml = new ActiveXObject("Microsoft.XMLDOM");
-					xml.async = false;
-					xml.loadXML(data);
-				} else {
-					xml = data;
-				}
-				
-				var messageHead = $("messageHead",xml).text();
-				var message = $("message",xml).text();
-				alert(message);
-				 document.getElementById("updateAllPriceBtn").disabled="";
-			     document.getElementById('icon1').style.display = 'none';
-			     document.getElementById("hidebg").style.display="none";
-			});
-			}
-		}
-		
-		
-		function createPriceMap() {
-			document.getElementById('icon1').style.display = 'block';
-		    hidebg.style.display="block";  //显示隐藏层
-   		    hidebg.style.height=document.body.clientHeight+"px";  //设置隐藏层的高度为当前页面高度
-   		   
-			$.post("${rootAddr}priceManage/createPriceMap",{},function(data) {
-				var xml;
-				if (seeIsIe()) {
-					xml = new ActiveXObject("Microsoft.XMLDOM");
-					xml.async = false;
-					xml.loadXML(data);
-				} else {
-					xml = data;
-				}
-				
-				var messageHead = $("messageHead",xml).text();
-				var message = $("message",xml).text();
-			    document.getElementById('icon1').style.display = 'none';
-			    document.getElementById("hidebg").style.display="none";
-			    document.getElementById('icon1').style.display = 'none';
-			    document.getElementById("hidebg").style.display="none";
-			    alert(message);
-			    if(messageHead == '0') {
-			    	var filename = $("file",xml).text();
-			    	document.getElementById("downloadFileName").value = filename;
-			    	document.getElementById("pricemap_download").submit();
-			    }
-			});
-		}
-		
-		
 		function rest() {
 			document.getElementById('oLineNo').value='-1';
 			document.getElementById('oStationNo').value='-1';
@@ -289,116 +231,97 @@
 			document.getElementById('dStationNo').value='-1';
 		}
     </script>
-    
-    <style>
-    	#hidebg { position:absolute;left:0px;top:0px;
-	      background-color:#000;
-	      width:100%;  /*宽度设置为100%，这样才能使隐藏背景层覆盖原页面*/
-	      filter:alpha(opacity=10);  /*设置透明度为60%*/
-	      opacity:0.1;  /*非IE浏览器下设置透明度为60%*/
-	      display:none; 
-	      z-Index:2;}
-	      
-	      #table_div{
-			  display:table-cell;
-			}
-    </style>
 </head>
 <body>
-<div id="hidebg"></div>
-<div id="icon1" style="position:absolute;top:40%;width:100%;display:none;">
-			<center><img src="${rootAddr}view/images/009.gif"/></center>
-		</div>
-<form method="post" action="${rootAddr}priceManage/priceToAuditView" id="formToAuditView">
-	 <input type="hidden" name="priceInfo.oriStationNo" id="oriStationNotxt"/>
-	 <input type="hidden" name="priceInfo.desStationNo" id="desStationNotxt"/>
+<form method="post" action="${rootAddr}distanceManage/distanceDelete" id="formDelete">
+	 <input type="hidden" name="distanceInfo.oriStationNo" id="oriStationNotxt"/>
+	 <input type="hidden" name="distanceInfo.desStationNo" id="desStationNotxt"/>
 </form>
 
-<form method="post" action="${rootAddr}priceManage/priceUpdSingle" id="form3">
-	 <input type="hidden" name="priceInfo.oriStationNo" id="oriStationNotxt2"/>
-	 <input type="hidden" name="priceInfo.desStationNo" id="desStationNotxt2"/>
+<form method="post" action="${rootAddr}distanceManage/distanceUpdView" id="form3">
+	 <input type="hidden" name="distanceInfo.oriStationNo" id="oriStationNotxt2"/>
+	 <input type="hidden" name="distanceInfo.desStationNo" id="desStationNotxt2"/>
 </form>
-
- <form method="post" action="${rootAddr}download/downloadFile" id="pricemap_download">
-  	<input type="hidden" name="subPath" value=""/>
-  	<input type="hidden" name="fileName" id="downloadFileName"/>
-  </form> 
 <div class="panel admin-panel margin-top">
   <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>查询条件</strong></div>
   <div class="body-content">
-    <form method="post" class="form-x" action="${rootAddr}priceManage/priceQueryByConditionUser" id="form1">
+    <form method="post" class="form-x" action="${rootAddr}distanceManage/distanceQueryByConditionUser" id="form1">
       <input type="hidden" name="nowpage"  value="${nowpage}" id="nowpagetxt"/> 
       <input type="hidden" name="pagesize"  value="5" /> 
       <input type="hidden" name="totolpagesize"  value="${totalPageSize}" /> 
-      	<div class="form-group">
-			<div class="label">
-	          <label>起始线路：</label>
-	        </div>
-	    	<div>
-		        <select name="oriLineNo" class="input w50" id="oLineNo" onchange="olineChange()"  style="width:10%;">
-		         	<option value="-1">请选择</option>
-		        </select>
-		        <div class="tips"></div>
-	        </div>
-	        
-	        <div class="label">
-	          <label>起始站：</label>
-	        </div>
-	        <div>
-	        	<select name="viewPriceInfo.oriStationNo" class="input w50" id="oStationNo" style="width:10%;">
-		         	<option value="-1">请选择</option>
-		        </select>
-		        <div class="tips"></div>
-		     </div>
-		     
-		     <div class="label">
-	          <label>目的线路：</label>
-	       	 </div>
-	       	 <div>
-		        <select name="desLineNo" class="input w50" id="dLineNo" onchange="dlineChange()" style="width:10%;">
-		         	<option value="-1">请选择</option>
-		        </select>
-		        <div class="tips"></div>
-	       	 </div>
-	       	 
-	       	 <div class="label">
-	          <label>目的站：</label>
-	        </div>
-	        <div>
-	           <select name="viewPriceInfo.desStationNo" class="input w50" id="dStationNo" style="width:10%;">
-		         	<option value="-1">请选择</option>
-		        </select>
-		        <div class="tips"></div> 
-	        </div>
-	        
-	         <!--<div class="label">
-	          <label>审核状态：</label>
-	        </div>
-	        div>
-	           <select name="viewPriceInfo.auditFlg" class="input w50" id="auditSt" style="width:5%;">
-		         	<option value="-1">请选择</option>
-		         	<option value="Y" #if(${viewPriceInfo.auditFlg} == 'Y') selected#end>已审核</option>
-		         	<option value="N" #if(${viewPriceInfo.auditFlg} == 'N') selected#end>未审核</option>
-		        </select>
-		        <div class="tips"></div> 
-	        </div-->
-      	</div>
-      	
+      <table style="width:100%;margin:auto;">
+      <tr>
+      <td width="55%">
+      <div class="form-group">
+        <div class="label">
+          <label>起始线路：</label>
+        </div>
+        <div class="field">
+	        <select name="oriLineNo" class="input w50" id="oLineNo" onchange="olineChange()">
+	         	<option value="-1">请选择</option>
+	        </select>
+	        <div class="tips"></div>
+        </div>
+      </div> 
+      </td>
+      <td>
+      <div class="form-group">
+        <div class="label">
+          <label>起始站：</label>
+        </div>
+        <div class="field">
+        	<select name="viewStationDistanceInfo.oriStationNo" class="input w50" id="oStationNo">
+	         	<option value="-1">请选择</option>
+	        </select>
+	        <div class="tips"></div>
+        </div>
+      </div>
+      </td></tr>
+      
+      <tr>
+      <td width="55%">
+       <div class="form-group">
+      	<div class="label">
+          <label>目的线路：</label>
+        </div>
+        <div class="field">
+	        <select name="desLineNo" class="input w50" id="dLineNo" onchange="dlineChange()">
+	         	<option value="-1">请选择</option>
+	        </select>
+	        <div class="tips"></div>
+        </div>
+      </div> 
+      </td>
+      <td>
+      <div class="form-group">
+        <div class="label">
+          <label>目的站：</label>
+        </div>
+        <div class="field">
+           <select name="viewStationDistanceInfo.desStationNo" class="input w50" id="dStationNo">
+	         	<option value="-1">请选择</option>
+	        </select>
+	        <div class="tips"></div> 
+        </div>
+      </div>
+      </td></tr>
+      </table>
+      <!--table width="100%" align="center">
+      </table-->
      <div class="form-group">
         <div class="label">
           <label></label>
         </div>
         <div class="field" width="100%" align="center">
           <button class="button bg-main icon-search" type="submit"> 查询</button>
-          <button class="button bg-main" type="button" onclick="rest()"> 重置</button>
-          <button class="button bg-main icon-download" type="button" onclick="createPriceMap()"> 生成线网票价矩阵</button>
+          <button class="button bg-main" type="button" onclick="reset()"> 重置</button>
         </div>
       </div>
     </form>
   </div>
 </div>
 <div class="panel admin-panel">
-  <div class="panel-head"><strong class="icon-reorder"> 票价信息列表</strong></div>
+  <div class="panel-head"><strong class="icon-reorder"> 运距信息列表</strong></div>
   <div class="padding border-bottom">
   	
   </div> 
@@ -409,43 +332,45 @@
       <th>起始站名</th>
       <th>目的站编号</th>    
       <th>目的站名</th>
-      <th>票价（元）</th>
-      <!--th>审核状态</th>
-      <th>审核人</th>
-      <th>审核时间</th>
-      <th width="250">操作</th-->
+      <th>间距(米)</th>
+      <!--th width="250">操作</th-->
     </tr>
     #set($index=1)
     #foreach($d in $queryResult)
     <tr>
       <td>${index}</td>      
-      <td>$!d.oriStationNo</td>  
-      <td>$!d.oriStationNme</td>
-      <td>$!d.desStationNo</td>
-      <td>$!d.desStationNme</td>
-      <td>$!d.price</td>
-      
+      <td>${d.oriStationNo}</td>  
+      <td>${d.oriStationNme}</td>
+      <td>${d.desStationNo}</td>
+      <td>${d.desStationNme}</td>
+      <td>${d.distance}</td>
+      <!--td>
+      <div class="button-group">
+         <a type="button" class="button border-main" href="javascript:void(0);" onclick="viewToUpd('${d.oriStationNo}','${d.desStationNo}')"><span class="icon-edit"></span>修改</a>
+       	 <a class="button border-red" href="javascript:void(0);" onclick="recdel('${d.oriStationNo}','${d.desStationNo}')"><span class="icon-trash-o"></span>删除</a>
+      </div>
+      </td-->
     </tr> 
     #set($index=$index + 1)
     #end 
      <tr>
-        <td colspan="10"><div class="pagelist"> <a onclick="script:changePage('f');">首页</a> <a onclick="script:changePage('p')">上一页</a> <a onclick="script:changePage('n')">下一页</a><a onclick="script:changePage('l');">尾页</a> 共${totalPageSize}页</div></td>
+        <td colspan="9"><div class="pagelist"> <a onclick="script:changePage('f');">首页</a> <a onclick="script:changePage('p')">上一页</a> <a onclick="script:changePage('n')">下一页</a><a onclick="script:changePage('l');">尾页</a> 共${totalPageSize}页</div></td>
       </tr>
   </table>
 </div>
 <script>
-function toAuditView(oriStationNo, desStationNo){
-	document.getElementById("oriStationNotxt").value = oriStationNo;
-	document.getElementById("desStationNotxt").value = desStationNo;
-	document.getElementById("formToAuditView").submit();
+function recdel(oriStationNo, desStationNo){
+	if(confirm("您确定要删除吗?")){
+		document.getElementById("oriStationNotxt").value = oriStationNo;
+		document.getElementById("desStationNotxt").value = desStationNo;
+		document.getElementById("formDelete").submit();
+	}
 }
 
 function viewToUpd(oriStationNo, desStationNo) {
-	if(confirm("更新后续重新审核，确定更新吗?")){
-		document.getElementById("oriStationNotxt2").value = oriStationNo;
-		document.getElementById("desStationNotxt2").value = desStationNo;
-		document.getElementById("form3").submit();
-	}
+	document.getElementById("oriStationNotxt2").value = oriStationNo;
+	document.getElementById("desStationNotxt2").value = desStationNo;
+	document.getElementById("form3").submit();
 }
 </script>
 <script>

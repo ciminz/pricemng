@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title>站点信息</title>  
+    <link rel="stylesheet" href="${rootAddr}view/css/pintuer.css">
+    <link rel="stylesheet" href="${rootAddr}view/css/admin.css">
+    <script src="${rootAddr}view/js/jquery.js"></script>
+    <script src="${rootAddr}view/js/jquery2.js"></script>
+    <script src="${rootAddr}view/js/pintuer.js"></script>  
+    <script>
+    	function seeIsIe() {
+			var isIe = !-[1,];
+			if(isIe) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+    	$(function(){
+		  $.post("${rootAddr}ajax/ajaxFindLine",{},function(data) {
+				var xml;
+				if (seeIsIe()) {
+					xml = new ActiveXObject("Microsoft.XMLDOM");
+					xml.async = false;
+					xml.loadXML(data);
+				} else {
+					
+					xml = data;
+				}
+				var messageHead = $("messageHead",xml).text();
+				
+				if(messageHead == '0') {
+					var count = $("count",xml).text();
+					if(count == '0') {
+						return;
+					}else {
+						$("#lineNo").children("[value != '-1']").remove();
+						$("lineInfo",xml).each(function() {
+							var lineNo = $("lineNo",this).text();
+							var lineNme = $("lineNme",this).text();
+							if(lineNo == '${stationInfo.lineNo}') {
+								$("<option value=" + lineNo +" selected='selected'>" + lineNme + "</option>").appendTo($("#lineNo"));
+							}else {
+								$("<option value=" + lineNo +">" + lineNme + "</option>").appendTo($("#lineNo"));
+							}
+							
+						})
+					}
+				}else {
+					alert('获取线路信息错误，请检查格式！');
+				}
+			});
+		
+		});
+		
+    	function changePage(oprt) {
+    		var nowpage = parseInt(document.getElementById("nowpagetxt").value);
+    		if(oprt == 'f') {
+    			document.getElementById("nowpagetxt").value = "1";
+    		}
+    		
+    		if(oprt == 'p') {
+    			document.getElementById("nowpagetxt").value = nowpage - 1 > 0 ? nowpage - 1:1;
+    		}
+    		
+    		if(oprt == 'n') {
+    			document.getElementById("nowpagetxt").value = nowpage + 1 < ${totalPageSize}?nowpage + 1:${totalPageSize};
+    		}
+    		
+    		if(oprt == 'l') {
+    			document.getElementById("nowpagetxt").value = ${totalPageSize};
+    		}
+    		
+    		document.getElementById("form1").submit();
+    	}
+    </script>
+</head>
+<body>
+<form method="post" action="${rootAddr}stationManage/stationDelete" id="form2">
+	 <input type="hidden" name="stationInfo.id" id="idtxt"/>
+</form>
+
+<form method="post" action="${rootAddr}stationManage/stationUpdView" id="form3">
+	 <input type="hidden" name="stationInfo.id" id="idtxt2"/>
+</form>
+<div class="panel admin-panel margin-top">
+  <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>查询条件</strong></div>
+  <div class="body-content">
+    <form method="post" class="form-x" action="${rootAddr}stationManage/stationQueryByConditionUser" id="form1">
+      <input type="hidden" name="nowpage"  value="${nowpage}" id="nowpagetxt"/> 
+      <input type="hidden" name="pagesize"  value="5" /> 
+      <input type="hidden" name="totolpagesize"  value="${totalPageSize}" /> 
+      <div class="form-group">
+        <div class="label">
+          <label>线路：</label>
+        </div>
+        <div class="field">
+	        <select name="stationInfo.lineNo" class="input w50" id="lineNo">
+	         	<option value="-1">请选择</option>
+	        </select>
+	        <div class="tips"></div>
+        </div>
+      </div> 
+      <div class="form-group">
+        <div class="label">
+          <label>站点名称：</label>
+        </div>
+        <div class="field">
+            <input type="text" class="input w50" name="stationInfo.stationNme" value="$!stationInfo.stationNme" id="stationNme"/>  
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="label">
+          <label>是否是换乘站：</label>
+        </div>
+        <div class="field">
+	        <select name="stationInfo.exchangeFlg" class="input w50" id="exchangeFlg">
+	          <option value="-1">请选择</option>
+	          <option value="Y">是</option>
+	          <option value="N">否</option>
+	        </select>
+	        <div class="tips"></div>
+        </div>
+      </div>
+     <div class="form-group">
+        <div class="label">
+          <label></label>
+        </div>
+        <div class="field">
+          <button class="button bg-main icon-search" type="submit"> 查询</button>
+          <button class="button bg-main" type="button" onclick="javascript:document.getElementById('lineNo').value='-1';document.getElementById('stationNme').value='';document.getElementById('exchangeFlg').value='-1';"> 重置</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="panel admin-panel">
+  <div class="panel-head"><strong class="icon-reorder"> 站点列表</strong></div>
+  <div class="padding border-bottom">
+  	
+  </div> 
+  <table class="table table-hover text-center">
+    <tr>
+      <th width="5%">序号</th>
+      <th>站点编号</th>  
+      <th>名称</th>
+      <th>英文名称</th>    
+      <th>线路编号</th>
+      <th>顺序号</th>
+      <th>坐标</th>
+      <th>是否是换成站</th>
+      <th>备注</th>
+      <!--th width="250">操作</th-->
+    </tr>
+    #set($index=1)
+    #foreach($s in $queryResult)
+    <tr>
+      <td>${index}</td>      
+      <td>${s.stationNo}</td>  
+      <td>${s.stationNme}</td>
+      <td>$!s.stationEnNme</td>
+      <td>$s.lineNo</td>
+      <td>$!s.sortId</td>
+      #if(!$null.isNull(${s.locationX}) && !$null.isNull(${s.locationY}))
+      <td>$s.locationX,$s.locationY</td>
+      #else
+      <td></td>
+      #end
+      #if(${s.exchangeFlg} == 'Y')
+      <td>是</td>
+      #else
+      <td>否</td>
+      #end
+      <td>$s.stationDes</td>
+      <!--td>
+      <div class="button-group">
+         <a type="button" class="button border-main" href="javascript:void(0);" onclick="viewToUpd('${s.id}')"><span class="icon-edit"></span>修改</a>
+       	 <a class="button border-red" href="javascript:void(0);" onclick="recdel('${s.id}')"><span class="icon-trash-o"></span>删除</a>
+      </div>
+      </td-->
+    </tr> 
+    #set($index=$index + 1)
+    #end 
+     <tr>
+        <td colspan="9"><div class="pagelist"> <a onclick="script:changePage('f');">首页</a> <a onclick="script:changePage('p')">上一页</a> <a onclick="script:changePage('n')">下一页</a><a onclick="script:changePage('l');">尾页</a> 共${totalPageSize}页</div></td>
+      </tr>
+  </table>
+</div>
+<script>
+function recdel(idVal){
+	if(confirm("您确定要删除吗?")){
+		document.getElementById("idtxt").value = idVal;
+		document.getElementById("form2").submit();
+	}
+}
+
+function viewToUpd(idVal) {
+	document.getElementById("idtxt2").value = idVal;
+	document.getElementById("form3").submit();
+}
+</script>
+<script>
+	#if($stationInfo.exchangeFlg)
+		document.getElementById('exchangeFlg').value='${stationInfo.exchangeFlg}';
+	#else
+		document.getElementById('exchangeFlg').value='-1';
+	#end
+</script>
+</body></html>
