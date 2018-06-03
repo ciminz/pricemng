@@ -308,6 +308,12 @@
                 D:\Program Files\eclipse\jdk1.6.0_26\lib\tools.jar
                </systemPath>
 		</dependency>
+		
+		<dependency>
+		    <groupId>com.googlecode.usc</groupId>
+		    <artifactId>jdbcdslog</artifactId>
+		    <version>1.0.6.2</version>
+		 </dependency>
 
 	</dependencies>
 
