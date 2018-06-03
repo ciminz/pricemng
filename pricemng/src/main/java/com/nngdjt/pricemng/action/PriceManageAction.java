@@ -233,6 +233,7 @@ public class PriceManageAction extends ActionSupport{
 		int totalPageSize = Page.getTotolSize(Integer.valueOf(this.getPagesize()) ,this.viewPriceInfoMapper.countByExample(viewPriceInfoExample)); 
 		ServletActionContext.getRequest().setAttribute("queryResult", vPriceInfoList);
 		ServletActionContext.getRequest().setAttribute("totalPageSize", totalPageSize + "");
+		logger.info("query complete.....................");
 		return "success";
 	}
 	
@@ -537,5 +538,25 @@ public class PriceManageAction extends ActionSupport{
 		
 		ServletActionContext.getRequest().setAttribute("returnPage", "priceManage/priceQueryByCondition");
 		return "success";
+	}
+	
+	
+	public String mapQryPrice() {
+		this.beanInit();
+		this.getViewPriceInfo().setOriStationNo(this.getViewPriceInfo().getOriStationNo().substring(1));
+		this.getViewPriceInfo().setDesStationNo(this.getViewPriceInfo().getDesStationNo().substring(1));
+		StationInfoExample stationInfoExample = new StationInfoExample();
+		stationInfoExample.createCriteria().andStationNoEqualTo(this.getViewPriceInfo().getOriStationNo());
+		List<StationInfo> stationInfoList = this.stationInfoMapper.selectByExample(stationInfoExample);
+		this.setOriLineNo(stationInfoList.get(0).getLineNo());
+		
+		stationInfoExample = new StationInfoExample();
+		stationInfoExample.createCriteria().andStationNoEqualTo(this.getViewPriceInfo().getDesStationNo());
+		stationInfoList = this.stationInfoMapper.selectByExample(stationInfoExample);
+		this.setDesLineNo(stationInfoList.get(0).getLineNo());
+		
+		ServletActionContext.getRequest().setAttribute("desLineNo", this.getDesLineNo());
+		ServletActionContext.getRequest().setAttribute("oriLineNo", this.getOriLineNo());
+		return this.query4User();
 	}
 }

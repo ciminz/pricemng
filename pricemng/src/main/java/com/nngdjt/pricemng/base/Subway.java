@@ -224,8 +224,7 @@ public class Subway {
 
 		StringBuilder sb = new StringBuilder(200);
 		StringBuilder fw = new StringBuilder();
-		fw.append("起始站 :" + s1.getName() + "  目标站点：" + s2.getName() + "，共经过" + (s1.getAllPassedStations(s2).size())
-				+ "站");
+		fw.append("起始站 :" + s1.getName() + "  目标站点：" + s2.getName() + "，共经过" + (s1.getAllPassedStations(s2).size()) + "站");
 		fw.append("\r\n");
 		for (Station station : s1.getAllPassedStations(s2)) {
 			sb.append(station.getName() + "->");

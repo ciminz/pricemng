@@ -182,7 +182,15 @@
 		<Parent>9</Parent>
 	</Item>
 	
-	<!-- 票价查询 -->
+	<Item>
+		<Id>92</Id>
+		<ItemName>线网图</ItemName>
+		<Url>priceManage/netPicture</Url>
+		<IsParent>1</IsParent>
+		<Parent>9</Parent>
+	</Item>
+	
+	<!-- 系统设置 -->
 	<Item>
 	 	<Id>10</Id>
 		<ItemName>系统设置</ItemName>

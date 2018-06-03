@@ -241,6 +241,15 @@
 			<result name="success">/view/tips_suc.vm</result>
 			<result name="input">/view/tips_err.vm</result>
 		</action>  
+		
+		<action name="netPicture">
+			<result>/view/price/subway.vm</result>
+		</action> 
+		
+		<action name="mapQryPrice" class="com.nngdjt.pricemng.action.PriceManageAction" method="mapQryPrice">
+			<result name="success">/view/price/price_query_user.vm</result>
+			<result name="input">/view/tips_err.vm</result>
+		</action> 
 	</package>	
 
 </struts>

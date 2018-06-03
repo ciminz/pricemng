@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">  
+<head>  
+<meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
+    <title>地铁线路测试</title>  
+	<link rel="stylesheet" href="${rootAddr}view/css/pintuer.css">
+    <link rel="stylesheet" href="${rootAddr}view/css/admin.css">
+    <script type="text/javascript" src="${rootAddr}view/js/jquery-1.4.2.js"></script>  
+    <script type="text/javascript" src="${rootAddr}view/js/jquery.subwayMap-0.5.0.js"></script>
+	<script>
+		function seeIsIe() {
+			var isIe = !-[1,];
+			if(isIe) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		
+		function setOd(stationNo) {
+			var stNo = stationNo;
+			var oriStationNo = document.getElementById('txtOriStationNo').value;
+			var desStationNo = document.getElementById('txtDesStationNo').value;
+			if(oriStationNo == '') {
+				if(confirm('设为起点站吗？')) {
+					document.getElementById('txtOriStationNo').value = stNo;
+					$.post("${rootAddr}ajax/ajaxFindStation",{},function(data) {
+						var xml;
+						if (seeIsIe()) {
+							xml = new ActiveXObject("Microsoft.XMLDOM");
+							xml.async = false;
+							xml.loadXML(data);
+						} else {
+							xml = data;
+						}
+						var messageHead = $("messageHead",xml).text();
+						if(messageHead == '0') {
+							var count = $("count",xml).text();
+							if(count == '0') {
+								return;
+							}else {
+								$("stationInfo",xml).each(function() {
+									var stationNo = $("stationNo",this).text();
+									var lineNo =  $("lineNo",this).text();
+									var stationNme = $("stationNme",this).text();
+									if(parseInt("1" + stationNo) == stNo) {
+										document.getElementById('lblOriSt').innerHTML = stationNme;
+									}
+								})
+							}
+						}else {
+							alert('获取站点信息错误，请检查格式！');
+						}
+					});
+					return;
+				}
+			}else if(desStationNo == '') {
+				if(confirm('设为目的站吗？')) {
+					document.getElementById('txtDesStationNo').value = stNo;
+					$.post("${rootAddr}ajax/ajaxFindStation",{},function(data) {
+						var xml;
+						if (seeIsIe()) {
+							xml = new ActiveXObject("Microsoft.XMLDOM");
+							xml.async = false;
+							xml.loadXML(data);
+						} else {
+							xml = data;
+						}
+						var messageHead = $("messageHead",xml).text();
+						if(messageHead == '0') {
+							var count = $("count",xml).text();
+							if(count == '0') {
+								return;
+							}else {
+								$("stationInfo",xml).each(function() {
+									var stationNo = $("stationNo",this).text();
+									var lineNo =  $("lineNo",this).text();
+									var stationNme = $("stationNme",this).text();
+									if(parseInt("1" + stationNo) == stNo) {
+										document.getElementById('lblDesSt').innerHTML = stationNme;
+									}
+								})
+							}
+						}else {
+							alert('获取站点信息错误，请检查格式！');
+						}
+					});
+					return;
+				}
+			}else {
+				alert('已选择起始站和目的站，请重置后重新选择');
+			}
+			
+		}
+		
+		
+		function reset() {
+			document.getElementById('txtDesStationNo').value = '';
+			document.getElementById('txtOriStationNo').value = '';
+			document.getElementById('lblDesSt').innerHTML = '未指定';
+			document.getElementById('lblOriSt').innerHTML = '未指定';
+		}
+		
+		function submit() {
+			if(document.getElementById('txtDesStationNo').value == '') {
+				alert('请指定起始站!');
+				return;
+			}
+			
+			if(document.getElementById('txtOriStationNo').value == '') {
+				alert('请指定目的站!');
+				return;
+			}
+			
+			document.getElementById('form1').submit();
+			
+		}
+	</script>
+	
+	
+<style type="text/css">    
+    body    
+    {    
+        font-family: Verdana;    
+        font-size: 8pt;    
+    }    
+    
+    /* The main DIV for the map */    
+    .subway-map    
+    {    
+        margin: 0;    
+        width: 5px;    
+        height:4px;    
+        background-color: white;    
+    }    
+    
+    /* Text labels */    
+    .text    
+    {    
+        text-decoration: none;    
+        color: black;    
+    }    
+    
+    #legend    
+    {    
+        float: left;    
+        width: 250px;    
+        height:400px;    
+    }    
+    
+    #legend div    
+    {    
+        height: 20px;    
+    }    
+    
+    #legend span    
+    {    
+        margin: 5px 5px 5px 0;    
+    }    
+    .subway-map span    
+    {    
+        margin: 5px 5px 5px 0;    
+    }    
+     
+    </style>    
+</head>  
+<body>  
+	<form action="${rootAddr}priceManage/mapQryPrice" method="post" id="form1">
+		<input type="hidden" name="viewPriceInfo.oriStationNo" id="txtOriStationNo" value=""/>
+		<input type="hidden" name="viewPriceInfo.desStationNo" id="txtDesStationNo" value=""/>
+	</form>
+	<div class="panel admin-panel margin-top">
+	  <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>查询条件</strong></div>
+	  <div class="body-content">
+		  <table style="width:20%;margin:auto;">
+		  <tr>
+		  <td width="50%">
+		  <div class="form-group">
+			<div class="label">
+			  <label>起始站：</label>
+			</div>
+		  </div> 
+		  </td>
+		  <td width="50%">
+		  <div class="form-group">
+			<div class="label">
+			  <label id="lblOriSt">未指定</label>
+			</div>
+		  </div> 
+		  </td>
+		  </tr>
+		  <tr>
+		  <td width="50%">
+		  <div class="form-group">
+			<div class="label">
+			  <label>目的站：</label>
+			</div>
+		  </div> 
+		  </td>
+		  <td width="50%">
+		  <div class="form-group">
+			<div class="label">
+			  <label id="lblDesSt">未指定</label>
+			</div>
+		  </div> 
+		  </td>
+		  </tr>
+		  <tr>
+		  <td width="50%">
+			<input type="button" value="查询票价信息" onclick="submit()">
+		  </td>
+		  <td width="50%">
+			<input type="button" value="重置" onclick="reset()">
+		  </td>
+		  </tr>
+		  </table>
+	  </div>
+	  </div>
+	  
+   <div class="subway-map" data-columns="44" data-rows="40" data-cellSize="85" data-legendId="legend" data-textClass="text" data-gridNumbers="false" data-grid="false" data-lineWidth="6">   
+    <ul data-color="green" data-label="一号线">  
+         <li data-coords="2,4" data-marker="interchange" data-labelPos="S"><a target="_self" href="javascript:setOd(10101);">石埠</a></li>    
+         <li data-coords="2.5,4" data-marker="interchange" data-labelPos="N" ><a href="javascript:setOd(10102);">南职院</a></li>   
+         <li data-coords="3,4" data-marker="interchange" data-labelPos="S" ><a href="javascript:setOd(10103);">鹏飞路</a></li>  
+         <li data-coords="3.5,4" data-marker="interchange" data-labelPos="N" ><a href="javascript:setOd(10104);">西乡塘客运站</a></li>  
+         <li data-coords="4,4" data-marker="interchange" data-labelPos="S" ><a href="javascript:setOd(10105);">民族大学</a></li>   
+         <li data-coords="4.5,4" data-marker="interchange" data-labelPos="N" ><a href="javascript:setOd(10106);">清川</a></li>   
+         <li data-coords="5,4" data-marker="interchange" data-labelPos="S" date-line="h5"><a href="javascript:setOd(10107);">动物园</a></li>  
+		 <li data-coords="5.5,4" data-marker="interchange" data-labelPos="N" date-line="h5"><a href="javascript:setOd(10108);">鲁班路</a></li> 
+		 <li data-coords="6,4" data-marker="interchange" data-labelPos="S" date-line="h5"><a href="javascript:setOd(10109);">广西大学</a></li>	
+	     <li data-coords="6.5,4" data-marker="interchange" data-labelPos="N" date-line="h5"><a href="javascript:setOd(10110);">白苍岭</a></li>	
+		 <li data-coords="6.5,4.5" data-marker="interchange" data-dir="E" data-markerInfo="v2" data-labelPos="W"><a href="javascript:setOd(10111);">火车站</a></li>  
+		 <li data-coords="6.5,5.3" data-marker="interchange" data-dir="E" data-markerInfo="v2" data-labelPos="W"><a href="javascript:setOd(10112);">朝阳广场</a></li>  
+		 <li data-coords="7,5.5" data-marker="interchange" data-labelPos="S" date-line="h5"><a href="javascript:setOd(10113);">新民路</a></li>
+		 <li data-coords="7.5,5.5" data-marker="interchange" data-labelPos="N" date-line="h5"><a href="javascript:setOd(10114);">民族广场</a></li>
+		 <li data-coords="8,5.5" data-marker="interchange" data-labelPos="S" date-line="h5"><a href="javascript:setOd(10115);">麻村</a></li>
+		 <li data-coords="8.5,5.5" data-marker="interchange" data-labelPos="N" date-line="h5"><a href="javascript:setOd(10116);">南湖</a></li>
+		 <li data-coords="9,5.5" data-marker="interchange" data-labelPos="S" date-line="h5"><a href="javascript:setOd(10117);">金湖广场</a></li>
+		 <li data-coords="9.5,5.5" data-marker="interchange" data-labelPos="N" date-line="h5"><a href="javascript:setOd(10118);">会展中心</a></li>
+		 <li data-coords="10,5.5" data-marker="interchange" data-labelPos="S" date-line="h5"><a href="javascript:setOd(10119);">万象城</a></li>
+		 <li data-coords="10.5,5.5" data-marker="interchange" data-labelPos="N" date-line="h5"><a href="javascript:setOd(10120);">东盟商务区</a></li>
+		 <li data-coords="11,5.5" data-marker="interchange" data-labelPos="S" date-line="h5"><a href="javascript:setOd(10121);">凤岭</a></li>
+		 <li data-coords="11.5,5.5" data-marker="interchange" data-labelPos="N" date-line="h5"><a href="javascript:setOd(10122);">埌东客运站</a></li>
+		 <li data-coords="11.5,4.5" data-marker="interchange" data-labelPos="S" date-line="h5"><a href="javascript:setOd(10123);">百花岭</a></li>
+		 <li data-coords="11.5,4" data-marker="interchange" data-labelPos="N" date-line="h5"><a href="javascript:setOd(10124);">佛子岭</a></li>
+		 <li data-coords="10.8,3" data-marker="interchange" data-labelPos="S" date-line="h5"><a href="javascript:setOd(10125);">火车东站</a></li>
+    </ul> 
+
+	<ul data-color="red" data-label="二号线">  
+         <li data-coords="6,10.5" data-marker="interchange" data-labelPos="W" ><a href="javascript:setOd(10201);">玉洞</a></li>   
+         <li data-coords="6,10" data-marker="interchange" data-labelPos="E" ><a href="javascript:setOd(10202);">金象</a></li>  
+         <li data-coords="6,9.5" data-marker="interchange" data-labelPos="W" ><a href="javascript:setOd(10203);">石子塘</a></li>  
+         <li data-coords="6,9" data-marker="interchange" data-labelPos="E" ><a href="javascript:setOd(10204);">建设路</a></li>   
+         <li data-coords="6,8.5" data-marker="interchange" data-labelPos="W" ><a href="javascript:setOd(10205);">大沙田</a></li>   
+         <li data-coords="6,8" data-marker="interchange" data-labelPos="E" date-line="h5"><a href="javascript:setOd(10206);">江南客运站</a></li>  
+		 <li data-coords="6,7.5" data-marker="interchange" data-labelPos="W" date-line="h5"><a href="javascript:setOd(10207);">石柱岭</a></li> 
+		 <li data-coords="6,7" data-marker="interchange" data-labelPos="E" date-line="h5"><a href="javascript:setOd(10208);">亭洪路</a></li>	
+	     <li data-coords="6,6.5" data-marker="interchange" data-labelPos="W" date-line="h5"><a href="javascript:setOd(10209);">福建园</a></li>	
+		 <li data-coords="6,6.1" data-marker="interchange" data-labelPos="E" date-line="h5"><a href="javascript:setOd(10210);">南宁剧场</a></li>
+		 <li data-coords="6.45,5.3"></li> 
+ 		 <li data-coords="6.45,4.5"></li> 		 
+		 <li data-coords="6.8,3.5" data-marker="interchange" data-labelPos="E" date-line="h5"><a href="javascript:setOd(10213);">明秀路</a></li>
+		 <li data-coords="6.8,3" data-marker="interchange" data-labelPos="W" date-line="h5"><a href="javascript:setOd(10214);">秀厢</a></li>
+		 <li data-coords="6.8,2.5" data-marker="interchange" data-labelPos="E" date-line="h5"><a href="javascript:setOd(10215);">三十三中</a></li>
+		 <li data-coords="6.8,2" data-marker="interchange" data-labelPos="W" date-line="h5"><a href="javascript:setOd(10216);">苏卢</a></li>
+		 <li data-coords="6.8,1.5" data-marker="interchange" data-labelPos="E" date-line="h5"><a href="javascript:setOd(10217);">安吉客运站</a></li>
+		 <li data-coords="6.8,1" data-marker="interchange" data-labelPos="W" date-line="h5"><a href="javascript:setOd(10218);">西津</a></li>
+    </ul> 
+             
+    </div>  
+    <div id="legend"></div>  
+    <script type="text/javascript">  
+        $(".subway-map").subwayMap({ debug: false });  
+    </script>  
+</body>  
+</html>  
