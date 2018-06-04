@@ -8,6 +8,6 @@
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="java-output-path" value="/pricemng/target/classes"/>
-        <property name="context-root" value="pricemng"/>
+        <property name="context-root" value="test"/>
     </wb-module>
 </project-modules>
