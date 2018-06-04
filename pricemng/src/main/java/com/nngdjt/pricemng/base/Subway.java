@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.velocity.tools.generic.ClassTool.Sub;
 
 import com.nngdjt.pricemng.entity.PriceInfo;
+import com.nngdjt.pricemng.entity.PriceInfoExample;
 import com.nngdjt.pricemng.mapper.PriceInfoMapper;
 import com.vane.utils.BaseUtil;
 
@@ -250,15 +251,36 @@ public class Subway {
 		
 		fw.append("间距（米）:"+totaldis+" 票价:"+PriceUtil.getPrivce(totaldis)+"元\r\n");
 		
-		PriceInfo priceInfo = new PriceInfo();
-		priceInfo.setId(BaseUtil.getSeqLong());
-		priceInfo.setOriStationNo(s1.getStationNo());
-		priceInfo.setDesStationNo(s2.getStationNo());
-		priceInfo.setPrice(PriceUtil.getPrivce(totaldis) + "");
-		priceInfo.setAuditFlg("N");
-		priceInfo.setBakFld1(fw.toString());
-		priceInfo.setBakFld2(totaldis + "");
-		priceInfoMapper.insert(priceInfo);
+		PriceInfoExample priceInfoExample = new PriceInfoExample();
+		priceInfoExample.createCriteria()
+		.andOriStationNoEqualTo(s1.getStationNo())
+		.andDesStationNoEqualTo(s2.getStationNo());
+		List<PriceInfo> priceInfoList = priceInfoMapper.selectByExample(priceInfoExample);
+		if(priceInfoList != null && priceInfoList.size() != 0) {
+			PriceInfo priceInfoTmp = priceInfoList.get(0);
+			if(!priceInfoTmp.getPrice().equals(PriceUtil.getPrivce(totaldis) + "")) {
+				priceInfoMapper.deleteByPrimaryKey(priceInfoTmp.getId());
+				PriceInfo priceInfo = new PriceInfo();
+				priceInfo.setId(BaseUtil.getSeqLong());
+				priceInfo.setOriStationNo(s1.getStationNo());
+				priceInfo.setDesStationNo(s2.getStationNo());
+				priceInfo.setPrice(PriceUtil.getPrivce(totaldis) + "");
+				priceInfo.setAuditFlg("N");
+				priceInfo.setBakFld1(fw.toString());
+				priceInfo.setBakFld2(totaldis + "");
+				priceInfoMapper.insert(priceInfo);
+			}
+		}else {
+			PriceInfo priceInfo = new PriceInfo();
+			priceInfo.setId(BaseUtil.getSeqLong());
+			priceInfo.setOriStationNo(s1.getStationNo());
+			priceInfo.setDesStationNo(s2.getStationNo());
+			priceInfo.setPrice(PriceUtil.getPrivce(totaldis) + "");
+			priceInfo.setAuditFlg("N");
+			priceInfo.setBakFld1(fw.toString());
+			priceInfo.setBakFld2(totaldis + "");
+			priceInfoMapper.insert(priceInfo);
+		}
 	}
 
 	/**

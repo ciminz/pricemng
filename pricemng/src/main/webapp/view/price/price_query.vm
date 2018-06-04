@@ -225,7 +225,7 @@
 		});
 		
 		function updateAllPrice() {
-			if(confirm("将更新线网所有OD站点票价，需重新审核，确定更新吗？")){
+			if(confirm("更新后票价有变动的记录，需重新审核，确定更新吗？")){
 			    document.getElementById("updateAllPriceBtn").disabled="disabled";
 			    document.getElementById('icon1').style.display = 'block';
 			    hidebg.style.display="block";  //显示隐藏层
@@ -434,8 +434,8 @@
       <td>$!d.auditDate  $!d.auditTme</td>
       <td>
       <div class="button-group">
-         <a type="button" class="button border-main" href="javascript:void(0);" onclick="viewToUpd('${d.oriStationNo}','${d.desStationNo}')"><span class="icon-refresh"></span>更新</a>
-       	 <a class="button border-red" href="javascript:void(0);" onclick="toAuditView('${d.oriStationNo}','${d.desStationNo}')"><span class="icon-edit"></span>审核</a>
+         <!--a type="button" class="button border-main" href="javascript:void(0);" onclick="viewToUpd('${d.oriStationNo}','${d.desStationNo}')"><span class="icon-refresh"></span>更新</a-->
+       	 <a class="button border-red" href="javascript:void(0);" onclick="toAuditView('${d.oriStationNo}','${d.desStationNo}','${d.auditFlg}')"><span class="icon-edit"></span>审核</a>
       </div>
       </td>
     </tr> 
@@ -447,7 +447,11 @@
   </table>
 </div>
 <script>
-function toAuditView(oriStationNo, desStationNo){
+function toAuditView(oriStationNo, desStationNo,flg){
+    if(flg == 'Y') {
+    	alert('该条票价记录已经审核');
+    	return;
+    }
 	document.getElementById("oriStationNotxt").value = oriStationNo;
 	document.getElementById("desStationNotxt").value = desStationNo;
 	document.getElementById("formToAuditView").submit();

@@ -293,7 +293,7 @@ public class PriceManageAction extends ActionSupport{
 		}
 		
 		if(flag) {
-			priceInfoMapper.deleteByExample(null);
+			//priceInfoMapper.deleteByExample(null);
 			DataBuilder dataBuilder = new DataBuilder();
 			PriceUtil priceUtil = new PriceUtil();
 			try {
