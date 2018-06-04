@@ -5,7 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="renderer" content="webkit">
-    <title>票价管理系统</title>  
+    <title>南宁轨道交通票价管理系统</title>  
+    <link rel="shortcut icon" href="${rootAddr}view/images/favicon.ico"/>
+	<link rel="bookmark" href="${rootAddr}view/images/favicon.ico"/>
     <link rel="stylesheet" href="${rootAddr}view/css/pintuer.css">
     <link rel="stylesheet" href="${rootAddr}view/css/admin.css">
     <script src="${rootAddr}view/js/jquery2.js"></script>   
@@ -23,7 +25,7 @@
 <body style="background-color:#f2f9fd;">
 <div class="header bg-main">
   <div class="logo margin-big-left fadein-top">
-    <h1><img src="${rootAddr}view/images/y.jpg" class="radius-circle rotate-hover" height="50" alt="" />票价管理系统</h1>
+    <h1><img src="${rootAddr}view/images/y.jpg" class="radius-circle rotate-hover" height="50" alt="" />南宁轨道交通票价管理系统</h1>
   </div>
   <div class="head-l"><a class="button button-little bg-green" href=""><span class="icon-home"></span> 前台首页</a> &nbsp;&nbsp;<a class="button button-little bg-red" href="javascript:quit();"><span class="icon-power-off"></span> 退出登录</a> </div>
 </div>
@@ -71,8 +73,8 @@ $(function(){
 });
 </script>
 <ul class="bread">
-  <li><a href="${rootAddr}/view/right.vm" target="right" class="icon-home"> 首页</a></li>
-  <li><a href="javascript:void(0);" id="a_leader_txt">票价管理系统</a></li>
+  <li><a href="javascript:void(0);" target="right" class="icon-home" target="_self"> 首页</a></li>
+  <li><a href="javascript:void(0);" id="a_leader_txt">南宁轨道交通票价管理系统</a></li>
 </ul>
 <div class="admin">
   <iframe scrolling="yes" rameborder="0" src="${rootAddr}/view/right.vm" name="right" width="100%" height="100%"></iframe>

@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="renderer" content="webkit">
     <title>登录</title>  
+    <link rel="shortcut icon" href="${rootAddr}view/images/favicon.ico"/>
+	<link rel="bookmark" href="${rootAddr}view/images/favicon.ico"/>
     <link rel="stylesheet" href="${rootAddr}view/css/pintuer.css">
     <link rel="stylesheet" href="${rootAddr}view/css/admin.css">
     <script src="${rootAddr}view/js/jquery2.js"></script>
@@ -21,6 +23,49 @@
     	alert('返回信息：${exceptionMessage}');
     </script>
     #end
+    
+    
+    
+    <script>
+			var code; //在全局 定义验证码
+			function createCode()
+			{ //创建验证码函数
+			 code = "";
+			 var codeLength =4;//验证码的长度
+			 var selectChar = new Array(0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f','g','h','i','j','k',
+			  'l','m','n','o','p','q','r','s','t','u','v','w','x','y','z');//所有候选组成验证码的字符，当然也可以用中文的
+			 for(var i=0;i<codeLength;i++)
+			 { 
+			 var charIndex =Math.floor(Math.random()*36);
+			 code +=selectChar[charIndex]; 
+			 }
+			// 设置验证码的显示样式，并显示
+			 document.getElementById("discode").style.fontFamily="Fixedsys"; //设置字体
+			 document.getElementById("discode").style.letterSpacing="5px"; //字体间距
+			 document.getElementById("discode").style.color="#0ab000"; //字体颜色
+			 document.getElementById("discode").innerHTML=code; // 显示
+			}
+			function but()
+			{
+				 //验证验证码输入是否正确
+				 var val1=document.getElementById("t1").value;
+				 if(val1 == '') {
+				 	return true;
+				 }
+				 var val2=code;
+				 if(val1!=val2){
+				   alert("验证码错误!");
+				   document.getElementById('t1').value="";
+				   return false;
+				 }
+				 return true;
+			}
+		</script>
+		<script>
+			$(function() {
+				createCode();
+			});
+		</script>
 </head>
 <body>
 <div class="bg"></div>
@@ -46,15 +91,18 @@
                             <span class="icon icon-key margin-small"></span>
                         </div>
                     </div>
-                    <!--div class="form-group">
+                    <div class="form-group">
                         <div class="field">
-                            <input type="text" class="input input-big" name="code" placeholder="填写右侧的验证码" data-validate="required:请填写右侧的验证码" />
-                           <img src="images/passcode.jpg" alt="" width="100" height="32" class="passcode" style="height:43px;cursor:pointer;" onclick="this.src=this.src+'?'">  
-                                                   
+                            <input type="text" class="input input-big" name="code" placeholder="验证码" data-validate="required:请填写验证码" id="t1"/>
+                       		<span class="icon margin-small"></span>
                         </div>
-                    </div-->
+                    </div>
+                    <div align="right">
+		                    <span id="discode"></span> 
+		                    <input type="button" value="换一换" class="c" style="height:20px;"onClick="createCode()">
+		            </div>    
                 </div>
-                <div style="padding:30px;"><input type="submit" class="button button-block bg-main text-big input-big" value="登录"></div>
+                <div style="padding:30px;"><input type="submit" class="button button-block bg-main text-big input-big" value="登录" onclick="return but();"></div>
             </div>
             </form>          
         </div>
