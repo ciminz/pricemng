@@ -219,7 +219,7 @@
 	  </div>
 	  
    <div class="subway-map" data-columns="44" data-rows="40" data-cellSize="85" data-legendId="legend" data-textClass="text" data-gridNumbers="false" data-grid="false" data-lineWidth="6">   
-    <ul data-color="green" data-label="一号线">  
+    <ul data-color="green" data-label="一号线">    
          <li data-coords="2,4" data-marker="interchange" data-labelPos="S"><a target="_self" href="javascript:setOd(10101);">石埠</a></li>    
          <li data-coords="2.5,4" data-marker="interchange" data-labelPos="N" ><a href="javascript:setOd(10102);">南职院</a></li>   
          <li data-coords="3,4" data-marker="interchange" data-labelPos="S" ><a href="javascript:setOd(10103);">鹏飞路</a></li>  
