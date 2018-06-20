@@ -408,6 +408,43 @@ public class PriceManageAction extends ActionSupport{
 		return null;
 	}
 	
+
+	public String createPriceTable() {
+		this.beanInit();
+	    List<List<String>> priceList = new ArrayList<List<String>>();
+		DataBuilder dataBuilder = new DataBuilder();
+		for(int i = 0; i < dataBuilder.lines.size(); i++) {
+			Station desStation = dataBuilder.lines.get(i);
+			List<PriceInfo> priceInfoList = new ArrayList<PriceInfo>();
+			for(int j = 0; j <= i; j++) {
+				Station oriStation =  dataBuilder.lines.get(j);
+				PriceInfoExample priceInfoExcample = new PriceInfoExample();
+				priceInfoExcample.createCriteria()
+				.andOriStationNoEqualTo(oriStation.getStationNo())
+				.andDesStationNoEqualTo(desStation.getStationNo());
+				List<PriceInfo> priceInfoTmpList = priceInfoMapper.selectByExample(priceInfoExcample);
+				if(priceInfoTmpList != null && priceInfoTmpList.size() != 0) {
+					System.out.println(priceInfoTmpList.get(0).getPrice());
+					priceInfoList.add(priceInfoTmpList.get(0));
+				}
+			}
+			
+			int size = dataBuilder.lines.size();
+			List<String> priceRow = new ArrayList<String>();
+			priceRow.add(desStation.getName());
+			for(PriceInfo priceInfo : priceInfoList) {
+                priceRow.add(priceInfo.getPrice());  
+            }
+			
+			for(int k = priceRow.size(); k < size; k++) {
+				priceRow.add("");
+			}
+			priceList.add(priceRow);
+		}
+		
+		return "success";
+	}
+	
 	/**
 	 * 审核
 	 * @return
@@ -559,4 +596,5 @@ public class PriceManageAction extends ActionSupport{
 		ServletActionContext.getRequest().setAttribute("oriLineNo", this.getOriLineNo());
 		return this.query4User();
 	}
+	        	
 }

@@ -7,11 +7,17 @@
     <link rel="icon" href="img/logo.png"/>
     <title>票价管理系统</title>
     <link href="css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="${rootAddr}view/css/pintuer.css">
+    <link rel="stylesheet" href="${rootAddr}view/css/admin.css">
 
     <!--[if lt IE 9]>
   <script src="js/html5shiv.min.js"></script>
   <script src="js/respond.min.js"></script>
   <![endif]-->
+  
+    <script src="${rootAddr}view/js/jquery.js"></script>
+    <script src="${rootAddr}view/js/jquery2.js"></script>
+    <script src="${rootAddr}view/js/pintuer.js"></script>  
     <style>
         html,body {
             height: 100%;
@@ -100,10 +106,114 @@
             color: white;
         }
     </style>
+    
+    <script>
+       $(document).ready(function(){
+    		getLine();
+		});
+		
+		function seeIsIe() {
+			var isIe = !-[1,];
+			if(isIe) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		
+    	function getLine() {
+			$.post("${rootAddr}ajax/ajaxFindLine",{},function(data) {
+				var xml;
+				if (seeIsIe()) {
+					xml = new ActiveXObject("Microsoft.XMLDOM");
+					xml.async = false;
+					xml.loadXML(data);
+				} else {
+					
+					xml = data;
+				}
+				var messageHead = $("messageHead",xml).text();
+				
+				if(messageHead == '0') {
+					var count = $("count",xml).text();
+					if(count == '0') {
+						return;
+					}else {
+						$("#lineNo").children("[value != '-1']").remove();
+						$("lineInfo",xml).each(function() {
+							var lineNo = $("lineNo",this).text();
+							var lineNme = $("lineNme",this).text();
+							if(lineNo == '${oriLineNo}') {
+								$("<option value=" + lineNo +" selected='selected'>" + lineNme + "</option>").appendTo($("#oLineNo"));
+							}else {
+								$("<option value=" + lineNo +">" + lineNme + "</option>").appendTo($("#oLineNo"));
+							}
+							
+							if(lineNo == '${desLineNo}') {
+								$("<option value=" + lineNo +" selected='selected'>" + lineNme + "</option>").appendTo($("#dLineNo"));
+							}else {
+								$("<option value=" + lineNo +">" + lineNme + "</option>").appendTo($("#dLineNo"));
+							}
+							
+						})
+					}
+				}else {
+					alert('获取线路信息错误，请检查格式！');
+				}
+			});
+		}
+		
+    </script>
 </head>
 <body>
+<div class="body-content">
+    <form method="post" class="form-x" action="${rootAddr}distanceManage/distanceQueryByCondition" id="form1">
+      <table style="width:100%;margin:auto;">
+      <tr>
+      <td width="55%">
+      <div class="form-group">
+        <div class="label">
+          <label>起始线路：</label>
+        </div>
+        <div class="field">
+	        <select name="oriLineNo" class="input w50" id="oLineNo">
+	         	<option value="-1">请选择</option>
+	        </select>
+	        <div class="tips"></div>
+        </div>
+      </div> 
+      </td>
+      <td>
+      <div class="form-group">
+        <div class="label">
+          <label>目的线路：</label>
+        </div>
+        <div class="field">
+        	<select name="desLineNo" class="input w50" id="dLineNo">
+	         	<option value="-1">请选择</option>
+	        </select>
+	        <div class="tips"></div>
+        </div>
+      </div>
+      </td></tr>
+      </table>
+ 	</div>
+ 	
+    <div class="form-group">
+        <div class="label">
+          <label></label>
+        </div>
+        <div class="field" width="100%" align="center">
+          <button class="button bg-main icon-search" type="submit"> 查询</button>
+          <button class="button bg-main" type="button" onclick="reset()"> 重置</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
 <div class="box">
-    
+   
 </div>
 
 

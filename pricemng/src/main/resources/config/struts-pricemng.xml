@@ -215,6 +215,10 @@
 		
 		<action name="createPriceMap" class="com.nngdjt.pricemng.action.PriceManageAction" method="createPriceMap"/>
 		
+		<action name="createPriceTable" class="com.nngdjt.pricemng.action.PriceManageAction" method="createPriceTable">
+			<result name="success">/view/right.vm</result>
+		</action>
+		
 		<action name="priceToAuditView" class="com.nngdjt.pricemng.action.PriceManageAction" method="auditView">
 			<result name="success">/view/price/price_audit.vm</result>
 		</action>
