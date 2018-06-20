@@ -139,6 +139,11 @@
 			<result name="input">/view/tips_err.vm</result>
 		</action> 
 		
+		<action name="stationAddBatch" class="com.nngdjt.pricemng.action.StationManageAction" method="addBatch">
+			<result name="success">/view/tips_suc.vm</result>
+			<result name="input">/view/tips_err.vm</result>
+		</action> 
+		
 		
 		<action name="stationUpd" class="com.nngdjt.pricemng.action.StationManageAction" method="upd">
 			<result name="success">/view/tips_suc.vm</result>

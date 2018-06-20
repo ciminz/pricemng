@@ -100,14 +100,88 @@
 	
 	});
 	
+	function fileSubmit() {
+		var file = document.getElementById('url1').value;
+		if(file == '') {
+			alert('请选择文件');
+			return;
+		}
+		document.getElementById('form1').submit();
+	}
+</script>
+
+<script>
+	function addTypeChange() {
+		var oprTyp = $("#addType").val();
+		if(oprTyp == '0') {
+			$("#addType_single").show();
+			$("#addType_batch").hide();
+			$("#form1").attr('action',"${rootAddr}stationManage/stationAdd");
+			$("#form1").attr('enctype',"text/plain");
+		}else if(oprTyp == '1') {
+			$("#addType_single").hide();
+			$("#addType_batch").show();
+			$("#form1").attr('action',"${rootAddr}stationManage/stationAddBatch");
+			$("#form1").attr('enctype',"multipart/form-data");
+		}
+	}
+	
+	function downloadTemp() {
+			document.getElementById('downloadFileName').value = 'station_template.xls';
+			document.getElementById('form_download').submit();
+		}
 </script>
 
 </head>
 <body>
 <div class="panel admin-panel">
+	 <form method="post" action="${rootAddr}download/downloadFile" id="form_download">
+	  	<input type="hidden" name="subPath" value="template"/>
+	  	<input type="hidden" name="fileName" id="downloadFileName"/>
+	  </form>  	
+	
   <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>新增站点</strong></div>
+ 
   <div class="body-content">
     <form method="post" class="form-x" action="${rootAddr}stationManage/stationAdd" id="form1">  
+    <div class="form-group">
+        <div class="label">
+          <label>新增方式：</label>
+        </div>
+        <div class="field">
+	        <select class="input w50" id="addType" onchange="addTypeChange()">
+			    <option value="0">单条</option>
+			    <option value="1">批量</option>
+			</select>
+	        <div class="tips"></div>
+        </div>
+ 	 </div>
+ 	 <div id="addType_batch" style="display:none;">
+      	<div class="body-content">
+      		<div class="form-group">
+	        <div class="label">
+	          <label>站点数据文件：</label>
+	        </div>
+	        <div class="field">
+	          <input type="file" name="file" id="btn_file" style="display:none" onchange="javascript:document.getElementById('url1').value=document.getElementById('btn_file').value;">
+	          <input type="text" id="url1" name="img" class="input tips" style="width:50%; float:left;"  value=""  data-toggle="hover" data-place="right"/>
+	          <input type="button" class="button bg-blue margin-left" id="image1" value="+ 选择文件"  style="float:left;" onclick="javascript:document.getElementById('btn_file').click();">
+	          <div class="tipss"><a href="javascript:downloadTemp();" style="color:green;">导入模板</a></div>
+	        </div>
+	      </div>  
+	      <div class="form-group">
+	        <div class="label">
+	          <label></label>
+	        </div>
+	        <div class="field">
+	          <button class="button bg-main icon-check-square-o" type="submit" id="submitBtn2" onclick="fileSubmit()"> 提交</button>
+	        </div>
+	      </div> 
+      	</div>
+      </div>
+      
+      <div id="addType_single" style="display:block;">
+      	<div class="body-content">
       <div class="form-group">
         <div class="label">
           <label>站点编号：</label>
@@ -188,7 +262,7 @@
       </div>
       <div class="form-group">
         <div class="label">
-          <label>换成站运营站编号：</label>
+          <label>换乘站运营站编号：</label>
         </div>
         <div class="field">
           <input type="text" class="input w50" value="" name="stationInfo.exchangeStNo" id="exchangeStNo"/>
@@ -197,7 +271,7 @@
       </div>
       <div class="form-group">
         <div class="label">
-          <label>换成站所属线路编号：</label>
+          <label>换乘站所属线路编号：</label>
         </div>
         <div class="field">
 	        <select name="stationInfo.exchangeStLiNo" class="input w50" id="lineNo2">
@@ -222,6 +296,8 @@
         <div class="field">
           <button class="button bg-main icon-check-square-o" type="submit" id="submitBtn"> 提交</button>
         </div>
+      </div>
+      </div>
       </div>
     </form>
   </div>
