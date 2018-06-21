@@ -3,6 +3,8 @@ package com.nngdjt.pricemng.servlet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
+import com.nngdjt.pricemng.base.DataBuilder;
+
 /**
  * Servlet implementation class ApplicationCongfigServlet
  */

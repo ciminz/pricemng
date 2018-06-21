@@ -6,8 +6,10 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -411,45 +413,107 @@ public class PriceManageAction extends ActionSupport{
 
 	public String createPriceTable() {
 		this.beanInit();
-	    List<List<String>> priceList = new ArrayList<List<String>>();
-		DataBuilder dataBuilder = new DataBuilder();
-		for(int i = 0; i < dataBuilder.lines.size(); i++) {
-			Station desStation = dataBuilder.lines.get(i);
-			List<PriceInfo> priceInfoList = new ArrayList<PriceInfo>();
-			for(int j = 0; j <= i; j++) {
-				Station oriStation =  dataBuilder.lines.get(j);
-				PriceInfoExample priceInfoExcample = new PriceInfoExample();
-				priceInfoExcample.createCriteria()
-				.andOriStationNoEqualTo(oriStation.getStationNo())
-				.andDesStationNoEqualTo(desStation.getStationNo());
-				List<PriceInfo> priceInfoTmpList = priceInfoMapper.selectByExample(priceInfoExcample);
-				if(priceInfoTmpList != null && priceInfoTmpList.size() != 0) {
-					System.out.println(priceInfoTmpList.get(0).getPrice());
-					priceInfoList.add(priceInfoTmpList.get(0));
+		ServletActionContext.getRequest().setAttribute("iframelarge", "1");
+		List<List<String>> priceList = null;
+		if(this.getOriLineNo() == null && this.getDesLineNo() == null) {
+			priceList = (List<List<String>>)ServletActionContext.getServletContext().getAttribute("priceList");
+			ServletActionContext.getRequest().setAttribute("priceList", priceList);
+		}else {
+		    priceList = new ArrayList<List<String>>();
+			DataBuilder dataBuilder = (DataBuilder)ServletActionContext.getServletContext().getAttribute("dataBuilder");
+			Set<String> stationNoSet = new HashSet<String>();
+			
+			List<Station> stationLst = new ArrayList<Station>();
+			Set<String> stationNoAdded = new HashSet<String>();
+			
+			StationInfoExample stationInfoExample = new StationInfoExample();
+			stationInfoExample.createCriteria().andLineNoEqualTo(this.getOriLineNo());
+			List<StationInfo> stationInfoList = this.stationInfoMapper.selectByExample(stationInfoExample);
+			for(StationInfo sti : stationInfoList) {
+				if("Y".equals(sti.getExchangeFlg())) {
+					stationNoSet.add(sti.getExchangeStNo());
+					continue;
+				}
+				stationNoSet.add(sti.getStationNo());
+			}
+			
+			for(Station st: dataBuilder.lines) {
+				if(stationNoSet.contains(st.getStationNo())) {
+					if(stationNoAdded.contains(st.getStationNo()) || !st.getLineNo().equals(this.getOriLineNo())) {
+						continue;
+					}
+					stationLst.add(st);
+					stationNoAdded.add(st.getStationNo());
 				}
 			}
 			
-			int size = dataBuilder.lines.size();
-			List<String> priceRow = new ArrayList<String>();
-			priceRow.add(desStation.getName());
-			for(PriceInfo priceInfo : priceInfoList) {
-                priceRow.add(priceInfo.getPrice());  
-            }
+			stationInfoExample = new StationInfoExample();
+			stationInfoExample.createCriteria().andLineNoEqualTo(this.getDesLineNo());
+			stationInfoList = this.stationInfoMapper.selectByExample(stationInfoExample);
+			for(StationInfo sti : stationInfoList) {
+				if("Y".equals(sti.getExchangeFlg())) {
+					stationNoSet.add(sti.getExchangeStNo());
+					continue;
+				}
+				stationNoSet.add(sti.getStationNo());
+			}
+			for(StationInfo sti : stationInfoList) {
+				if("Y".equals(sti.getExchangeFlg())) {
+					stationNoSet.add(sti.getExchangeStNo());
+					continue;
+				}
+				stationNoSet.add(sti.getStationNo());
+			}
+			for(Station st: dataBuilder.lines) {
+				if(stationNoSet.contains(st.getStationNo())) {
+					if(stationNoAdded.contains(st.getStationNo()) || !st.getLineNo().equals(this.getDesLineNo())) {
+						continue;
+					}
+					stationLst.add(st);
+					stationNoAdded.add(st.getStationNo());
+				}
+			}
 			
-			for(int k = priceRow.size(); k <= size; k++) {
-				priceRow.add("");
+			
+			for(int i = 0; i < stationLst.size(); i++) {
+				Station desStation = stationLst.get(i);
+				List<PriceInfo> priceInfoList = new ArrayList<PriceInfo>();
+				for(int j = 0; j <= i; j++) {
+					Station oriStation =  stationLst.get(j);
+					PriceInfoExample priceInfoExcample = new PriceInfoExample();
+					priceInfoExcample.createCriteria()
+					.andOriStationNoEqualTo(oriStation.getStationNo())
+					.andDesStationNoEqualTo(desStation.getStationNo());
+					List<PriceInfo> priceInfoTmpList = priceInfoMapper.selectByExample(priceInfoExcample);
+					if(priceInfoTmpList != null && priceInfoTmpList.size() != 0) {
+						System.out.println(priceInfoTmpList.get(0).getPrice());
+						priceInfoList.add(priceInfoTmpList.get(0));
+					}
+				}
+				
+				int size = stationLst.size();
+				List<String> priceRow = new ArrayList<String>();
+				priceRow.add(desStation.getName());
+				for(PriceInfo priceInfo : priceInfoList) {
+	                priceRow.add(priceInfo.getPrice());  
+	            }
+				
+				for(int k = priceRow.size(); k <= size; k++) {
+					priceRow.add("");
+				}
+				priceList.add(priceRow);
+			}
+			
+			//设置尾行
+			List<String> priceRow = new ArrayList<String>();
+			priceRow.add("");
+			for(Station station : stationLst) {
+			   priceRow.add(station.getName());  
 			}
 			priceList.add(priceRow);
+			ServletActionContext.getRequest().setAttribute("priceList", priceList);
 		}
-		
-		//设置尾行
-		List<String> priceRow = new ArrayList<String>();
-		priceRow.add("");
-		for(Station station : dataBuilder.lines) {
-		   priceRow.add(station.getName());  
-		}
-		priceList.add(priceRow);
-		ServletActionContext.getRequest().setAttribute("priceList", priceList);
+
 		return "success";
 	}
 	
@@ -581,6 +645,8 @@ public class PriceManageAction extends ActionSupport{
 			return ExceptionProcess.exceptionProcess("票价更新失败","priceManage/priceQueryByCondition");
 		}
 		
+		this.initPriceTable();
+		
 		ServletActionContext.getRequest().setAttribute("returnPage", "priceManage/priceQueryByCondition");
 		return "success";
 	}
@@ -604,5 +670,48 @@ public class PriceManageAction extends ActionSupport{
 		ServletActionContext.getRequest().setAttribute("oriLineNo", this.getOriLineNo());
 		return this.query4User();
 	}
-	        	
+	
+	
+	public void initPriceTable() {
+		this.beanInit();
+	    List<List<String>> priceList = new ArrayList<List<String>>();
+		DataBuilder dataBuilder = new DataBuilder();
+		for(int i = 0; i < dataBuilder.lines.size(); i++) {
+			Station desStation = dataBuilder.lines.get(i);
+			List<PriceInfo> priceInfoList = new ArrayList<PriceInfo>();
+			for(int j = 0; j <= i; j++) {
+				Station oriStation =  dataBuilder.lines.get(j);
+				PriceInfoExample priceInfoExcample = new PriceInfoExample();
+				priceInfoExcample.createCriteria()
+				.andOriStationNoEqualTo(oriStation.getStationNo())
+				.andDesStationNoEqualTo(desStation.getStationNo());
+				List<PriceInfo> priceInfoTmpList = priceInfoMapper.selectByExample(priceInfoExcample);
+				if(priceInfoTmpList != null && priceInfoTmpList.size() != 0) {
+					System.out.println(priceInfoTmpList.get(0).getPrice());
+					priceInfoList.add(priceInfoTmpList.get(0));
+				}
+			}
+			
+			int size = dataBuilder.lines.size();
+			List<String> priceRow = new ArrayList<String>();
+			priceRow.add(desStation.getName());
+			for(PriceInfo priceInfo : priceInfoList) {
+                priceRow.add(priceInfo.getPrice());  
+            }
+			
+			for(int k = priceRow.size(); k <= size; k++) {
+				priceRow.add("");
+			}
+			priceList.add(priceRow);
+		}
+		
+		//设置尾行
+		List<String> priceRow = new ArrayList<String>();
+		priceRow.add("");
+		for(Station station : dataBuilder.lines) {
+		   priceRow.add(station.getName());  
+		}
+		priceList.add(priceRow);
+		ServletActionContext.getRequest().setAttribute("priceList", priceList);
+	}
 }

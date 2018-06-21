@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
+import org.apache.struts2.ServletActionContext;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -17,9 +18,13 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.nngdjt.pricemng.base.DataBuilder;
+import com.nngdjt.pricemng.base.Station;
 import com.nngdjt.pricemng.entity.Menuitem;
 import com.nngdjt.pricemng.entity.MenuitemRoleExample;
 import com.nngdjt.pricemng.entity.MenuitemRoleKey;
+import com.nngdjt.pricemng.entity.PriceInfo;
+import com.nngdjt.pricemng.entity.PriceInfoExample;
 import com.nngdjt.pricemng.entity.Role;
 import com.nngdjt.pricemng.entity.User;
 import com.nngdjt.pricemng.entity.UserExample;
@@ -27,6 +32,7 @@ import com.nngdjt.pricemng.entity.UserRoleExample;
 import com.nngdjt.pricemng.entity.UserRoleKey;
 import com.nngdjt.pricemng.mapper.MenuitemMapper;
 import com.nngdjt.pricemng.mapper.MenuitemRoleMapper;
+import com.nngdjt.pricemng.mapper.PriceInfoMapper;
 import com.nngdjt.pricemng.mapper.RoleMapper;
 import com.nngdjt.pricemng.mapper.UserMapper;
 import com.nngdjt.pricemng.mapper.UserRoleMapper;
@@ -54,12 +60,15 @@ public class InitRoleServlet extends HttpServlet {
 	
 	private MenuitemRoleMapper menuitemRoleMapper;
 	
+	private PriceInfoMapper priceInfoMapper;
+	
 	private void beanInit() {
 		this.menuitemMapper = (MenuitemMapper)LocalBeanFactory.get(MenuitemMapper.class);
 		this.userMapper = (UserMapper)LocalBeanFactory.get(UserMapper.class);
 		this.roleMapper = (RoleMapper)LocalBeanFactory.get(RoleMapper.class);
 		this.userRoleMapper = (UserRoleMapper)LocalBeanFactory.get(UserRoleMapper.class);
 		this.menuitemRoleMapper = (MenuitemRoleMapper)LocalBeanFactory.get(MenuitemRoleMapper.class);
+		this.priceInfoMapper = (PriceInfoMapper)LocalBeanFactory.get(PriceInfoMapper.class);
 	}
 
 	@Override
@@ -72,6 +81,7 @@ public class InitRoleServlet extends HttpServlet {
 		this.initRole();
 		this.initRoleMenu();
 		this.initUserRole();
+		this.initPriceTable();
 //		//查看是否存在ID为1的角色
 //		Role role = this.roleMapper.selectByPrimaryKey(1L);
 //		if(role == null) {
@@ -265,5 +275,50 @@ public class InitRoleServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void initPriceTable() {
+		this.beanInit();
+	    List<List<String>> priceList = new ArrayList<List<String>>();
+		DataBuilder dataBuilder = new DataBuilder();
+		this.getServletContext().setAttribute("dataBuilder", dataBuilder);
+		for(int i = 0; i < dataBuilder.lines.size(); i++) {
+			Station desStation = dataBuilder.lines.get(i);
+			List<PriceInfo> priceInfoList = new ArrayList<PriceInfo>();
+			for(int j = 0; j <= i; j++) {
+				Station oriStation =  dataBuilder.lines.get(j);
+				PriceInfoExample priceInfoExcample = new PriceInfoExample();
+				priceInfoExcample.createCriteria()
+				.andOriStationNoEqualTo(oriStation.getStationNo())
+				.andDesStationNoEqualTo(desStation.getStationNo());
+				List<PriceInfo> priceInfoTmpList = priceInfoMapper.selectByExample(priceInfoExcample);
+				if(priceInfoTmpList != null && priceInfoTmpList.size() != 0) {
+					System.out.println(priceInfoTmpList.get(0).getPrice());
+					priceInfoList.add(priceInfoTmpList.get(0));
+				}
+			}
+			
+			int size = dataBuilder.lines.size();
+			List<String> priceRow = new ArrayList<String>();
+			priceRow.add(desStation.getName());
+			for(PriceInfo priceInfo : priceInfoList) {
+                priceRow.add(priceInfo.getPrice());  
+            }
+			
+			for(int k = priceRow.size(); k <= size; k++) {
+				priceRow.add("");
+			}
+			priceList.add(priceRow);
+		}
+		
+		//设置尾行
+		List<String> priceRow = new ArrayList<String>();
+		priceRow.add("");
+		for(Station station : dataBuilder.lines) {
+		   priceRow.add(station.getName());  
+		}
+		priceList.add(priceRow);
+		this.getServletContext().setAttribute("priceList", priceList);
+		
 	}
 }

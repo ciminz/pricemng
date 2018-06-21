@@ -168,11 +168,8 @@
 </head>
 <body>
 <div class="body-content">
-    <form method="post" class="form-x" action="${rootAddr}distanceManage/distanceQueryByCondition" id="form1">
-      <table style="width:100%;margin:auto;">
-      <tr>
-      <td width="55%">
-      <div class="form-group">
+    <form method="post" class="form-x" action="${rootAddr}/priceManage/createPriceTable" id="form1">
+      <div class="form-group" style="width:60%">
         <div class="label">
           <label>起始线路：</label>
         </div>
@@ -183,9 +180,7 @@
 	        <div class="tips"></div>
         </div>
       </div> 
-      </td>
-      <td>
-      <div class="form-group">
+      <div class="form-group" style="width:60%">
         <div class="label">
           <label>目的线路：</label>
         </div>
@@ -196,11 +191,9 @@
 	        <div class="tips"></div>
         </div>
       </div>
-      </td></tr>
-      </table>
  	</div>
  	
-    <div class="form-group">
+    <div class="form-group" style="width:25%">
         <div class="label">
           <label></label>
         </div>
@@ -219,14 +212,19 @@
 <div class="box2">
    <table border="1" style="table-layout:fixed;">
    		 #set($index1=1)
+   		 #set($s=$priceList.size()*3)
    		 #foreach($l in $priceList)
    		 	<tr>
    		 		 #set($index2=1)
    		 		 #foreach($d in $l)
    		 		    #if($index1 == $priceList.size() || $index2 == 1)
-   		 		 		<td style="font-size:1%; text-align:right" width=500px>$!d</td>
+   		 		      #if($index2 == 1)
+   		 		 		<td style="font-size:1%; text-align:right" width=${s}px>$!d</td>
+   		 		 	  #else
+   		 		 	  	<td style="font-size:1%; text-align:center" width=${s}px>$!d</td>
+   		 		 	  #end
    		 		 	#else
-   		 		 		<td style="font-size:1%; text-align:center" width=500px>$!d</td>
+   		 		 		<td style="font-size:1%; text-align:center" width=5px>$!d</td>
    		 		 	#end
    		 		 	#set($index2=$index2+1)	
    		 		 #end

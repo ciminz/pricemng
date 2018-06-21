@@ -23,12 +23,28 @@ public class Station {
       
     public byte lineno =0;//线路名称
     
-    //本站到某一个目标站(key)所经过的所有站集合(value)，保持前后顺序  
+    private String lineNo;
+    
+    public String getLineNo() {
+		return lineNo;
+	}
+
+	public void setLineNo(String lineNo) {
+		this.lineNo = lineNo;
+	}
+
+	//本站到某一个目标站(key)所经过的所有站集合(value)，保持前后顺序  
     private Map<Station,LinkedHashSet<Station>> orderSetMap = new HashMap<Station,LinkedHashSet<Station>>();  
     
     public Station (String stationNo,String name) {
     	this.stationNo = stationNo;
     	this.name = name;
+    }
+    
+    public Station (String stationNo,String name,String lineNo) {
+    	this.stationNo = stationNo;
+    	this.name = name;
+    	this.lineNo = lineNo;
     }
     
     public Station (String name){  

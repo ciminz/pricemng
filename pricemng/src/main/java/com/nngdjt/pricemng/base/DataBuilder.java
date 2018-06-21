@@ -61,7 +61,7 @@ public class DataBuilder {
 		        int index = 0;
 		        for(String s : lineArr){ 
 		        	String stationNo = lineStArr[index];
-		        	Station st = new Station(stationNo,s);
+		        	Station st = new Station(stationNo,s,lineInfo.getLineNo());
 		        	line.add(st);
 		            lines.add(st); 
 		            index++;

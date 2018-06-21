@@ -71,13 +71,25 @@ $(function(){
 		$(this).addClass("on");
   })
 });
+
+function f() {
+	
+	var str = document.getElementById('iframepage').contentWindow.location.href;
+	if(str.search('createPriceTable') != -1) {
+		document.getElementById('iframepage').width="250%"
+		document.getElementById('iframepage').height="250%"
+	}else {
+		document.getElementById('iframepage').width="100%"
+		document.getElementById('iframepage').height="100%"
+	}
+}
 </script>
 <ul class="bread">
   <li><a href="javascript:void(0);" target="right" class="icon-home" target="_self"> 首页</a></li>
   <li><a href="javascript:void(0);" id="a_leader_txt">南宁轨道交通票价管理系统</a></li>
 </ul>
 <div class="admin">
-  <iframe scrolling="yes" rameborder="0" src="${rootAddr}/priceManage/createPriceTable" name="right" width="100%" height="100%"></iframe>
+  <iframe  id="iframepage" scrolling="auto" rameborder="0" src="${rootAddr}/priceManage/createPriceTable" name="right" width="100%" height="100%" onload="f()"></iframe>
 </div>
 </body>
 </html>
