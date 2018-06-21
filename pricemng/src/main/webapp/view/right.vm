@@ -212,8 +212,28 @@
     </form>
   </div>
 </div>
-<div class="box">
+<!--div class="box">
    
+</div-->
+
+<div class="box2">
+   <table border="1" style="table-layout:fixed;">
+   		 #set($index1=1)
+   		 #foreach($l in $priceList)
+   		 	<tr>
+   		 		 #set($index2=1)
+   		 		 #foreach($d in $l)
+   		 		    #if($index1 == $priceList.size() || $index2 == 1)
+   		 		 		<td style="font-size:1%; text-align:right" width=500px>$!d</td>
+   		 		 	#else
+   		 		 		<td style="font-size:1%; text-align:center" width=500px>$!d</td>
+   		 		 	#end
+   		 		 	#set($index2=$index2+1)	
+   		 		 #end
+   		 	</tr>
+   		 #set($index1=$index1+1)	
+   		 #end
+   </table>
 </div>
 
 

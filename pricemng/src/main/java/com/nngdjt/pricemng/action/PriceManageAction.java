@@ -436,12 +436,20 @@ public class PriceManageAction extends ActionSupport{
                 priceRow.add(priceInfo.getPrice());  
             }
 			
-			for(int k = priceRow.size(); k < size; k++) {
+			for(int k = priceRow.size(); k <= size; k++) {
 				priceRow.add("");
 			}
 			priceList.add(priceRow);
 		}
 		
+		//设置尾行
+		List<String> priceRow = new ArrayList<String>();
+		priceRow.add("");
+		for(Station station : dataBuilder.lines) {
+		   priceRow.add(station.getName());  
+		}
+		priceList.add(priceRow);
+		ServletActionContext.getRequest().setAttribute("priceList", priceList);
 		return "success";
 	}
 	
