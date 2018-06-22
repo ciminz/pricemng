@@ -13,7 +13,7 @@
 </head>
 <body>
 <div class="panel admin-panel">
-  <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>新增用户</strong></div>
+  <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>用户信息更新</strong></div>
   <div class="body-content">
     <form method="post" class="form-x" action="${rootAddr}userManage/userUpd">  
       <input type="hidden" name="user.id" value="$upduser.id"/>

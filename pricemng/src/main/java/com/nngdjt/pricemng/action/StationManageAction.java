@@ -174,7 +174,7 @@ public class StationManageAction extends ActionSupport{
 		stationInfoIntoDb.setStationNme(this.getStationInfo().getStationNme());
 		stationInfoIntoDb.setStationEnNme(this.getStationInfo().getStationEnNme());
 		stationInfoIntoDb.setLineNo(this.getStationInfo().getLineNo());
-		stationInfoIntoDb.setSortId(this.getStationInfo().getSortId());
+		stationInfoIntoDb.setSortId(this.getStationInfo().getStationNo().substring(1));
 		stationInfoIntoDb.setLocationX(this.getStationInfo().getLocationX());
 		stationInfoIntoDb.setLocationY(this.getStationInfo().getLocationY());
 		stationInfoIntoDb.setExchangeFlg(this.getStationInfo().getExchangeFlg());
@@ -357,7 +357,7 @@ public class StationManageAction extends ActionSupport{
 			stationInfo.setStationNme(stationNme);
 			stationInfo.setStationEnNme(stationEnNme);
 			stationInfo.setLineNo(lineNo);
-			stationInfo.setSortId(sortId);
+			stationInfo.setSortId(stationInfo.getStationNo().substring(1));
 			stationInfo.setLocationX(locationX);
 			stationInfo.setLocationY(locationY);
 			stationInfo.setExchangeFlg(exchangeFlg);

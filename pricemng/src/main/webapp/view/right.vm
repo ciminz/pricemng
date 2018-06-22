@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="img/logo.png"/>
     <title>票价管理系统</title>
@@ -219,12 +219,12 @@
    		 		 #foreach($d in $l)
    		 		    #if($index1 == $priceList.size() || $index2 == 1)
    		 		      #if($index2 == 1)
-   		 		 		<td style="font-size:1%; text-align:right" width=${s}px>$!d</td>
+   		 		 		<td style="text-align:right" width=${s}px>$!d</td>
    		 		 	  #else
-   		 		 	  	<td style="font-size:1%; text-align:center" width=${s}px>$!d</td>
+   		 		 	  	<td style="text-align:center" width=${s}px>$!d</td>
    		 		 	  #end
    		 		 	#else
-   		 		 		<td style="font-size:1%; text-align:center" width=5px>$!d</td>
+   		 		 		<td style="text-align:center" width=5px>$!d</td>
    		 		 	#end
    		 		 	#set($index2=$index2+1)	
    		 		 #end

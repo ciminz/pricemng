@@ -7,17 +7,22 @@ import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.nngdjt.pricemng.base.DataBuilder;
 import com.nngdjt.pricemng.base.ExceptionProcess;
+import com.nngdjt.pricemng.base.Station;
 import com.nngdjt.pricemng.entity.Menuitem;
 import com.nngdjt.pricemng.entity.MenuitemExample;
 import com.nngdjt.pricemng.entity.MenuitemRoleExample;
 import com.nngdjt.pricemng.entity.MenuitemRoleKey;
+import com.nngdjt.pricemng.entity.PriceInfo;
+import com.nngdjt.pricemng.entity.PriceInfoExample;
 import com.nngdjt.pricemng.entity.User;
 import com.nngdjt.pricemng.entity.UserExample;
 import com.nngdjt.pricemng.entity.UserRoleExample;
 import com.nngdjt.pricemng.entity.UserRoleKey;
 import com.nngdjt.pricemng.mapper.MenuitemMapper;
 import com.nngdjt.pricemng.mapper.MenuitemRoleMapper;
+import com.nngdjt.pricemng.mapper.PriceInfoMapper;
 import com.nngdjt.pricemng.mapper.UserMapper;
 import com.nngdjt.pricemng.mapper.UserRoleMapper;
 import com.opensymphony.xwork2.ActionSupport;
@@ -38,6 +43,8 @@ public class UserLoginAction extends ActionSupport{
 	private MenuitemMapper menuitemMapper;
 	
 	private MenuitemRoleMapper menuItemRoleMapper;
+	
+	private PriceInfoMapper priceInfoMapper;
 	
 	public String getName() {
 		return name;
@@ -60,6 +67,7 @@ public class UserLoginAction extends ActionSupport{
 		userRoleMapper = (UserRoleMapper)LocalBeanFactory.get(UserRoleMapper.class);
 		menuitemMapper = (MenuitemMapper)LocalBeanFactory.get(MenuitemMapper.class);
 		menuItemRoleMapper = (MenuitemRoleMapper)LocalBeanFactory.get(MenuitemRoleMapper.class);
+		priceInfoMapper = (PriceInfoMapper)LocalBeanFactory.get(PriceInfoMapper.class);
 	}
 	
 	public String execute() {
@@ -130,7 +138,7 @@ public class UserLoginAction extends ActionSupport{
 		}
 		
 		ServletActionContext.getRequest().getSession().setAttribute("menuItemListOfUser", menuItemListOfUser);
-		
+		initPriceTable();
 		return "success";
 	}
 	
@@ -138,5 +146,51 @@ public class UserLoginAction extends ActionSupport{
 		logger.info(">>>>>user logout...");
 		ServletActionContext.getRequest().getSession().removeAttribute("nowuser");
 		return "success";
+	}
+	
+	
+	public void initPriceTable() {
+		this.beanInit();
+	    List<List<String>> priceList = new ArrayList<List<String>>();
+		DataBuilder dataBuilder = new DataBuilder();
+		ServletActionContext.getRequest().getSession().setAttribute("dataBuilder", dataBuilder);
+		for(int i = 0; i < dataBuilder.lines.size(); i++) {
+			Station desStation = dataBuilder.lines.get(i);
+			List<PriceInfo> priceInfoList = new ArrayList<PriceInfo>();
+			for(int j = 0; j <= i; j++) {
+				Station oriStation =  dataBuilder.lines.get(j);
+				PriceInfoExample priceInfoExcample = new PriceInfoExample();
+				priceInfoExcample.createCriteria()
+				.andOriStationNoEqualTo(oriStation.getStationNo())
+				.andDesStationNoEqualTo(desStation.getStationNo());
+				List<PriceInfo> priceInfoTmpList = priceInfoMapper.selectByExample(priceInfoExcample);
+				if(priceInfoTmpList != null && priceInfoTmpList.size() != 0) {
+					System.out.println(priceInfoTmpList.get(0).getPrice());
+					priceInfoList.add(priceInfoTmpList.get(0));
+				}
+			}
+			
+			int size = dataBuilder.lines.size();
+			List<String> priceRow = new ArrayList<String>();
+			priceRow.add(desStation.getName());
+			for(PriceInfo priceInfo : priceInfoList) {
+                priceRow.add(priceInfo.getPrice());  
+            }
+			
+			for(int k = priceRow.size(); k <= size; k++) {
+				priceRow.add("");
+			}
+			priceList.add(priceRow);
+		}
+		
+		//设置尾行
+		List<String> priceRow = new ArrayList<String>();
+		priceRow.add("");
+		for(Station station : dataBuilder.lines) {
+		   priceRow.add(station.getName());  
+		}
+		priceList.add(priceRow);
+		ServletActionContext.getRequest().getSession().setAttribute("priceList", priceList);
+		
 	}
 }

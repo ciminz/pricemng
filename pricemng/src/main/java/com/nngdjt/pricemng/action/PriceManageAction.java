@@ -329,6 +329,8 @@ public class PriceManageAction extends ActionSupport{
 			e.printStackTrace();
 		}
 		
+		this.initPriceTable();
+		
 		return null;
 	}
 	
@@ -416,11 +418,11 @@ public class PriceManageAction extends ActionSupport{
 		ServletActionContext.getRequest().setAttribute("iframelarge", "1");
 		List<List<String>> priceList = null;
 		if(this.getOriLineNo() == null && this.getDesLineNo() == null) {
-			priceList = (List<List<String>>)ServletActionContext.getServletContext().getAttribute("priceList");
+			priceList = (List<List<String>>)ServletActionContext.getRequest().getSession().getAttribute("priceList");
 			ServletActionContext.getRequest().setAttribute("priceList", priceList);
 		}else {
 		    priceList = new ArrayList<List<String>>();
-			DataBuilder dataBuilder = (DataBuilder)ServletActionContext.getServletContext().getAttribute("dataBuilder");
+			DataBuilder dataBuilder = (DataBuilder)ServletActionContext.getRequest().getSession().getAttribute("dataBuilder");
 			Set<String> stationNoSet = new HashSet<String>();
 			
 			List<Station> stationLst = new ArrayList<Station>();
@@ -712,6 +714,6 @@ public class PriceManageAction extends ActionSupport{
 		   priceRow.add(station.getName());  
 		}
 		priceList.add(priceRow);
-		ServletActionContext.getRequest().setAttribute("priceList", priceList);
+		ServletActionContext.getRequest().getSession().setAttribute("priceList", priceList);
 	}
 }

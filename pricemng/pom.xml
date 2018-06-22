@@ -378,7 +378,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>test</finalName>
+		<finalName>pricemng</finalName>
 		<!-- <sourceDirectory>src/main</sourceDirectory> <testSourceDirectory>src/test</testSourceDirectory> -->
 		<plugins>
 			<plugin>

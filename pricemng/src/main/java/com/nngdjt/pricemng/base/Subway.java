@@ -249,7 +249,7 @@ public class Subway {
 
 		}
 		
-		fw.append("间距（米）:"+totaldis+" 票价:"+PriceUtil.getPrivce(totaldis)+"元\r\n");
+		fw.append("，乘距:"+totaldis+"米，票价:"+PriceUtil.getPrivce(totaldis)+"元\r\n");
 		
 		PriceInfoExample priceInfoExample = new PriceInfoExample();
 		priceInfoExample.createCriteria()
