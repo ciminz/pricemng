@@ -212,7 +212,7 @@
 <div class="box2">
    <table border="1" style="table-layout:fixed;">
    		 #set($index1=1)
-   		 #set($s=$priceList.size()*3)
+   		 #set($s=$priceList.size()*3.5)
    		 #foreach($l in $priceList)
    		 	<tr>
    		 		 #set($index2=1)
