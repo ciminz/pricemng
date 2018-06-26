@@ -187,7 +187,7 @@
     #set($index=$index + 1)
     #end 
      <tr>
-        <td colspan="9"><div class="pagelist"> <a onclick="script:changePage('f');">首页</a> <a onclick="script:changePage('p')">上一页</a> <a onclick="script:changePage('n')">下一页</a><a onclick="script:changePage('l');">尾页</a> 共${totalPageSize}页</div></td>
+        <td colspan="10"><div class="pagelist"> <a onclick="script:changePage('f');">首页</a> <a onclick="script:changePage('p')">上一页</a> <a onclick="script:changePage('n')">下一页</a><a onclick="script:changePage('l');">尾页</a> 共${totalPageSize}页</div></td>
       </tr>
   </table>
 </div>

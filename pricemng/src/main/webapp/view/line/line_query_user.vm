@@ -31,6 +31,11 @@
     		
     		document.getElementById("form1").submit();
     	}
+    	
+    	function station(lineId) {
+			document.getElementById('lineNo3').value=lineId;   
+			document.getElementById('form3').submit(); 		
+    	}
     </script>
 </head>
 <body>
@@ -41,6 +46,9 @@
       <input type="hidden" name="nowpage"  value="${nowpage}" id="nowpagetxt"/> 
       <input type="hidden" name="pagesize"  value="5" /> 
       <input type="hidden" name="totolpagesize"  value="${totalPageSize}" /> 
+</form>
+<form method="post" class="form-x" action="${rootAddr}stationManage/stationQueryByConditionUser" id="form3">
+	<input type="hidden" name="stationInfo.lineNo" id="lineNo3"/>
 </form>
 <div class="panel admin-panel">
   <div class="panel-head"><strong class="icon-reorder"> 线路信息列表</strong></div>
@@ -55,7 +63,7 @@
       <th>英文名</th>
       <th>颜色</th>
       <th>描述</th>      
-      <!--th width="250">操作</th-->
+      <th width="250">操作</th>
     </tr>
     #set($index=1)
     #foreach($l in $queryResult)
@@ -66,16 +74,16 @@
       <td>$!l.lineEnNme</td>
       <td>$!l.lineColor</td>
       <td>$!l.lineDes</td>
-      <!--td>
+      <td>
       <div class="button-group">
-       <a class="button border-red" href="javascript:void(0);" onclick="userdel('${l.id}')"><span class="icon-trash-o"></span>删除</a>
+       <a class="button border-blue" href="javascript:void(0);" onclick="station('${l.lineNo}')"><span class="icon-search"></span>站点明细</a>
       </div>
-      </td-->
+      </td>
     </tr> 
     #set($index=$index + 1)
     #end 
      <tr>
-        <td colspan="8"><div class="pagelist"> <a onclick="script:changePage('f');">首页</a> <a onclick="script:changePage('p')">上一页</a> <a onclick="script:changePage('n')">下一页</a><a onclick="script:changePage('l');">尾页</a> 共${totalPageSize}页</div></td>
+        <td colspan="9"><div class="pagelist"> <a onclick="script:changePage('f');">首页</a> <a onclick="script:changePage('p')">上一页</a> <a onclick="script:changePage('n')">下一页</a><a onclick="script:changePage('l');">尾页</a> 共${totalPageSize}页</div></td>
       </tr>
   </table>
 </div>

@@ -78,7 +78,10 @@
 		</action> 
 		
 		<action name="userPwdUpd" class="com.nngdjt.pricemng.action.UserManageAction" method="userPwdUpd">
-			<result name="success">/view/right.vm</result>
+			<result name="success" type="redirectAction">
+				 <param name="namespace">/priceManage</param>
+				 <param name="actionName">createPriceTable</param>
+			</result>
 			<result name="input">/view/tips_err.vm</result>
 		</action> 
 	</package>	
