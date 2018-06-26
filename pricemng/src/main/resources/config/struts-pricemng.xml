@@ -214,6 +214,7 @@
 			<result name="success">/view/price/price_query_user.vm</result>
 			<result name="input">/view/tips_err.vm</result>
 		</action>
+		
 		<action name="priceManageUpdateAllPrice" class="com.nngdjt.pricemng.action.PriceManageAction" method="priceManageUpdateAllPrice"/>
 		
 		<action name="createPriceMap" class="com.nngdjt.pricemng.action.PriceManageAction" method="createPriceMap"/>
