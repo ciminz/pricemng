@@ -162,11 +162,16 @@ public class UserLoginAction extends ActionSupport{
 				PriceInfoExample priceInfoExcample = new PriceInfoExample();
 				priceInfoExcample.createCriteria()
 				.andOriStationNoEqualTo(oriStation.getStationNo())
-				.andDesStationNoEqualTo(desStation.getStationNo());
+				.andDesStationNoEqualTo(desStation.getStationNo())
+				.andAuditFlgEqualTo("Y");;
 				List<PriceInfo> priceInfoTmpList = priceInfoMapper.selectByExample(priceInfoExcample);
 				if(priceInfoTmpList != null && priceInfoTmpList.size() != 0) {
 					System.out.println(priceInfoTmpList.get(0).getPrice());
 					priceInfoList.add(priceInfoTmpList.get(0));
+				}else {
+					PriceInfo priceInfoTmp = new PriceInfo();
+					priceInfoTmp.setPrice("未审核");
+					priceInfoList.add(priceInfoTmp);
 				}
 			}
 			

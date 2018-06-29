@@ -164,9 +164,60 @@
 			});
 		}
 		
+		function createPriceMap() {
+			document.getElementById('icon1').style.display = 'block';
+		    hidebg.style.display="block";  //显示隐藏层
+   		    hidebg.style.height=document.body.clientHeight+"px";  //设置隐藏层的高度为当前页面高度
+   		   
+			$.post("${rootAddr}priceManage/createPriceMap",{},function(data) {
+				var xml;
+				if (seeIsIe()) {
+					xml = new ActiveXObject("Microsoft.XMLDOM");
+					xml.async = false;
+					xml.loadXML(data);
+				} else {
+					xml = data;
+				}
+				
+				var messageHead = $("messageHead",xml).text();
+				var message = $("message",xml).text();
+			    document.getElementById('icon1').style.display = 'none';
+			    document.getElementById("hidebg").style.display="none";
+			    document.getElementById('icon1').style.display = 'none';
+			    document.getElementById("hidebg").style.display="none";
+			    alert(message);
+			    if(messageHead == '0') {
+			    	var filename = $("file",xml).text();
+			    	document.getElementById("downloadFileName").value = filename;
+			    	document.getElementById("pricemap_download").submit();
+			    }
+			});
+		}
     </script>
+    
+     <style>
+    	#hidebg { position:absolute;left:0px;top:0px;
+	      background-color:#000;
+	      width:100%;  /*宽度设置为100%，这样才能使隐藏背景层覆盖原页面*/
+	      filter:alpha(opacity=10);  /*设置透明度为60%*/
+	      opacity:0.1;  /*非IE浏览器下设置透明度为60%*/
+	      display:none; 
+	      z-Index:2;}
+	      
+	      #table_div{
+			  display:table-cell;
+			}
+    </style>
 </head>
 <body>
+<form method="post" action="${rootAddr}download/downloadFile" id="pricemap_download">
+  	<input type="hidden" name="subPath" value=""/>
+  	<input type="hidden" name="fileName" id="downloadFileName"/>
+  </form> 
+<div id="hidebg"></div>
+<div id="icon1" style="position:absolute;top:10%;width:30%;display:none;">
+	<center><img src="${rootAddr}view/images/009.gif"/></center>
+</div>
 <div class="body-content">
     <form method="post" class="form-x" action="${rootAddr}/priceManage/createPriceTable" id="form1">
       <div class="form-group" style="width:50%">
@@ -199,6 +250,7 @@
         </div>
         <div class="field" width="100%" align="center">
           <button class="button bg-main icon-search" type="submit"> 查询</button>
+          <button class="button bg-main icon-download" type="button" onclick="createPriceMap()"> 导出线网票价矩阵</button>
           <button class="button bg-main" type="button" onclick="reset()"> 重置</button>
         </div>
       </div>
@@ -224,7 +276,26 @@
    		 		 	  	<td style="text-align:center" width=${s}px>$!d</td>
    		 		 	  #end
    		 		 	#else
-   		 		 		<td style="text-align:center" width=5px>$!d</td>
+   		 		 	    #if($d == 2)
+   		 		 	    	#set($color='#FFD700')
+   		 		 	    #elseif($d == 3)
+							#set($color='#7CFC00')
+						#elseif($d == 4)
+							#set($color='#DAA520')
+						#elseif($d == 5)
+							#set($color='#00FFFF')
+						#elseif($d == 6)
+							#set($color='#FF00FF')
+   		 		 	    #else
+   		 		 	    	#set($color='white')
+   		 		 	    #end
+   		 		 	    
+   		 		 	    #if($d != '' && $d != '未审核') 
+   		 		 	    	#set($prefix='￥')
+   		 		 	    #else
+   		 		 	       #set($prefix='')
+   		 		 	    #end
+   		 		 		<td style="text-align:center" width=5px bgcolor="$color">$!prefix$!d</td>
    		 		 	#end
    		 		 	#set($index2=$index2+1)	
    		 		 #end

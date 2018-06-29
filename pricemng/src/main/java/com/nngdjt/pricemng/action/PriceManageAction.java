@@ -15,10 +15,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.ibatis.session.RowBounds;
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -349,6 +353,27 @@ public class PriceManageAction extends ActionSupport{
 	        //创建工作表  工作表的名字叫helloWorld  
 	        HSSFSheet sheet = workBook.createSheet("票价矩阵");  
 	        
+	        
+	        HSSFCellStyle style2 = workBook.createCellStyle();  
+	        style2.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.index);
+	        style2.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+	        
+	        HSSFCellStyle style3 = workBook.createCellStyle();  
+	        style3.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
+	        style3.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+	        
+	        HSSFCellStyle style4 = workBook.createCellStyle();  
+	        style4.setFillForegroundColor(IndexedColors.LIGHT_ORANGE.index);
+	        style4.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+	        
+	        HSSFCellStyle style5 = workBook.createCellStyle();  
+	        style5.setFillForegroundColor(IndexedColors.LIGHT_BLUE.index);
+	        style5.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+	        
+	        HSSFCellStyle style6 = workBook.createCellStyle();  
+	        style6.setFillForegroundColor(IndexedColors.PINK.index);
+	        style6.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+	        
 	        DataBuilder dataBuilder = new DataBuilder();
 	        for(int i = 0; i < dataBuilder.lines.size(); i++) {
 	        	Station desStation = dataBuilder.lines.get(i);
@@ -376,6 +401,18 @@ public class PriceManageAction extends ActionSupport{
 	            	//创建单元格，操作第三行第三列  
 	                HSSFCell cellPrice = row.createCell(index++, CellType.STRING);  
 	                cellPrice.setCellValue(priceInfo.getPrice());  
+	                if("2".equals(priceInfo.getPrice())) {
+	                	System.out.println(priceInfo.getPrice());
+	                	cellPrice.setCellStyle(style2);
+	                }else if("3".equals(priceInfo.getPrice())) {
+	                	cellPrice.setCellStyle(style3);
+	                }else if("4".equals(priceInfo.getPrice())) {
+	                	cellPrice.setCellStyle(style4);
+	                }else if("5".equals(priceInfo.getPrice())) {
+	                	cellPrice.setCellStyle(style5);
+	                }else if("6".equals(priceInfo.getPrice())) {
+	                	cellPrice.setCellStyle(style6);
+	                }
 	            }
 	        }
 	        
@@ -485,11 +522,16 @@ public class PriceManageAction extends ActionSupport{
 					PriceInfoExample priceInfoExcample = new PriceInfoExample();
 					priceInfoExcample.createCriteria()
 					.andOriStationNoEqualTo(oriStation.getStationNo())
-					.andDesStationNoEqualTo(desStation.getStationNo());
+					.andDesStationNoEqualTo(desStation.getStationNo())
+					.andAuditFlgEqualTo("Y");
 					List<PriceInfo> priceInfoTmpList = priceInfoMapper.selectByExample(priceInfoExcample);
 					if(priceInfoTmpList != null && priceInfoTmpList.size() != 0) {
 						System.out.println(priceInfoTmpList.get(0).getPrice());
 						priceInfoList.add(priceInfoTmpList.get(0));
+					}else {
+						PriceInfo priceInfoTmp = new PriceInfo();
+						priceInfoTmp.setPrice("未审核");
+						priceInfoList.add(priceInfoTmp);
 					}
 				}
 				
@@ -686,11 +728,16 @@ public class PriceManageAction extends ActionSupport{
 				PriceInfoExample priceInfoExcample = new PriceInfoExample();
 				priceInfoExcample.createCriteria()
 				.andOriStationNoEqualTo(oriStation.getStationNo())
-				.andDesStationNoEqualTo(desStation.getStationNo());
+				.andDesStationNoEqualTo(desStation.getStationNo())
+				.andAuditFlgEqualTo("Y");
 				List<PriceInfo> priceInfoTmpList = priceInfoMapper.selectByExample(priceInfoExcample);
 				if(priceInfoTmpList != null && priceInfoTmpList.size() != 0) {
 					System.out.println(priceInfoTmpList.get(0).getPrice());
 					priceInfoList.add(priceInfoTmpList.get(0));
+				}else {
+					PriceInfo priceInfoTmp = new PriceInfo();
+					priceInfoTmp.setPrice("未审核");
+					priceInfoList.add(priceInfoTmp);
 				}
 			}
 			
