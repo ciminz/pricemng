@@ -457,6 +457,9 @@ public class PriceManageAction extends ActionSupport{
 		if(this.getOriLineNo() == null && this.getDesLineNo() == null) {
 			priceList = (List<List<String>>)ServletActionContext.getRequest().getSession().getAttribute("priceList");
 			ServletActionContext.getRequest().setAttribute("priceList", priceList);
+		}else if("-1" .equals(this.getOriLineNo()) || "-1".equals(this.getDesLineNo())) {
+			priceList = (List<List<String>>)ServletActionContext.getRequest().getSession().getAttribute("priceList");
+			ServletActionContext.getRequest().setAttribute("priceList", priceList);
 		}else {
 		    priceList = new ArrayList<List<String>>();
 			DataBuilder dataBuilder = (DataBuilder)ServletActionContext.getRequest().getSession().getAttribute("dataBuilder");
@@ -475,8 +478,10 @@ public class PriceManageAction extends ActionSupport{
 				}
 				stationNoSet.add(sti.getStationNo());
 			}
-			
+			logger.info("=====================" + (dataBuilder == null));
+			logger.info("=====================" + (dataBuilder.lines == null));
 			for(Station st: dataBuilder.lines) {
+				
 				if(stationNoSet.contains(st.getStationNo())) {
 					if(stationNoAdded.contains(st.getStationNo()) || !st.getLineNo().equals(this.getOriLineNo())) {
 						continue;

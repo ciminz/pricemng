@@ -219,7 +219,7 @@
 	<center><img src="${rootAddr}view/images/009.gif"/></center>
 </div>
 <div class="body-content">
-    <form method="post" class="form-x" action="${rootAddr}/priceManage/createPriceTable" id="form1">
+    <form method="post" class="form-x" action="${rootAddr}priceManage/createPriceTable" id="form1">
       <div class="form-group" style="width:50%">
         <div class="label">
           <label>起始线路：</label>
@@ -251,7 +251,7 @@
         <div class="field" width="100%" align="center">
           <button class="button bg-main icon-search" type="submit"> 查询</button>
           <button class="button bg-main icon-download" type="button" onclick="createPriceMap()"> 导出线网票价矩阵</button>
-          <button class="button bg-main" type="button" onclick="reset()"> 重置</button>
+          <button class="button bg-main" type="button" onclick="javascript:document.getElementById('oLineNo').value='-1';document.getElementById('dLineNo').value='-1';"> 重置</button>
         </div>
       </div>
     </form>
