@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <title>系统信息</title>
-<link rel="stylesheet" href="css/pintuer.css">
+<link rel="stylesheet" href="${rootAddr}view/css/pintuer.css">
 <style type="text/css">
 *{ margin:0px; padding:0px;}
 .error-container{ background:#fff; border:1px solid #0ae;  text-align:center; width:450px; margin:250px auto; font-family:Microsoft Yahei; padding-bottom:30px; border-top-left-radius:5px; border-top-right-radius:5px;  }
@@ -18,10 +18,9 @@ a{color:#0ae;}
 <div class="error-container"> 
     <h1> 票价管理系统-信息提示 </h1>   
     <div class="errorcon">     
-        <i class="icon-smile-o"></i>操作成功       
+        <i class="icon-smile-o"></i>系统异常，操作失败，请联系系统管理员。
    </div>
-    <h4 class="smaller"><a id="href" href="${rootAddr}priceManage/createPriceTable" target="right"> 返 回 </a></h4> 
-   
+   <h4 class="smaller"><a id="href" href="javascript:top.location=document.referrer;"> 返 回 </a></h4>
 </div>
 
 <script type="text/javascript">

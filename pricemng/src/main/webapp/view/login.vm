@@ -10,8 +10,10 @@
 	<link rel="bookmark" href="${rootAddr}view/images/favicon.ico"/>
     <link rel="stylesheet" href="${rootAddr}view/css/pintuer.css">
     <link rel="stylesheet" href="${rootAddr}view/css/admin.css">
+    <script src="${rootAddr}view/js/jquery.js"></script>
     <script src="${rootAddr}view/js/jquery2.js"></script>
     <script src="${rootAddr}view/js/pintuer.js"></script> 
+    <script src="${rootAddr}view/js/md5.js"></script>
     #if(${notLogin})
 		<script>
 			alert("请登录！");
@@ -23,30 +25,61 @@
     	alert('返回信息：${exceptionMessage}');
     </script>
     #end
-    
-    
-    
+        
     <script>
+    
+            function seeIsIe() {
+				var isIe = !-[1,];
+				if(isIe) {
+					return true;
+				}
+				else {
+					return false;
+				}
+			}
+		
+	
 			var code; //在全局 定义验证码
 			function createCode()
-			{ //创建验证码函数
-			 code = "";
-			 var codeLength =4;//验证码的长度
-			 //var selectChar = new Array(0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f','g','h','i','j','k',
-			  //'l','m','n','o','p','q','r','s','t','u','v','w','x','y','z');//所有候选组成验证码的字符，当然也可以用中文的
-			 var selectChar = new Array(0,2,3,4,5,6,7,8,9,'A','B','C','D','E','F','G','H','I','J','K',
-			 'L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');//所有候选组成验证码的字符，当然也可以用中文的
-			 for(var i=0;i<codeLength;i++)
-			 { 
-			 var charIndex =Math.floor(Math.random()*35);
-			 code +=selectChar[charIndex]; 
-			 }
-			// 设置验证码的显示样式，并显示
-			 document.getElementById("discode").style.fontFamily="Fixedsys"; //设置字体
-			 document.getElementById("discode").style.letterSpacing="5px"; //字体间距
-			 document.getElementById("discode").style.color="#0ab000"; //字体颜色
-			 document.getElementById("discode").innerHTML=code; // 显示
+			{ 
+				 //创建验证码函数
+				 code = "";
+				 var codeLength =4;//验证码的长度
+				 //var selectChar = new Array(0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f','g','h','i','j','k',
+				  //'l','m','n','o','p','q','r','s','t','u','v','w','x','y','z');//所有候选组成验证码的字符，当然也可以用中文的
+				 var selectChar = new Array(0,2,3,4,5,6,7,8,9,'A','B','C','D','E','F','G','H','I','J','K',
+				 'L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');//所有候选组成验证码的字符，当然也可以用中文的
+				 for(var i=0;i<codeLength;i++)
+				 { 
+				 var charIndex =Math.floor(Math.random()*35);
+				 code +=selectChar[charIndex]; 
+				 }
+				// 设置验证码的显示样式，并显示
+				 document.getElementById("discode").style.fontFamily="Fixedsys"; //设置字体
+				 document.getElementById("discode").style.letterSpacing="5px"; //字体间距
+				 document.getElementById("discode").style.color="#0ab000"; //字体颜色
+				 
+				 var codeMd5 = hex_md5(code.toUpperCase());
+				 $.post("${rootAddr}ajax/ajaxSetValidateCode",{"validateCode":codeMd5},function(data) {
+				  	
+					var xml;
+					if (seeIsIe()) {
+						xml = new ActiveXObject("Microsoft.XMLDOM");
+						xml.async = false;
+						xml.loadXML(data);
+					} else {
+						xml = data;
+					}
+					
+					var messageHead = $("messageHead",xml).text();
+					
+					if(messageHead == '0') {
+						 document.getElementById("discode").innerHTML=code; // 显示
+					}
+				});
 			}
+			
+			
 			function but()
 			{
 				 //验证验证码输入是否正确
@@ -58,14 +91,18 @@
 				 if(val1.toUpperCase()!=val2){
 				   alert("验证码错误!");
 				   document.getElementById('t1').value="";
+				   createCode();
 				   return false;
 				 }
+				 document.getElementById('valCode').value=hex_md5(val1.toUpperCase());
+				 document.getElementById('pwdTxt').value=hex_md5(document.getElementById('pwdTxt').value);
 				 return true;
 			}
 		</script>
 		<script>
 			$(function() {
 				createCode();
+				document.getElementById('valCdeTxt').value = '';
 			});
 		</script>
 </head>
@@ -95,7 +132,8 @@
                     </div>
                     <div class="form-group">
                         <div class="field">
-                            <input type="text" class="input input-big" name="code" placeholder="验证码" data-validate="required:请填写验证码" id="t1"/>
+                            <input type="hidden" value="" name="validateCode" id="valCode">
+                            <input type="text" class="input input-big" name="code" placeholder="验证码" data-validate="required:请填写验证码" id="t1" id="valCdeTxt"/>
                        		<span class="icon margin-small"></span>
                         </div>
                     </div>

@@ -100,4 +100,18 @@
     	<servlet-name>velocity</servlet-name>
 	    <url-pattern>*.vm</url-pattern>
 	</servlet-mapping>
+	
+	
+	<error-page>
+		<error-code>404</error-code>
+		<location>/view/tips_err2.vm</location>
+	</error-page>
+	<error-page>
+		<exception-type>java.lang.Throwable</exception-type>
+		<location>/view/tips_err2.vm</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/view/tips_err2.vm</location>
+	</error-page>
 </web-app>

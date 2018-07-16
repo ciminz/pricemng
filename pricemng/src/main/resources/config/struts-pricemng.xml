@@ -6,15 +6,18 @@
 <struts>
 
 	<constant name="struts.enable.DynamicMethodInvocation" value="true" /><!--设定可以在请求中指定方法 -->
-	<constant name="struts.devMode" value="true" /><!-- 开发者模式 -->
+	<constant name="struts.devMode" value="false" /><!-- 开发者模式 -->
 	<constant name="struts.objectFactory" value="spring"/> <!-- 使用spring注入Action实例 -->
 	<constant name="struts.multipart.maxSize" value="34952533"/> <!--最大允许３０M -->
 	
 
 	<package name="base" namespace="/" extends="struts-default">
+		
 		<interceptors>
 	 		<interceptor name="checkIsLogin" class="com.nngdjt.pricemng.interceptor.ValidateUserIsLoginInterceptor"/>
+	 		<interceptor name="xssInterceptor" class="com.nngdjt.pricemng.interceptor.XssInterceptor"></interceptor>
 	 		<interceptor-stack name="myStack">
+	 			<interceptor-ref name="xssInterceptor"/>
 	 			<interceptor-ref name="defaultStack"/>
 	 			<interceptor-ref name="checkIsLogin"/>
 	 		</interceptor-stack>
@@ -198,6 +201,7 @@
 	<package name="ajax" namespace="/ajax" extends="base">
 		<action name="ajaxFindLine" class="com.nngdjt.pricemng.action.AjaxAction" method="findLine"/>
 		<action name="ajaxFindStation" class="com.nngdjt.pricemng.action.AjaxAction" method="findStation"/>
+		<action name="ajaxSetValidateCode" class="com.nngdjt.pricemng.action.AjaxAction" method="setValidateCode"/>
 	</package>
 	
 	<package name="download" namespace="/download" extends="base">

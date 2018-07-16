@@ -1,8 +1,12 @@
 package com.nngdjt.pricemng.action;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.catalina.util.MD5Encoder;
 import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +40,8 @@ public class UserLoginAction extends ActionSupport{
 	
 	private String password;
 	
+	private String validateCode;
+	
 	private UserMapper userMapper;
 	
 	private UserRoleMapper userRoleMapper;
@@ -61,6 +67,16 @@ public class UserLoginAction extends ActionSupport{
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public String getValidateCode() {
+		return validateCode;
+	}
+
+	public void setValidateCode(String validateCode) {
+		this.validateCode = validateCode;
+	}
+
+
 	
 	private void beanInit() {
 		userMapper = (UserMapper)LocalBeanFactory.get(UserMapper.class);
@@ -93,9 +109,19 @@ public class UserLoginAction extends ActionSupport{
 		}
 		
 		User user = userList.get(0);
-		if(!this.password.equals(user.getPassword())) {
+		logger.info(this.encoderByMd5(user.getPassword()).toUpperCase());
+		logger.info(this.password.toUpperCase());
+		if(!this.password.toUpperCase().equals(this.encoderByMd5(user.getPassword()).toUpperCase())) {
 			logger.info("user password is not correct");
 			return ExceptionProcess.exceptionProcess("用户密码错误");
+		}
+		
+		logger.info(">>>>>>val1:" + this.getValidateCode() + ", val2:" 
+		+ (String)ServletActionContext.getRequest().getSession().getAttribute("validateCode"));
+		
+		if(!this.getValidateCode().equals(ServletActionContext.getRequest().getSession().getAttribute("validateCode"))) {
+			logger.info("user validatecode is not correct");
+			return ExceptionProcess.exceptionProcess("验证码错误");
 		}
 		
 		//将用户信息放入session中保存
@@ -197,5 +223,28 @@ public class UserLoginAction extends ActionSupport{
 		priceList.add(priceRow);
 		ServletActionContext.getRequest().getSession().setAttribute("priceList", priceList);
 		
+	}
+	
+	
+	public String encoderByMd5(String s) {
+		try {
+	        MessageDigest md = MessageDigest.getInstance("MD5");
+	        byte[] bytes = md.digest(s.getBytes("utf-8"));
+	        return toHex(bytes);
+	    }
+	    catch (Exception e) {
+	        throw new RuntimeException(e);
+	    }
+    }
+	
+	private static String toHex(byte[] bytes) {
+
+	    final char[] HEX_DIGITS = "0123456789ABCDEF".toCharArray();
+	    StringBuilder ret = new StringBuilder(bytes.length * 2);
+	    for (int i=0; i<bytes.length; i++) {
+	        ret.append(HEX_DIGITS[(bytes[i] >> 4) & 0x0f]);
+	        ret.append(HEX_DIGITS[bytes[i] & 0x0f]);
+	    }
+	    return ret.toString();
 	}
 }

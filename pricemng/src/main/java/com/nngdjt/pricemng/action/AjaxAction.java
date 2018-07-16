@@ -27,6 +27,16 @@ public class AjaxAction extends ActionSupport{
 	private StationInfo stationInfo;
 	
 	private StationInfoMapper stationInfoMapper;
+	
+	private String validateCode;
+	
+	public String getValidateCode() {
+		return validateCode;
+	}
+
+	public void setValidateCode(String validateCode) {
+		this.validateCode = validateCode;
+	}
 
 	public StationInfo getStationInfo() {
 		return stationInfo;
@@ -104,6 +114,23 @@ public class AjaxAction extends ActionSupport{
 		}
 		
 		logger.info(">>>>>>>>>>>>>>>>" + returnMessage.toString());
+		try {
+			HttpServletResponse response = ServletActionContext.getResponse();
+			response.setCharacterEncoding("utf-8");
+			PrintWriter pw = response.getWriter();
+			pw.write(returnMessage.toString());
+			pw.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public String setValidateCode() {
+		logger.info(">>>>>>>>>>>>>>" + this.getValidateCode());
+		ServletActionContext.getRequest().getSession().setAttribute("validateCode", this.getValidateCode());
+		StringBuilder returnMessage = null;
+		returnMessage = new StringBuilder("<response><messageHead>0</messageHead></response>");
 		try {
 			HttpServletResponse response = ServletActionContext.getResponse();
 			response.setCharacterEncoding("utf-8");
