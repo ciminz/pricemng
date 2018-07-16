@@ -30,7 +30,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.vane.base.LocalBeanFactory;
 
 public class UserLoginAction extends ActionSupport{
-	
+	  
 	private static Logger logger = LoggerFactory.getLogger(UserLoginAction.class);
 	
 	private String name;
