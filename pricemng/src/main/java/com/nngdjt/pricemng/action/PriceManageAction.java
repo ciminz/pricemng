@@ -289,6 +289,14 @@ public class PriceManageAction extends ActionSupport{
 				.andDesStationNoEqualTo(desStationNo);
 				
 				int distanceCnt = this.distanceInfoMapper.countByExample(distanceInfoExample);
+				if(distanceCnt == 0) {
+					distanceInfoExample = new DistanceInfoExample();
+					distanceInfoExample.createCriteria().
+					andOriStationNoEqualTo(desStationNo)
+					.andDesStationNoEqualTo(oriStationNo);
+					
+					distanceCnt = this.distanceInfoMapper.countByExample(distanceInfoExample);
+				}
 				
 				if(distanceCnt == 0) {
 					returnMessage = new StringBuilder("<response><messageHead>-1</messageHead><message>" + stationInfo.getStationNme() + "与" + nextStation.getStationNme() +"间无间距信息</message></response>");
