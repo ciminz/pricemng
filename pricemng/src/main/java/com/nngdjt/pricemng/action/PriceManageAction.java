@@ -639,12 +639,12 @@ public class PriceManageAction extends ActionSupport{
 		
 		if(this.getPriceInfo() == null || this.getPriceInfo().getOriStationNo() == null || "".equals(this.getPriceInfo().getOriStationNo())) {
 			logger.info("get priceinfo OriStationNo faild");
-			return ExceptionProcess.exceptionProcess("无法接受运距起始站信息");
+			return ExceptionProcess.exceptionProcess("无法接受间距起始站信息");
 		}
 		
 		if(this.getPriceInfo() == null || this.getPriceInfo().getDesStationNo() == null || "".equals(this.getPriceInfo().getDesStationNo())) {
 			logger.info("get priceinfo DesStationNo faild");
-			return ExceptionProcess.exceptionProcess("无法接受运距目的站信息");
+			return ExceptionProcess.exceptionProcess("无法接受间距目的站信息");
 		}
 		
 		ViewPriceInfoExample vPriceInfoExample = new ViewPriceInfoExample();

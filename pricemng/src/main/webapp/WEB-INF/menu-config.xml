@@ -72,10 +72,10 @@
 		<IsParent>1</IsParent>
 		<Parent>3</Parent>
 	</Item>
-	<!-- 运距 -->
+	<!-- 间距 -->
 	<Item>
 	 	<Id>4</Id>
-		<ItemName>运距管理</ItemName>
+		<ItemName>间距管理</ItemName>
 		<Url>#</Url>
 		<IsParent>0</IsParent>
 		<Parent>-1</Parent>
@@ -83,7 +83,7 @@
 	
 	<Item>
 		<Id>41</Id>
-		<ItemName>查询运距</ItemName>
+		<ItemName>查询间距</ItemName>
 		<Url>distanceManage/distanceQueryByCondition</Url>
 		<IsParent>1</IsParent>
 		<Parent>4</Parent>
@@ -91,7 +91,7 @@
 	
 	<Item>
 		<Id>42</Id>
-		<ItemName>新增运距</ItemName>
+		<ItemName>新增间距</ItemName>
 		<Url>distanceManage/distanceImportView</Url>
 		<IsParent>1</IsParent>
 		<Parent>4</Parent>

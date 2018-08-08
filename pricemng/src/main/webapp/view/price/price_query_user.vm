@@ -95,15 +95,15 @@
 							var lineNo =  $("lineNo",this).text();
 							var stationNme = $("stationNme",this).text();
 							if(stationNo == '${viewPriceInfo.oriStationNo}' && lineNo == oriLineNo) {
-								$("<option value=" + stationNo + " selected='selected'>" + stationNo + ' ' +stationNme + "</option>").appendTo($("#oStationNo"));
+								$("<option value=" + stationNo + " selected='selected'>" + stationNme + "</option>").appendTo($("#oStationNo"));
 							}else if(lineNo == oriLineNo){
-								$("<option value="+ stationNo + ">" + stationNo + ' ' +stationNme + "</option>").appendTo($("#oStationNo"));
+								$("<option value="+ stationNo + ">" + stationNme + "</option>").appendTo($("#oStationNo"));
 							}
 							
 							if(stationNo == '${viewPriceInfo.desStationNo}' && lineNo == desLineNo) {
-								$("<option value=" + stationNo +" selected='selected'>" + stationNo + ' ' +stationNme + "</option>").appendTo($("#dStationNo"));
+								$("<option value=" + stationNo +" selected='selected'>"  + stationNme + "</option>").appendTo($("#dStationNo"));
 							}else if(lineNo == desLineNo){
-								$("<option value=" + stationNo +">" + stationNo + ' ' +stationNme + "</option>").appendTo($("#dStationNo"));
+								$("<option value=" + stationNo +">" + stationNme + "</option>").appendTo($("#dStationNo"));
 							}
 							
 						})
@@ -164,9 +164,9 @@
 							
 							var stationNme = $("stationNme",this).text();
 							if(stationNo == '${viewPriceInfo.oriStationNo}') {
-								$("<option value=" + stationNo + " selected='selected'>" + stationNo + ' ' +stationNme + "</option>").appendTo($("#oStationNo"));
+								$("<option value=" + stationNo + " selected='selected'>" + stationNme + "</option>").appendTo($("#oStationNo"));
 							}else {
-								$("<option value="+ stationNo + ">" + stationNo + ' ' +stationNme + "</option>").appendTo($("#oStationNo"));
+								$("<option value="+ stationNo + ">" + stationNme + "</option>").appendTo($("#oStationNo"));
 							}
 						});
 					}
@@ -205,9 +205,9 @@
 							
 							var stationNme = $("stationNme",this).text();
 							if(stationNo == '${viewPriceInfo.desStationNo}') {
-								$("<option value=" + stationNo + " selected='selected'>" + stationNo + ' ' +stationNme + "</option>").appendTo($("#dStationNo"));
+								$("<option value=" + stationNo + " selected='selected'>" + stationNme + "</option>").appendTo($("#dStationNo"));
 							}else {
-								$("<option value="+ stationNo + ">" + stationNo + ' ' +stationNme + "</option>").appendTo($("#dStationNo"));
+								$("<option value="+ stationNo + ">" + stationNme + "</option>").appendTo($("#dStationNo"));
 							}
 						});
 					}

@@ -142,7 +142,7 @@ public class DistanceManageAction extends ActionSupport{
 	}
 	
 	/**
-	 * 运距查询
+	 * 间距查询
 	 * @return
 	 */
 	public String query() {
@@ -168,7 +168,7 @@ public class DistanceManageAction extends ActionSupport{
 	}
 	
 	/**
-	 * 运距删除
+	 * 间距删除
 	 * @return
 	 */
 	public String delete() {
@@ -176,12 +176,12 @@ public class DistanceManageAction extends ActionSupport{
 		
 		if(this.getDistanceInfo() == null || this.getDistanceInfo().getOriStationNo() == null || "".equals(this.getDistanceInfo().getOriStationNo())) {
 			logger.info("get distance OriStationNo faild");
-			return ExceptionProcess.exceptionProcess("无法接受运距起始站信息");
+			return ExceptionProcess.exceptionProcess("无法接受间距起始站信息");
 		}
 		
 		if(this.getDistanceInfo() == null || this.getDistanceInfo().getDesStationNo() == null || "".equals(this.getDistanceInfo().getDesStationNo())) {
 			logger.info("get distance DesStationNo faild");
-			return ExceptionProcess.exceptionProcess("无法接受运距目的站信息");
+			return ExceptionProcess.exceptionProcess("无法接受间距目的站信息");
 		}
 		
 		DistanceInfoExample distanceInfoExample = new DistanceInfoExample();
@@ -191,13 +191,13 @@ public class DistanceManageAction extends ActionSupport{
 		
 		this.distanceInfoMapper.deleteByExample(distanceInfoExample);
 		
-		//删除运距
+		//删除间距
 		ServletActionContext.getRequest().setAttribute("returnPage", "distanceManage/distanceQueryByCondition");
 		return "success";
 	}
 	
 	/**
-	 * 运距新增
+	 * 间距新增
 	 */
 	public String add() {
 		this.beanInit();
@@ -238,12 +238,12 @@ public class DistanceManageAction extends ActionSupport{
 		
 		if(this.getDistanceInfo() == null || this.getDistanceInfo().getOriStationNo() == null || "".equals(this.getDistanceInfo().getOriStationNo())) {
 			logger.info("get distance OriStationNo faild");
-			return ExceptionProcess.exceptionProcess("无法接受运距起始站信息");
+			return ExceptionProcess.exceptionProcess("无法接受间距起始站信息");
 		}
 		
 		if(this.getDistanceInfo() == null || this.getDistanceInfo().getDesStationNo() == null || "".equals(this.getDistanceInfo().getDesStationNo())) {
 			logger.info("get distance DesStationNo faild");
-			return ExceptionProcess.exceptionProcess("无法接受运距目的站信息");
+			return ExceptionProcess.exceptionProcess("无法接受间距目的站信息");
 		}
 		
 		DistanceInfoExample distanceInfoExample = new DistanceInfoExample();
@@ -282,7 +282,7 @@ public class DistanceManageAction extends ActionSupport{
 		List<DistanceInfo> distanceInfoList = this.distanceInfoMapper.selectByExample(distanceInfoExample);
 		if(distanceInfoList == null && distanceInfoList.size() == 0) {
 			logger.info("the distance info no found");
-			return ExceptionProcess.exceptionProcess("无法获取运距信息","distanceManage/distanceQueryByCondition");
+			return ExceptionProcess.exceptionProcess("无法获取间距信息","distanceManage/distanceQueryByCondition");
 		}
 		
 		DistanceInfo distanceInfoUpd = distanceInfoList.get(0);

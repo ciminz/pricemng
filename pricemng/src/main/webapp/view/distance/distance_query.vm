@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="renderer" content="webkit">
-    <title>运距信息</title>  
+    <title>间距信息</title>  
     <link rel="stylesheet" href="${rootAddr}view/css/pintuer.css">
     <link rel="stylesheet" href="${rootAddr}view/css/admin.css">
     <script src="${rootAddr}view/js/jquery.js"></script>
@@ -95,15 +95,15 @@
 							var lineNo =  $("lineNo",this).text();
 							var stationNme = $("stationNme",this).text();
 							if(stationNo == '${viewStationDistanceInfo.oriStationNo}' && lineNo == oriLineNo) {
-								$("<option value=" + stationNo + " selected='selected'>" + stationNo + ' ' +stationNme + "</option>").appendTo($("#oStationNo"));
+								$("<option value=" + stationNo + " selected='selected'>" + stationNme + "</option>").appendTo($("#oStationNo"));
 							}else if(lineNo == oriLineNo){
 								$("<option value="+ stationNo + ">" + stationNme + "</option>").appendTo($("#oStationNo"));
 							}
 							
 							if(stationNo == '${viewStationDistanceInfo.desStationNo}' && lineNo == desLineNo) {
-								$("<option value=" + stationNo +" selected='selected'>" + stationNo + ' ' +stationNme + "</option>").appendTo($("#dStationNo"));
+								$("<option value=" + stationNo +" selected='selected'>" +stationNme + "</option>").appendTo($("#dStationNo"));
 							}else if(lineNo == desLineNo){
-								$("<option value=" + stationNo +">" + stationNo + ' ' +stationNme + "</option>").appendTo($("#dStationNo"));
+								$("<option value=" + stationNo +">"+ stationNme + "</option>").appendTo($("#dStationNo"));
 							}
 							
 						})
@@ -164,9 +164,9 @@
 							
 							var stationNme = $("stationNme",this).text();
 							if(stationNo == '${viewStationDistanceInfo.oriStationNo}') {
-								$("<option value=" + stationNo + " selected='selected'>" + stationNo + ' ' +stationNme +"</option>").appendTo($("#oStationNo"));
+								$("<option value=" + stationNo + " selected='selected'>" + stationNme +"</option>").appendTo($("#oStationNo"));
 							}else {
-								$("<option value="+ stationNo + ">" + stationNo + ' ' +stationNme +"</option>").appendTo($("#oStationNo"));
+								$("<option value="+ stationNo + ">" + stationNme +"</option>").appendTo($("#oStationNo"));
 							}
 						});
 					}
@@ -205,9 +205,9 @@
 							
 							var stationNme = $("stationNme",this).text();
 							if(stationNo == '${viewStationDistanceInfo.desStationNo}') {
-								$("<option value=" + stationNo + " selected='selected'>"+ stationNo + ' ' +stationNme +"</option>").appendTo($("#dStationNo"));
+								$("<option value=" + stationNo + " selected='selected'>"+ stationNme +"</option>").appendTo($("#dStationNo"));
 							}else {
-								$("<option value="+ stationNo + ">" + stationNo + ' ' +stationNme + "</option>").appendTo($("#dStationNo"));
+								$("<option value="+ stationNo + ">" + stationNme + "</option>").appendTo($("#dStationNo"));
 							}
 						});
 					}
@@ -321,7 +321,7 @@
   </div>
 </div>
 <div class="panel admin-panel">
-  <div class="panel-head"><strong class="icon-reorder"> 运距信息列表</strong></div>
+  <div class="panel-head"><strong class="icon-reorder"> 间距信息列表</strong></div>
   <div class="padding border-bottom">
   	
   </div> 

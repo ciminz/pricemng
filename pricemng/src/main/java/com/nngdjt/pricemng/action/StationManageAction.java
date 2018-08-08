@@ -145,8 +145,7 @@ public class StationManageAction extends ActionSupport{
 		}
 		this.stationInfoMapper.deleteByPrimaryKey(this.getStationInfo().getId());
 		
-		//删除运距
-		
+		//删除站点
 		ServletActionContext.getRequest().setAttribute("returnPage", "stationManage/stationQueryByCondition");
 		return "success";
 	}

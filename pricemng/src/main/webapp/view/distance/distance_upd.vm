@@ -243,7 +243,7 @@
 </head>
 <body>
 <div class="panel admin-panel">
-  <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>更新运距</strong></div>
+  <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>更新间距</strong></div>
   <div class="body-content">
     <form method="post" class="form-x" action="${rootAddr}distanceManage/distanceUpd" id="form1">  
       <div id="addType_single" style="display:block;">
