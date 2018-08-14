@@ -6,7 +6,7 @@
 <struts>
 
 	<constant name="struts.enable.DynamicMethodInvocation" value="true" /><!--设定可以在请求中指定方法 -->
-	<constant name="struts.devMode" value="false" /><!-- 开发者模式 -->
+	<constant name="struts.devMode" value="true" /><!-- 开发者模式 -->
 	<constant name="struts.objectFactory" value="spring"/> <!-- 使用spring注入Action实例 -->
 	<constant name="struts.multipart.maxSize" value="34952533"/> <!--最大允许３０M -->
 	

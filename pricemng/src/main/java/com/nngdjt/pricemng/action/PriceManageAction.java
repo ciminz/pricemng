@@ -5,9 +5,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -19,7 +22,6 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.IndexedColors;
@@ -310,6 +312,16 @@ public class PriceManageAction extends ActionSupport{
 			//priceInfoMapper.deleteByExample(null);
 			DataBuilder dataBuilder = new DataBuilder();
 			PriceUtil priceUtil = new PriceUtil();
+			Map<String,Object> oriPriceInfoMap = new HashMap<String, Object>();
+			List<PriceInfo> priceInfoList = priceInfoMapper.selectByExample(null);
+			for(PriceInfo priceInfo : priceInfoList) {
+				oriPriceInfoMap.put(priceInfo.getOriStationNo()+priceInfo.getDesStationNo(), priceInfo.getPrice());
+			}
+			ServletActionContext.getRequest().setAttribute("oriPriceInfoMap", oriPriceInfoMap);
+			
+			Map<String,Object> newPriceInfoMap = new HashMap<String, Object>();
+			ServletActionContext.getRequest().setAttribute("newPriceInfoMap", newPriceInfoMap);
+			
 			try {
 				long t1 = System.currentTimeMillis();
 				//DataBuilder dataBuilder = new DataBuilder();
@@ -320,12 +332,34 @@ public class PriceManageAction extends ActionSupport{
 						sw.calculate(dataBuilder.lines.get(i), dataBuilder.lines.get(y), priceInfoMapper);
 					}
 				}
+				
+				newPriceInfoMap = (Map<String,Object>)ServletActionContext.getRequest().getAttribute("newPriceInfoMap");
+				Collection<Object> newPriceInfoList = (Collection<Object>)newPriceInfoMap.values();
+				for(Object o : newPriceInfoList) {
+					PriceInfo priceInfo = (PriceInfo)o;
+					if(oriPriceInfoMap.get(priceInfo.getOriStationNo()+priceInfo.getDesStationNo()) == null) {
+						priceInfoMapper.insert(priceInfo);
+					}else {
+						String oriPrice = (String)oriPriceInfoMap.get(priceInfo.getOriStationNo()+priceInfo.getDesStationNo());
+						String newPrice = priceInfo.getPrice();
+						if(!oriPrice.equals(newPrice)) {
+							PriceInfoExample priceInfoExample = new PriceInfoExample();
+							priceInfoExample.createCriteria()
+							.andOriStationNoEqualTo(priceInfo.getOriStationNo())
+							.andDesStationNoEqualTo(priceInfo.getDesStationNo());
+							priceInfoList = priceInfoMapper.selectByExample(priceInfoExample);
+							PriceInfo priceInfoTmp = priceInfoList.get(0);
+							priceInfoMapper.deleteByPrimaryKey(priceInfoTmp.getId());
+							priceInfoMapper.insert(priceInfo);
+						}
+					}
+				}
 				long t2 = System.currentTimeMillis();
 				logger.info("耗时：" + (t2 - t1) + "ms");
 				returnMessage = new StringBuilder("<response><messageHead>0</messageHead><message>更新线网票价信息成功</message></response>");
 			} catch (Exception e) {
 				e.printStackTrace();
-				returnMessage = new StringBuilder("<response><messageHead>-1</messageHead><message>更新线网票价信息失败</message></response>");
+				returnMessage = new StringBuilder("<response><messageHead>-1</messageHead><message>更新线网票价信息失败 " + e.getCause().getMessage()+"</message></response>");
 			} 
 			
 		}
@@ -581,20 +615,39 @@ public class PriceManageAction extends ActionSupport{
 	public String priceAudit() {
 		this.beanInit();
 		
+		String oStNo = null;
+		String dStNo = null;
+		
 		if(this.getViewPriceInfo() == null || this.getViewPriceInfo().getOriStationNo() == null || "".equals(this.getViewPriceInfo().getOriStationNo())) {
 			logger.info("get distance OriStationNo faild");
 			return ExceptionProcess.exceptionProcess("无法接受起始站信息");
+		}else {
+			StationInfoExample stationExample = new StationInfoExample();
+			stationExample.createCriteria().andStationNoEqualTo(this.getViewPriceInfo().getOriStationNo());
+			List<StationInfo> stationInfoList = this.stationInfoMapper.selectByExample(stationExample);
+			if(stationInfoList != null && stationInfoList.size() > 0) {
+				oStNo = stationInfoList.get(0).getExchangeStNo();
+			}
 		}
 		
 		if(this.getViewPriceInfo() == null || this.getViewPriceInfo().getDesStationNo() == null || "".equals(this.getViewPriceInfo().getDesStationNo())) {
 			logger.info("get distance DesStationNo faild");
 			return ExceptionProcess.exceptionProcess("无法接受目的站信息");
+		}else {
+			StationInfoExample stationExample = new StationInfoExample();
+			stationExample.createCriteria().andStationNoEqualTo(this.getViewPriceInfo().getDesStationNo());
+			List<StationInfo> stationInfoList = this.stationInfoMapper.selectByExample(stationExample);
+			if(stationInfoList != null && stationInfoList.size() > 0) {
+				dStNo = stationInfoList.get(0).getExchangeStNo();
+			}
 		}
+		
+		
 		
 		PriceInfoExample priceInfoExample = new PriceInfoExample();
 		priceInfoExample.createCriteria()
-		.andOriStationNoEqualTo(this.getViewPriceInfo().getOriStationNo())
-		.andDesStationNoEqualTo(this.getViewPriceInfo().getDesStationNo());
+		.andOriStationNoEqualTo(oStNo)
+		.andDesStationNoEqualTo(dStNo);
 		
 		List<PriceInfo> priceInfoList = this.priceInfoMapper.selectByExample(priceInfoExample);
 		if(priceInfoList == null || priceInfoList.size() == 0) {

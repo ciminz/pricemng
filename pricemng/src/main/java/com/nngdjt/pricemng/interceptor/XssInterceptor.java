@@ -16,7 +16,14 @@ public class XssInterceptor extends AbstractInterceptor{
         ActionContext actionContext = invocation.getInvocationContext();
         Map<String, Object> map = actionContext.getParameters();
         for (Map.Entry<String, Object> entry : map.entrySet()) {
-            String value =  ((String[])(entry.getValue()))[0];
+        	
+            String value = "";
+            if(entry.getValue() instanceof String) {
+            	value = (String)entry.getValue();
+            }else {
+            	value = ((String[])(entry.getValue()))[0];
+            }
+        	
             entry.setValue(StringEscapeUtils.escapeHtml4(value));//将提交上来的字符串进行转码
             //System.out.println((entry.getValue()));
         }

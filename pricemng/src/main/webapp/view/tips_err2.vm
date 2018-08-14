@@ -20,7 +20,7 @@ a{color:#0ae;}
     <div class="errorcon">     
         <i class="icon-smile-o"></i>系统异常，操作失败，请联系系统管理员。
    </div>
-   <h4 class="smaller"><a id="href" href="javascript:top.location=document.referrer;"> 返 回 </a></h4>
+   <h4 class="smaller"><a id="href" href="javascript:history.go(-2);" target="right"> 返 回 </a></h4>
 </div>
 
 <script type="text/javascript">

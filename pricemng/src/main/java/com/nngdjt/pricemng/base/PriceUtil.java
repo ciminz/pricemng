@@ -139,9 +139,13 @@ public class PriceUtil {
 		   return dis.get(s1+s2);
 	   }
 	     
-	   else {
+	   else if(dis.containsKey(s2+s1)) {
 		   System.out.println("31313131");
 		   return dis.get(s2+s1);
+	   }
+	   
+	   else {
+		   return 0;
 	   }
    }
 }

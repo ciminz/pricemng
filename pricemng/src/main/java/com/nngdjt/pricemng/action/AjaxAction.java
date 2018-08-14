@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.nngdjt.pricemng.entity.LineInfo;
+import com.nngdjt.pricemng.entity.LineInfoExample;
 import com.nngdjt.pricemng.entity.StationInfo;
 import com.nngdjt.pricemng.mapper.LineInfoMapper;
 import com.nngdjt.pricemng.mapper.StationInfoMapper;
@@ -64,7 +65,9 @@ public class AjaxAction extends ActionSupport{
 		this.beanInit();
 		StringBuilder returnMessage = null;
 		try {
-			List<LineInfo> lineInfoList = this.lineInfoMapper.selectByExample(null);
+			LineInfoExample lineInfoExample = new LineInfoExample();
+			lineInfoExample.setOrderByClause("line_no");
+			List<LineInfo> lineInfoList = this.lineInfoMapper.selectByExample(lineInfoExample);
 			returnMessage = new StringBuilder("<response><messageHead>0</messageHead>");
 			returnMessage.append("<count>").append(lineInfoList.size()).append("</count>");
 			for(LineInfo l: lineInfoList) {

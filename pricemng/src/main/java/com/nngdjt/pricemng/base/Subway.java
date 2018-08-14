@@ -1,11 +1,12 @@
 package com.nngdjt.pricemng.base;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 
-import org.apache.velocity.tools.generic.ClassTool.Sub;
+import org.apache.struts2.ServletActionContext;
 
 import com.nngdjt.pricemng.entity.PriceInfo;
 import com.nngdjt.pricemng.entity.PriceInfoExample;
@@ -222,12 +223,64 @@ public class Subway {
 	
 	
 	private void PrintInfo(Station s1, Station s2, PriceInfoMapper priceInfoMapper) throws Exception {
-
+		System.out.println("===s1:===" + s1.getStationNo() + "======s2=====" + s2.getStationNo());
+        LinkedHashSet<Station> stationPathSet = null;
+        boolean recalcutelateFlg = false;
+        int distance1 = 0;
+        int distance2 = 0;
+		if(s2.getOrderSetMap() != null 
+		   && s2.getOrderSetMap().get(s1) != null 
+		   && s2.getAllPassedStations(s1) != null 
+		   && s1.getAllPassedStations(s2).size() == s2.getAllPassedStations(s1).size()) {
+			System.out.println("======================compare===========================");
+			Station sstart = s1;
+			for (Station station : s1.getAllPassedStations(s2)) {
+				if(station==sstart)
+					continue;
+				distance1+= priceUtil.getDistance(sstart.getStationNo(), station.getStationNo());
+			}
+			
+			sstart = s2;
+			for (Station station : s2.getAllPassedStations(s1)) {
+				if(station==sstart)
+					continue;
+				distance2+= priceUtil.getDistance(sstart.getStationNo(), station.getStationNo());
+			}
+			
+			if(distance1 <= distance2) {
+				System.out.println("===========distance1 <= distance2===========");
+				stationPathSet = s1.getAllPassedStations(s2);
+				recalcutelateFlg = true;
+			}else {
+				System.out.println("==========distance1 > distance2===========");
+				stationPathSet = s2.getAllPassedStations(s1);
+				LinkedHashSet<Station> stationPathSet2 = new LinkedHashSet<Station>();
+				Iterator<Station> it = stationPathSet.iterator();
+				List<Station> stationList = new ArrayList<Station>();
+				while(it.hasNext()) {
+					stationList.add(it.next());
+				}
+				for(int i = stationPathSet.size() -1; i >=0; i--) {
+					stationPathSet2.add(stationList.get(i));
+				}
+				stationPathSet = stationPathSet2;
+			}
+			
+		}else {
+			System.out.println("======================not compare===========================");
+			stationPathSet = s1.getAllPassedStations(s2);
+		}
+		
+		System.out.println("======stationPathSet.size====" + stationPathSet.size());
+		
+		Map<String,Object> newPriceInfoMap = (Map<String,Object>)ServletActionContext.getRequest().getAttribute("newPriceInfoMap");
+		
+		
 		StringBuilder sb = new StringBuilder(200);
 		StringBuilder fw = new StringBuilder();
-		fw.append("起始站 :" + s1.getName() + "  目标站点：" + s2.getName() + "，共经过" + (s1.getAllPassedStations(s2).size()) + "站");
+		fw.append("起始站 :" + s1.getName() + "  目标站点：" + s2.getName() + "，共经过" + (stationPathSet.size()) + "站");
 		fw.append("\r\n");
-		for (Station station : s1.getAllPassedStations(s2)) {
+		for (Station station : stationPathSet) {
 			sb.append(station.getName() + "->");
 
 		}
@@ -241,7 +294,7 @@ public class Subway {
 
 		int totaldis=0;
 		Station sstart = s1;
-		for (Station station : s1.getAllPassedStations(s2)) {
+		for (Station station : stationPathSet) {
 			if(station==sstart)
 				continue;
 			totaldis+= priceUtil.getDistance(sstart.getStationNo(), station.getStationNo());
@@ -251,36 +304,141 @@ public class Subway {
 		
 		fw.append("，乘距:"+totaldis+"米，票价:"+PriceUtil.getPrivce(totaldis)+"元\r\n");
 		
-		PriceInfoExample priceInfoExample = new PriceInfoExample();
-		priceInfoExample.createCriteria()
-		.andOriStationNoEqualTo(s1.getStationNo())
-		.andDesStationNoEqualTo(s2.getStationNo());
-		List<PriceInfo> priceInfoList = priceInfoMapper.selectByExample(priceInfoExample);
-		if(priceInfoList != null && priceInfoList.size() != 0) {
-			PriceInfo priceInfoTmp = priceInfoList.get(0);
-			if(!priceInfoTmp.getPrice().equals(PriceUtil.getPrivce(totaldis) + "")) {
-				priceInfoMapper.deleteByPrimaryKey(priceInfoTmp.getId());
-				PriceInfo priceInfo = new PriceInfo();
-				priceInfo.setId(BaseUtil.getSeqLong());
-				priceInfo.setOriStationNo(s1.getStationNo());
-				priceInfo.setDesStationNo(s2.getStationNo());
-				priceInfo.setPrice(PriceUtil.getPrivce(totaldis) + "");
-				priceInfo.setAuditFlg("N");
-				priceInfo.setBakFld1(fw.toString());
-				priceInfo.setBakFld2(totaldis + "");
-				priceInfoMapper.insert(priceInfo);
+//		PriceInfoExample priceInfoExample = new PriceInfoExample();
+//		priceInfoExample.createCriteria()
+//		.andOriStationNoEqualTo(s1.getStationNo())
+//		.andDesStationNoEqualTo(s2.getStationNo());
+//		List<PriceInfo> priceInfoList = priceInfoMapper.selectByExample(priceInfoExample);
+//		if(priceInfoList != null && priceInfoList.size() != 0) {
+//			PriceInfo priceInfoTmp = priceInfoList.get(0);
+//			if(!priceInfoTmp.getPrice().equals(PriceUtil.getPrivce(totaldis) + "")) {
+//				//priceInfoMapper.deleteByPrimaryKey(priceInfoTmp.getId());
+//				PriceInfo priceInfo = new PriceInfo();
+//				priceInfo.setId(BaseUtil.getSeqLong());
+//				priceInfo.setOriStationNo(s1.getStationNo());
+//				priceInfo.setDesStationNo(s2.getStationNo());
+//				priceInfo.setPrice(PriceUtil.getPrivce(totaldis) + "");
+//				priceInfo.setAuditFlg("N");
+//				priceInfo.setBakFld1(fw.toString());
+//				priceInfo.setBakFld2(totaldis + "");
+//				//priceInfoMapper.insert(priceInfo);
+//				newPriceInfoMap.put(priceInfoTmp.getOriStationNo() + priceInfoTmp.getDesStationNo(), priceInfo);
+//			}
+//		}else {
+//			PriceInfo priceInfo = new PriceInfo();
+//			priceInfo.setId(BaseUtil.getSeqLong());
+//			priceInfo.setOriStationNo(s1.getStationNo());
+//			priceInfo.setDesStationNo(s2.getStationNo());
+//			priceInfo.setPrice(PriceUtil.getPrivce(totaldis) + "");
+//			priceInfo.setAuditFlg("N");
+//			priceInfo.setBakFld1(fw.toString());
+//			priceInfo.setBakFld2(totaldis + "");
+//			//priceInfoMapper.insert(priceInfo);
+//			newPriceInfoMap.put(priceInfo.getOriStationNo() + priceInfo.getDesStationNo(), priceInfo);
+//		}
+		PriceInfo priceInfo = new PriceInfo();
+		priceInfo.setId(BaseUtil.getSeqLong());
+		priceInfo.setOriStationNo(s1.getStationNo());
+		priceInfo.setDesStationNo(s2.getStationNo());
+		priceInfo.setPrice(PriceUtil.getPrivce(totaldis) + "");
+		priceInfo.setAuditFlg("N");
+		priceInfo.setBakFld1(fw.toString());
+		priceInfo.setBakFld2(totaldis + "");
+		//priceInfoMapper.insert(priceInfo);
+		newPriceInfoMap.put(priceInfo.getOriStationNo() + priceInfo.getDesStationNo(), priceInfo);
+		
+		
+		
+		if(recalcutelateFlg) {
+			stationPathSet = s1.getAllPassedStations(s2);
+			LinkedHashSet<Station> stationPathSet2 = new LinkedHashSet<Station>();
+			Iterator<Station> it = stationPathSet.iterator();
+			List<Station> stationList = new ArrayList<Station>();
+			while(it.hasNext()) {
+				stationList.add(it.next());
 			}
-		}else {
-			PriceInfo priceInfo = new PriceInfo();
+			for(int i = stationPathSet.size() -1; i >=0; i--) {
+				stationPathSet2.add(stationList.get(i));
+			}
+			stationPathSet = stationPathSet2;
+			sb = new StringBuilder(200);
+		    fw = new StringBuilder();
+			fw.append("起始站:" + s2.getName() + "  目标站点：" + s1.getName() + "，共经过" + (stationPathSet.size()) + "站");
+			fw.append("\r\n");
+			for (Station station : stationPathSet) {
+				sb.append(station.getName() + "->");
+
+			}
+
+			sb.delete(sb.length() - 2, sb.length());
+
+			fw.append(sb.toString());
+			fw.append("\r\n");
+			
+			// 计算最短路径
+
+			totaldis=0;
+			sstart = s2;
+			for (Station station : stationPathSet) {
+				if(station==sstart)
+					continue;
+				totaldis+= priceUtil.getDistance(sstart.getStationNo(), station.getStationNo());
+				sstart = station;
+
+			}
+			
+			fw.append("，乘距:"+totaldis+"米，票价:"+PriceUtil.getPrivce(totaldis)+"元\r\n");
+			
+//			priceInfoExample = new PriceInfoExample();
+//			priceInfoExample.createCriteria()
+//			.andOriStationNoEqualTo(s2.getStationNo())
+//			.andDesStationNoEqualTo(s1.getStationNo());
+//			priceInfoList = priceInfoMapper.selectByExample(priceInfoExample);
+//			if(priceInfoList != null && priceInfoList.size() != 0) {
+//				PriceInfo priceInfoTmp = priceInfoList.get(0);
+//				Map<String,Object> oriPriceMap = (Map<String,Object>)ServletActionContext.getRequest().getAttribute("oriPriceInfoMap");
+////				String oriPrice = (String)oriPriceMap.get(priceInfoTmp.getOriStationNo()+priceInfoTmp.getDesStationNo());
+//				String oriPrice = priceInfoTmp.getPrice();
+//				if(oriPrice != null && !oriPrice.equals(PriceUtil.getPrivce(totaldis) + "")) {
+//					//priceInfoMapper.deleteByPrimaryKey(priceInfoTmp.getId());
+//					PriceInfo priceInfo = new PriceInfo();
+//					priceInfo.setId(BaseUtil.getSeqLong());
+//					priceInfo.setOriStationNo(s2.getStationNo());
+//					priceInfo.setDesStationNo(s1.getStationNo());
+//					priceInfo.setPrice(PriceUtil.getPrivce(totaldis) + "");
+//					priceInfo.setAuditFlg("N");
+//					priceInfo.setBakFld1(fw.toString());
+//					priceInfo.setBakFld2(totaldis + "");
+//					priceInfo.setBakFld3(priceInfoTmp.getOriStationNo() + "," + priceInfoTmp.getDesStationNo() + "," + priceInfoTmp.getPrice());
+//					//priceInfoMapper.insert(priceInfo);
+//					newPriceInfoMap.put(priceInfoTmp.getOriStationNo() + priceInfoTmp.getDesStationNo(), priceInfo);
+//				}
+//			}else {
+//				PriceInfo priceInfo = new PriceInfo();
+//				priceInfo.setId(BaseUtil.getSeqLong());
+//				priceInfo.setOriStationNo(s2.getStationNo());
+//				priceInfo.setDesStationNo(s1.getStationNo());
+//				priceInfo.setPrice(PriceUtil.getPrivce(totaldis) + "");
+//				priceInfo.setAuditFlg("N");
+//				priceInfo.setBakFld1(fw.toString());
+//				priceInfo.setBakFld2(totaldis + "");
+//				//priceInfoMapper.insert(priceInfo);
+//				newPriceInfoMap.put(priceInfo.getOriStationNo() + priceInfo.getDesStationNo(), priceInfo);
+//			}
+			
+			priceInfo = new PriceInfo();
 			priceInfo.setId(BaseUtil.getSeqLong());
-			priceInfo.setOriStationNo(s1.getStationNo());
-			priceInfo.setDesStationNo(s2.getStationNo());
+			priceInfo.setOriStationNo(s2.getStationNo());
+			priceInfo.setDesStationNo(s1.getStationNo());
 			priceInfo.setPrice(PriceUtil.getPrivce(totaldis) + "");
 			priceInfo.setAuditFlg("N");
 			priceInfo.setBakFld1(fw.toString());
 			priceInfo.setBakFld2(totaldis + "");
-			priceInfoMapper.insert(priceInfo);
+			//priceInfoMapper.insert(priceInfo);
+			newPriceInfoMap.put(priceInfo.getOriStationNo() + priceInfo.getDesStationNo(), priceInfo);
 		}
+		
+		ServletActionContext.getRequest().setAttribute("newPriceInfoMap", newPriceInfoMap);
 	}
 
 	/**
