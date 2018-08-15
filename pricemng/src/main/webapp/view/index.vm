@@ -85,8 +85,9 @@ function f() {
 }
 </script>
 <ul class="bread">
-  <li><a href="javascript:void(0);" target="right" class="icon-home" target="_self"> 首页</a></li>
+  <li><a href="javascript:void();" target="right" class="icon-home" target="_self"> 首页</a></li>
   <li><a href="javascript:void(0);" id="a_leader_txt">南宁轨道交通票价管理系统</a></li>
+  <li><a href="javascript:window.history.back();" target="right" class="icon-backward" target="_self"> 返回</a></li>
 </ul>
 <div class="admin">
   <iframe  id="iframepage" scrolling="auto" rameborder="0" src="${rootAddr}priceManage/createPriceTable" name="right" width="100%" height="100%" onload="f()"></iframe>
