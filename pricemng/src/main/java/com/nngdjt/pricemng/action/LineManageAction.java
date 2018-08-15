@@ -70,7 +70,9 @@ public class LineManageAction extends ActionSupport{
 	 */
 	public String query() {
 		this.beanInit();
-		List<LineInfo> lineInfoList = this.lineInfoMapper.selectByExampleWithRowbounds(null,
+		LineInfoExample lineInfoExample = new LineInfoExample();
+		lineInfoExample.setOrderByClause("LINE_NO");
+		List<LineInfo> lineInfoList = this.lineInfoMapper.selectByExampleWithRowbounds(lineInfoExample,
 				new RowBounds(Page.getOffSet(this.getNowpage(), this.getPagesize()), Integer.valueOf(this.getPagesize())));
 		int totalPageSize = Page.getTotolSize(Integer.valueOf(this.getPagesize()) ,this.lineInfoMapper.countByExample(null)); 
 		ServletActionContext.getRequest().setAttribute("queryResult", lineInfoList);
