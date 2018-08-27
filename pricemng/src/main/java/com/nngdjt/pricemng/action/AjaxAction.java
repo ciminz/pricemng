@@ -66,7 +66,7 @@ public class AjaxAction extends ActionSupport{
 		StringBuilder returnMessage = null;
 		try {
 			LineInfoExample lineInfoExample = new LineInfoExample();
-			lineInfoExample.setOrderByClause("line_no");
+			lineInfoExample.setOrderByClause("line_no asc");
 			List<LineInfo> lineInfoList = this.lineInfoMapper.selectByExample(lineInfoExample);
 			returnMessage = new StringBuilder("<response><messageHead>0</messageHead>");
 			returnMessage.append("<count>").append(lineInfoList.size()).append("</count>");

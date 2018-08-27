@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="true">
 	<contextName>test</contextName> 
-	<property name="LOG_DIR" value="F://logs" />
+	<property name="LOG_DIR" value="E://logs" />
 	<property name="LOG_FILE_NAME" value="pricemng" />  <!-- 可以由项目组中进行调整 -->
 	<property name="logFileNamePattern" value="${LOG_FILE_NAME}_%d{yyyy-MM-dd}_%i" />
 	<property name="fileLayoutPattern"
