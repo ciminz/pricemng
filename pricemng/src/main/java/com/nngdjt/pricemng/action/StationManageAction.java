@@ -178,6 +178,9 @@ public class StationManageAction extends ActionSupport{
 		stationInfoIntoDb.setLocationY(this.getStationInfo().getLocationY());
 		stationInfoIntoDb.setExchangeFlg(this.getStationInfo().getExchangeFlg());
 		stationInfoIntoDb.setExchangeStNo(this.getStationInfo().getExchangeStNo());
+		if(!"Y".equals(this.getStationInfo().getExchangeFlg())) {
+			stationInfoIntoDb.setExchangeStNo(this.getStationInfo().getStationNo());
+		}
 		stationInfoIntoDb.setExchangeStLiNo(this.getStationInfo().getExchangeStLiNo());
 		stationInfoIntoDb.setStationDes(this.getStationInfo().getStationDes());
 		this.stationInfoMapper.insert(stationInfoIntoDb);
