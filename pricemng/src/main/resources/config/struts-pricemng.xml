@@ -227,6 +227,10 @@
 			<result name="success">/view/right.vm</result>
 		</action>
 		
+		<action name="createPriceTable2">
+			<result>/view/right.vm</result>
+		</action>
+		
 		<action name="priceToAuditView" class="com.nngdjt.pricemng.action.PriceManageAction" method="auditView">
 			<result name="success">/view/price/price_audit.vm</result>
 		</action>

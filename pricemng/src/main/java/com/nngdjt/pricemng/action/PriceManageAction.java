@@ -495,6 +495,7 @@ public class PriceManageAction extends ActionSupport{
 
 	public String createPriceTable() {
 		this.beanInit();
+		initPriceTable();
 		ServletActionContext.getRequest().setAttribute("iframelarge", "1");
 		List<List<String>> priceList = null;
 		if(this.getOriLineNo() == null && this.getDesLineNo() == null) {

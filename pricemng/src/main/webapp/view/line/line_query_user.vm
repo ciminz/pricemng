@@ -29,6 +29,10 @@
     			document.getElementById("nowpagetxt").value = ${totalPageSize};
     		}
     		
+    		if(oprt == 's') {
+    			document.getElementById("nowpagetxt").value = document.getElementById("pageset").value;
+    		}
+    		
     		document.getElementById("form1").submit();
     	}
     	
@@ -83,7 +87,7 @@
     #set($index=$index + 1)
     #end 
      <tr>
-        <td colspan="9"><div class="pagelist"> <a onclick="script:changePage('f');">首页</a> <a onclick="script:changePage('p')">上一页</a> <a onclick="script:changePage('n')">下一页</a><a onclick="script:changePage('l');">尾页</a> 共${totalPageSize}页</div></td>
+        <td colspan="9"><div class="pagelist"> <a onclick="script:changePage('f');">首页</a> <a onclick="script:changePage('p')">上一页</a> <a onclick="script:changePage('n')">下一页</a><a onclick="script:changePage('l');">尾页</a> 共${totalPageSize}页,第<input type="text" id="pageset" value="${nowpage}" style="width:30px;"/>页 <input type="button" value="跳转" onclick="script:changePage('s')"></div></td>
       </tr>
   </table>
 </div>

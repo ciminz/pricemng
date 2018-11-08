@@ -193,6 +193,12 @@
 			    }
 			});
 		}
+		
+		function f1() {
+			document.getElementById('icon1').style.display = 'block';
+		    hidebg.style.display="block";  //显示隐藏层
+   		    hidebg.style.height=document.body.clientHeight+"px";  //设置隐藏层的高度为当前页面高度
+		}
     </script>
     
      <style>
@@ -249,7 +255,7 @@
           <label></label>
         </div>
         <div class="field" width="100%" align="center">
-          <button class="button bg-main icon-search" type="submit"> 查询</button>
+          <button class="button bg-main icon-search" type="submit" onclick="f1()"> 查询</button>
           <button class="button bg-main icon-download" type="button" onclick="createPriceMap()"> 导出线网票价矩阵</button>
           <button class="button bg-main" type="button" onclick="javascript:document.getElementById('oLineNo').value='-1';document.getElementById('dLineNo').value='-1';"> 重置</button>
         </div>

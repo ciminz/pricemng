@@ -27,7 +27,7 @@
   <div class="logo margin-big-left fadein-top">
     <h1><img src="${rootAddr}view/images/y.jpg" class="radius-circle rotate-hover" height="50" alt="" />南宁轨道交通票价管理系统</h1>
   </div>
-  <div class="head-l"><a class="button button-little bg-green" href="${rootAddr}priceManage/createPriceTable" target="right"><span class="icon-home"></span> 前台首页</a> &nbsp;&nbsp;<a class="button button-little bg-red" href="javascript:quit();"><span class="icon-power-off"></span> 退出登录</a> </div>
+  <div class="head-l"><a class="button button-little bg-green" href="${rootAddr}priceManage/createPriceTable2" target="right"><span class="icon-home"></span> 前台首页</a> &nbsp;&nbsp;<a class="button button-little bg-red" href="javascript:quit();"><span class="icon-power-off"></span> 退出登录</a> </div>
 </div>
 <div class="leftnav">
   <div class="leftnav-title"><strong><span class="icon-list"></span>系统功能</strong></div>
@@ -85,12 +85,12 @@ function f() {
 }
 </script>
 <ul class="bread">
-  <li><a href="javascript:void();" target="right" class="icon-home" target="_self"> 首页</a></li>
+  <!--li><a href="javascript:void();" target="right" class="icon-home" target="_self"> 首页</a></li-->
   <li><a href="javascript:void(0);" id="a_leader_txt">南宁轨道交通票价管理系统</a></li>
   <li><a href="javascript:window.history.back();" target="right" class="icon-backward" target="_self"> 返回</a></li>
 </ul>
 <div class="admin">
-  <iframe  id="iframepage" scrolling="auto" rameborder="0" src="${rootAddr}priceManage/createPriceTable" name="right" width="100%" height="100%" onload="f()"></iframe>
+  <iframe  id="iframepage" scrolling="auto" rameborder="0" src="${rootAddr}priceManage/createPriceTable2" name="right" width="100%" height="100%" onload="f()"></iframe>
 </div>
 </body>
 </html>
