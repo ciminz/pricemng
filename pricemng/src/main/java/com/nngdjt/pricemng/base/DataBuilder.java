@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.nngdjt.pricemng.entity.LineInfo;
+import com.nngdjt.pricemng.entity.LineInfoExample;
 import com.nngdjt.pricemng.entity.StationInfo;
 import com.nngdjt.pricemng.entity.StationInfoExample;
 import com.nngdjt.pricemng.mapper.LineInfoMapper;
@@ -28,7 +29,9 @@ public class DataBuilder {
 	    public DataBuilder(){   
 	    	LineInfoMapper lineInfoMapper = (LineInfoMapper)LocalBeanFactory.get(LineInfoMapper.class);
 	    	StationInfoMapper stationInfoMapper = (StationInfoMapper)LocalBeanFactory.get(StationInfoMapper.class);
-	    	List<LineInfo> lineInfoList = lineInfoMapper.selectByExample(null);
+	    	LineInfoExample lineInfoExample = new LineInfoExample();
+	    	lineInfoExample.setOrderByClause("line_no asc");
+	    	List<LineInfo> lineInfoList = lineInfoMapper.selectByExample(lineInfoExample);
 	    	for(LineInfo lineInfo : lineInfoList) {
 	    		line = new ArrayList<Station>(); 
 		    	StationInfoExample stationInfoExample = new StationInfoExample();
