@@ -126,7 +126,7 @@ public class PriceUtil {
 		else if (distance > 26000 && distance <= 34000)
 			return 6;
 		else
-			return (7 + (((int) distance - 34) / 10000));
+			return (7 + (((int) distance - 34000) / 10000));
 
 	}
 
