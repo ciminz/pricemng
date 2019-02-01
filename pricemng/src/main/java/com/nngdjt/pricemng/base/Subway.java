@@ -198,11 +198,13 @@ public class Subway {
 				continue;
 			}
 			
-			int shortestPath = (s1.getAllPassedStations(parent).size() - 1) + priceUtil.getDistance(parent.getStationNo(), child.getStationNo());// 前面这个1表示计算路径需要去除自身站点，后面这个1表示增加了1站距离  1变成查表的数据
-			
+			//int shortestPath = (s1.getAllPassedStations(parent).size() - 1) + priceUtil.getDistance(parent.getStationNo(), child.getStationNo());// 前面这个1表示计算路径需要去除自身站点，后面这个1表示增加了1站距离  1变成查表的数据
+			int shortestPath = this.getDistanceBetweenStation(s1, s1.getAllPassedStations(parent)) + priceUtil.getDistance(parent.getStationNo(), child.getStationNo());
 			if (s1.getAllPassedStations(child).contains(child)) {
 				// 如果s1已经计算过到此child的经过距离，那么比较出最小的距离
-				if ((s1.getAllPassedStations(child).size() - 1) > shortestPath) {
+				//if ((s1.getAllPassedStations(child).size() - 1) > shortestPath) {
+				if (this.getDistanceBetweenStation(s1, s1.getAllPassedStations(child)) > shortestPath) {	
+//					throw new RuntimeException("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 					// 重置S1到周围各站的最小路径
 					s1.getAllPassedStations(child).clear();
 					s1.getAllPassedStations(child).addAll(s1.getAllPassedStations(parent));
@@ -440,6 +442,19 @@ public class Subway {
 		
 		ServletActionContext.getRequest().setAttribute("newPriceInfoMap", newPriceInfoMap);
 	}
+	
+	
+	public int getDistanceBetweenStation(Station s1,LinkedHashSet<Station> stationPathSet) {
+		int totaldis=0;
+		Station sstart = s1;
+		for (Station station : stationPathSet) {
+			if(station==sstart)
+				continue;
+			totaldis+= priceUtil.getDistance(sstart.getStationNo(), station.getStationNo());
+			sstart = station;
+		}
+		return totaldis;
+	} 
 
 	/**
 	 * desc: How to use the method author chaisson since 2015-5-31 version 1.0
