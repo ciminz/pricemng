@@ -1,5 +1,6 @@
 package com.nngdjt.pricemng.base;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class PriceUtil {
 			if(distanceInfoList == null || distanceInfoList.size() == 0) {
 				continue;
 			}
-			dis.put(station.getStationNo() + station.getNext().getStationNo(), Integer.valueOf(distanceInfoList.get(0).getDistance()));
+			dis.put(station.getStationNo() + station.getNext().getStationNo(), Integer.valueOf(new BigDecimal(distanceInfoList.get(0).getDistance()).multiply(new BigDecimal(1000)).setScale(0).toString()));//转换成毫米
 		}
 		
 		/*一号线*/
@@ -114,19 +115,19 @@ public class PriceUtil {
 		
 	}
 
-	public static int getPrivce(int distance) {
-		if (distance <= 6000)
+	public static int getPrivce(int distance) {//按毫米比对
+		if (distance <= 6000*1000)
 			return 2;
-		else if (distance > 6000 && distance <= 12000)
+		else if (distance > 6000*1000 && distance <= 12000*1000)
 			return 3;
-		else if (distance > 12000 && distance <= 18000)
+		else if (distance > 12000*1000 && distance <= 18000*1000)
 			return 4;
-		else if (distance > 18000 && distance <= 26000)
+		else if (distance > 18000*1000 && distance <= 26000*1000)
 			return 5;
-		else if (distance > 26000 && distance <= 34000)
+		else if (distance > 26000*1000 && distance <= 34000*1000)
 			return 6;
 		else
-			return (7 + (((int) distance - 34000) / 10000));
+			return (7 + (((int) distance - 34000*1000) / (10000*1000)));
 
 	}
 

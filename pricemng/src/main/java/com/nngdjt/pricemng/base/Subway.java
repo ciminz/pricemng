@@ -1,5 +1,6 @@
 package com.nngdjt.pricemng.base;
 import java.io.FileWriter;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -9,7 +10,6 @@ import java.util.Map;
 import org.apache.struts2.ServletActionContext;
 
 import com.nngdjt.pricemng.entity.PriceInfo;
-import com.nngdjt.pricemng.entity.PriceInfoExample;
 import com.nngdjt.pricemng.mapper.PriceInfoMapper;
 import com.vane.utils.BaseUtil;
 
@@ -304,7 +304,12 @@ public class Subway {
 
 		}
 		
-		fw.append("，乘距:"+totaldis+"米，票价:"+PriceUtil.getPrivce(totaldis)+"元\r\n");
+		String totaldisStr = "";
+		BigDecimal totaldisDec = new BigDecimal(totaldis);
+		BigDecimal resultDec = totaldisDec.divide(new BigDecimal(1000));
+		resultDec = resultDec.setScale(3,BigDecimal.ROUND_HALF_DOWN);
+		totaldisStr = resultDec.toString();
+		fw.append("，乘距:"+totaldisStr+"米，票价:"+PriceUtil.getPrivce(totaldis)+"元\r\n");
 		
 //		PriceInfoExample priceInfoExample = new PriceInfoExample();
 //		priceInfoExample.createCriteria()
@@ -345,7 +350,7 @@ public class Subway {
 		priceInfo.setPrice(PriceUtil.getPrivce(totaldis) + "");
 		priceInfo.setAuditFlg("N");
 		priceInfo.setBakFld1(fw.toString());
-		priceInfo.setBakFld2(totaldis + "");
+		priceInfo.setBakFld2(totaldisStr + "");
 		//priceInfoMapper.insert(priceInfo);
 		newPriceInfoMap.put(priceInfo.getOriStationNo() + priceInfo.getDesStationNo(), priceInfo);
 		
@@ -389,7 +394,13 @@ public class Subway {
 
 			}
 			
-			fw.append("，乘距:"+totaldis+"米，票价:"+PriceUtil.getPrivce(totaldis)+"元\r\n");
+			totaldisStr = "";
+			totaldisDec = new BigDecimal(totaldis);
+			resultDec = totaldisDec.divide(new BigDecimal(1000));
+			resultDec = resultDec.setScale(3,BigDecimal.ROUND_HALF_DOWN);
+			totaldisStr = resultDec.toString();
+			
+			fw.append("，乘距:"+totaldisStr+"米，票价:"+PriceUtil.getPrivce(totaldis)+"元\r\n");
 			
 //			priceInfoExample = new PriceInfoExample();
 //			priceInfoExample.createCriteria()
@@ -435,7 +446,7 @@ public class Subway {
 			priceInfo.setPrice(PriceUtil.getPrivce(totaldis) + "");
 			priceInfo.setAuditFlg("N");
 			priceInfo.setBakFld1(fw.toString());
-			priceInfo.setBakFld2(totaldis + "");
+			priceInfo.setBakFld2(totaldisStr + "");
 			//priceInfoMapper.insert(priceInfo);
 			newPriceInfoMap.put(priceInfo.getOriStationNo() + priceInfo.getDesStationNo(), priceInfo);
 		}

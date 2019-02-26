@@ -61,9 +61,9 @@
 		</sift>
 	</appender>
 
-	<logger name="java.sql.Connection" level="DEBUG" />  
-	<logger name="java.sql.Statement" level="DEBUG" />  
-	<logger name="java.sql.PreparedStatement" level="DEBUG" />  
+	<logger name="java.sql.Connection" level="TRACE" />  
+	<logger name="java.sql.Statement" level="TRACE" />  
+	<logger name="java.sql.PreparedStatement" level="TRACE" />  
 	
 	<root level="TRACE">
 	 <appender-ref ref="CONSOLE" />
