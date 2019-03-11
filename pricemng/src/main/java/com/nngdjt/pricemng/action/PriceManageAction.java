@@ -573,8 +573,17 @@ public class PriceManageAction extends ActionSupport{
 					.andOriStationNoEqualTo(oriStation.getStationNo())
 					.andDesStationNoEqualTo(desStation.getStationNo())
 					.andAuditFlgEqualTo("Y");
+					
+					PriceInfoExample priceInfoExcample2 = new PriceInfoExample();
+					priceInfoExcample2.createCriteria()
+					.andOriStationNoEqualTo(oriStation.getStationNo())
+					.andDesStationNoEqualTo(desStation.getStationNo())
+					.andAuditFlgEqualTo("Y");
+					
+					
 					List<PriceInfo> priceInfoTmpList = priceInfoMapper.selectByExample(priceInfoExcample);
-					if(priceInfoTmpList != null && priceInfoTmpList.size() != 0) {
+					List<PriceInfo> priceInfoTmpList2 = priceInfoMapper.selectByExample(priceInfoExcample);
+					if(priceInfoTmpList != null && priceInfoTmpList.size() != 0 && priceInfoTmpList2 != null && priceInfoTmpList2.size() != 0) {
 						System.out.println(priceInfoTmpList.get(0).getPrice());
 						priceInfoList.add(priceInfoTmpList.get(0));
 					}else {
