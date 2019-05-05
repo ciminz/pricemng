@@ -279,16 +279,17 @@ public class Subway {
 		
 		
 		StringBuilder sb = new StringBuilder(200);
+		StringBuilder sb2 = new StringBuilder("");
 		StringBuilder fw = new StringBuilder();
 		fw.append("起始站 :" + s1.getName() + "  目标站点：" + s2.getName() + "，共经过" + (stationPathSet.size()) + "站");
 		fw.append("\r\n");
 		for (Station station : stationPathSet) {
 			sb.append(station.getName() + "->");
-
+			sb2.append(station.getName() + "->");
 		}
 
 		sb.delete(sb.length() - 2, sb.length());
-
+		sb2.delete(sb2.length() - 2, sb2.length());
 		fw.append(sb.toString());
 		fw.append("\r\n");
 		
@@ -351,6 +352,7 @@ public class Subway {
 		priceInfo.setAuditFlg("N");
 		priceInfo.setBakFld1(fw.toString());
 		priceInfo.setBakFld2(totaldisStr + "");
+		priceInfo.setBakFld3(sb2.toString() + "");
 		//priceInfoMapper.insert(priceInfo);
 		newPriceInfoMap.put(priceInfo.getOriStationNo() + priceInfo.getDesStationNo(), priceInfo);
 		
@@ -369,16 +371,17 @@ public class Subway {
 			}
 			stationPathSet = stationPathSet2;
 			sb = new StringBuilder(200);
+			sb2 = new StringBuilder("");
 		    fw = new StringBuilder();
 			fw.append("起始站:" + s2.getName() + "  目标站点：" + s1.getName() + "，共经过" + (stationPathSet.size()) + "站");
 			fw.append("\r\n");
 			for (Station station : stationPathSet) {
 				sb.append(station.getName() + "->");
-
+				sb2.append(station.getName() + "->");
 			}
 
 			sb.delete(sb.length() - 2, sb.length());
-
+			sb2.delete(sb2.length() - 2, sb2.length());
 			fw.append(sb.toString());
 			fw.append("\r\n");
 			
@@ -447,6 +450,7 @@ public class Subway {
 			priceInfo.setAuditFlg("N");
 			priceInfo.setBakFld1(fw.toString());
 			priceInfo.setBakFld2(totaldisStr + "");
+			priceInfo.setBakFld3(sb2.toString() + "");
 			//priceInfoMapper.insert(priceInfo);
 			newPriceInfoMap.put(priceInfo.getOriStationNo() + priceInfo.getDesStationNo(), priceInfo);
 		}

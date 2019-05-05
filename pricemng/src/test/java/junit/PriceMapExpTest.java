@@ -36,46 +36,52 @@ public class PriceMapExpTest extends BaseJunit4Test{
         HSSFSheet sheet = workBook.createSheet("票价矩阵");  
         
         DataBuilder dataBuilder = new DataBuilder();
+        
+        for(Station s : dataBuilder.lines) {
+        	System.out.println("---" + s.getStationNo());
+        }
         for(int i = 0; i < dataBuilder.lines.size(); i++) {
         	Station desStation = dataBuilder.lines.get(i);
         	List<PriceInfo> priceInfoList = new ArrayList<PriceInfo>();
         	for(int j = 0; j <= i; j++) {
         		Station oriStation =  dataBuilder.lines.get(j);
-        		PriceInfoExample priceInfoExcample = new PriceInfoExample();
-        		priceInfoExcample.createCriteria()
-        		.andOriStationNoEqualTo(oriStation.getStationNo())
-        		.andDesStationNoEqualTo(desStation.getStationNo());
-        		List<PriceInfo> priceInfoTmpList = priceInfoMapper.selectByExample(priceInfoExcample);
-        		if(priceInfoTmpList != null && priceInfoTmpList.size() != 0) {
-        			System.out.println(priceInfoTmpList.get(0).getPrice());
-        			priceInfoList.add(priceInfoTmpList.get(0));
-        		}
+//        		PriceInfoExample priceInfoExcample = new PriceInfoExample();
+//        		priceInfoExcample.createCriteria()
+//        		.andOriStationNoEqualTo(oriStation.getStationNo())
+//        		.andDesStationNoEqualTo(desStation.getStationNo());
+//        		List<PriceInfo> priceInfoTmpList = priceInfoMapper.selectByExample(priceInfoExcample);
+//        		if(priceInfoTmpList != null && priceInfoTmpList.size() != 0) {
+//        			System.out.println(priceInfoTmpList.get(0).getPrice());
+//        			priceInfoList.add(priceInfoTmpList.get(0));
+//        		}
+        		
+        		System.out.println(desStation.getStationNo() + ":" + oriStation.getStationNo());
         	}
         	
-        	//创建行,第3行  
-            HSSFRow row = sheet.createRow(i);
-            
-            HSSFCell cellStation = row.createCell(0, CellType.STRING);  
-            cellStation.setCellValue(desStation.getName());  
-            int index = 1;
-            for(PriceInfo priceInfo : priceInfoList) {
-            	//创建单元格，操作第三行第三列  
-                HSSFCell cellPrice = row.createCell(index++, CellType.STRING);  
-                cellPrice.setCellValue(priceInfo.getPrice());  
-            }
+//        	//创建行,第3行  
+//            HSSFRow row = sheet.createRow(i);
+//            
+//            HSSFCell cellStation = row.createCell(0, CellType.STRING);  
+//            cellStation.setCellValue(desStation.getName());  
+//            int index = 1;
+//            for(PriceInfo priceInfo : priceInfoList) {
+//            	//创建单元格，操作第三行第三列  
+//                HSSFCell cellPrice = row.createCell(index++, CellType.STRING);  
+//                cellPrice.setCellValue(priceInfo.getPrice());  
+//            }
         }
-        
-        //末尾行，设重点站
-        HSSFRow row = sheet.createRow(dataBuilder.lines.size());
-        int index = 1;
-        for(Station station : dataBuilder.lines) {
-        	//创建单元格，操作第三行第三列  
-            HSSFCell cellPrice = row.createCell(index++, CellType.STRING);  
-            cellPrice.setCellValue(station.getName());  
-        }
-         
-        workBook.write(new File("f:\\测试.xls"));  
-          
-        workBook.close();//最后记得关闭工作簿  
+//        
+//        //末尾行，设重点站
+//        HSSFRow row = sheet.createRow(dataBuilder.lines.size());
+//        int index = 1;
+//        for(Station station : dataBuilder.lines) {
+//        	//创建单元格，操作第三行第三列  
+//            HSSFCell cellPrice = row.createCell(index++, CellType.STRING);  
+//            cellPrice.setCellValue(station.getName());  
+//        }
+//         
+//        workBook.write(new File("f:\\测试.xls"));  
+//          
+//        workBook.close();//最后记得关闭工作簿  
 	}
 }

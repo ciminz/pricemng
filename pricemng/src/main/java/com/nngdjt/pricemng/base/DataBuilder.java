@@ -1,5 +1,6 @@
 package com.nngdjt.pricemng.base;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,6 +33,7 @@ public class DataBuilder {
 	    	LineInfoExample lineInfoExample = new LineInfoExample();
 	    	lineInfoExample.setOrderByClause("line_no asc");
 	    	List<LineInfo> lineInfoList = lineInfoMapper.selectByExample(lineInfoExample);
+	    	Collections.sort(lineInfoList, new LineInfoComparator());
 	    	for(LineInfo lineInfo : lineInfoList) {
 	    		line = new ArrayList<Station>(); 
 		    	StationInfoExample stationInfoExample = new StationInfoExample();
